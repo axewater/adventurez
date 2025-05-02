@@ -181,7 +181,16 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
                     else:
                         response_message += f"De doorgang naar {target_name_lower.capitalize()} is open."
                 else:
-                    response_message += f"Je ziet hier geen '{argument}'."
+                    # --- NEW: Check inventory if not found in room ---
+                    item_in_inventory = _find_item_in_inventory(user_id, game_id, target_name_lower)
+                    if item_in_inventory and item_in_inventory != "AMBIGUOUS":
+                        response_message += item_in_inventory.description or f"Je bekijkt de {item_in_inventory.name} in je inventaris. Er is niets bijzonders aan te zien."
+                        entity_image_path = item_in_inventory.image_path
+                        room_image_path = None # Don't show room image when looking at inventory item
+                    elif item_in_inventory == "AMBIGUOUS":
+                        response_message += f"Je hebt meerdere dingen genaamd '{argument}' in je inventaris. Wees specifieker."
+                    else:
+                        response_message += f"Je ziet hier geen '{argument}' en je hebt het ook niet bij je."
             else:
                 # Look at room
                 response_message += format_room_description(user_id, game_id, current_room)
