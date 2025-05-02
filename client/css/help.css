@@ -1,0 +1,157 @@
+/* /client/css/help.css */
+/* Styles specifically for the help page */
+
+/* Main layout container for help page */
+.help-page-container {
+    display: flex;
+    gap: 20px; /* Space between TOC and content */
+    padding: 20px; /* Padding around the entire help page */
+    max-width: 1200px; /* Limit overall width */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Table of Contents Sidebar */
+#toc {
+    width: 220px; /* Fixed width for the sidebar */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    border: 1px solid var(--border-color);
+    background-color: var(--panel-bg-color);
+    padding: 15px;
+    border-radius: 5px;
+    height: fit-content; /* Adjust height to content */
+    position: sticky; /* Keep TOC visible */
+    top: 70px; /* Adjust based on topbar height + desired gap */
+    align-self: flex-start; /* Align to the top */
+}
+
+#toc h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: var(--secondary-color);
+}
+
+#toc ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc ul li a {
+    display: block;
+    padding: 6px 10px; /* Slightly more padding */
+    color: var(--link-color);
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#toc ul li a:hover {
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
+    text-decoration: none;
+}
+
+/* Nested lists for deeper hierarchy */
+#toc ul ul {
+    padding-left: 15px; /* Indent nested lists */
+    margin-top: 5px;
+}
+
+/* Help Content Area */
+.help-content {
+    flex-grow: 1; /* Allow content to take remaining space */
+    max-width: 900px; /* Keep content readable */
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px 30px; /* More padding inside content */
+    color: var(--text-color);
+}
+
+.help-content h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.help-content h2 {
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--accent-color);
+    padding-bottom: 5px;
+    margin-top: 40px; /* More space above H2 */
+    margin-bottom: 15px;
+}
+
+.help-content h3 {
+    color: var(--secondary-color);
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.help-content p {
+    line-height: 1.7; /* Slightly more line spacing */
+    margin-bottom: 15px;
+}
+
+.help-content ul, .help-content ol {
+    margin-left: 25px; /* More indentation */
+    margin-bottom: 15px;
+    padding-left: 0; /* Reset default padding */
+}
+
+.help-content code {
+    background-color: var(--panel-bg-color);
+    padding: 3px 6px; /* Slightly larger padding */
+    border-radius: 3px;
+    font-family: monospace;
+    border: 1px solid var(--border-color);
+    font-size: 0.95em;
+}
+
+.help-content pre {
+    background-color: var(--panel-bg-color);
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px; /* More space below code blocks */
+}
+
+.help-content pre code {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    font-size: 0.9em; /* Slightly smaller code in blocks */
+    line-height: 1.5;
+}
+
+.help-content a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.help-content a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .help-page-container {
+        flex-direction: column; /* Stack TOC and content */
+        padding: 10px;
+    }
+
+    #toc {
+        width: 100%; /* Full width */
+        position: static; /* Remove sticky positioning */
+        margin-bottom: 20px;
+        height: auto; /* Reset height */
+    }
+
+    .help-content {
+        padding: 15px; /* Less padding on small screens */
+    }
+}

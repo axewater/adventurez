@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Help - Text Adventure Builder{% endblock %}
+
+{% block head_extra %}
+    {# Link the new CSS file specific to this page #}
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/help.css') }}">
+{% endblock %}
+
+{% block content %}
+{# NEW: Wrapper div for Flexbox layout #}
+<div class="help-page-container">
+
+    {# Table of Contents (Moved outside main content) #}
+    <nav id="toc">
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#editor-overview">Editor Overview</a>
+                <ul>
+                    <li><a href="#spellen-tab">Spellen Tab</a></li>
+                    <li><a href="#kamers-tab">Kamers Tab</a></li>
+                    <li><a href="#entiteiten-tab">Entiteiten Tab</a></li>
+                    <li><a href="#scripts-tab">Scripts Tab</a></li>
+                    <li><a href="#gesprekken-tab">Gesprekken Tab</a></li>
+                    <li><a href="#bestanden-tab">Bestanden Tab</a></li>
+                    <li><a href="#speel-modus">Speel Modus</a></li>
+                    <li><a href="#scores-tab">Scores Tab</a></li>
+                    <li><a href="#admin-tab">Admin Tab</a></li>
+                </ul>
+            </li>
+            <li><a href="#basic-concepts">Basic Concepts</a></li>
+            <li><a href="#advanced-features">Advanced Features</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ul>
+    </nav>
+
+    {# Main Help Content Area #}
+    <div class="help-content">
+        <h1>Help & Documentation</h1>
+
+        {# Sections remain the same #}
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>Welcome to the Text Adventure Builder! This tool allows you to create your own text-based adventure games using a visual interface and simple scripting.</p>
+            <p>Whether you're building a classic dungeon crawl, an interactive story, or an educational simulation, this builder provides the tools you need.</p>
+        </section>
+
+        <section id="getting-started">
+            <h2>Getting Started</h2>
+            <p>To begin, you'll need an account. Once logged in:</p>
+            <ol>
+                <li>Navigate to the <strong>Spellen</strong> tab.</li>
+                <li>Click the <strong>+ Nieuw Spel</strong> button (either in the sidebar or the main grid view).</li>
+                <li>Give your game a name and optional description/images in the modal that appears.</li>
+                <li>Click <strong>Maak Spel Aan</strong>.</li>
+                <li>Your new game will be selected, and you can start building!</li>
+            </ol>
+        </section>
+
+        <section id="editor-overview">
+            <h2>Editor Overview</h2>
+            <p>The editor is divided into several tabs, each focusing on a different aspect of your game.</p>
+
+            <h3 id="spellen-tab">Spellen Tab</h3>
+            <p>This is the main dashboard where you can see all your created games. You can:</p>
+            <ul>
+                <li>Start playing a game.</li>
+                <li>Open game settings (rename, change images, description).</li>
+                <li>Export a game to a <code>.zip</code> file.</li>
+                <li>Submit a game to the Adventure Store (if configured).</li>
+                <li>Delete a game.</li>
+                <li>Compress game images (optimizes file size).</li>
+                <li>Create a new game or import one from a <code>.zip</code> file using the buttons at the top.</li>
+            </ul>
+
+            <h3 id="kamers-tab">Kamers Tab (Admin)</h3>
+            <p>Manage the locations in your game.</p>
+            <ul>
+                <li><strong>List View:</strong> Add, delete, and reorder rooms. Select a room to edit its details.</li>
+                <li><strong>Graph View:</strong> Visually arrange rooms and draw connections between them. Click a room node to edit its details and see/add entities within it. Drag entities from the panel onto room nodes.</li>
+                <li><strong>Details Panel:</strong> Edit the selected room's title, description, and image. Manage connections to other rooms (direction, lock status, required key).</li>
+            </ul>
+
+            <h3 id="entiteiten-tab">Entiteiten Tab (Admin)</h3>
+            <p>Manage the items, characters (NPCs), and scenery within your game.</p>
+            <ul>
+                <li><strong>List:</strong> Add, delete, and search for entities. Select an entity to edit its details.</li>
+                <li><strong>Details Panel:</strong> Edit the selected entity's name, description, type (ITEM/NPC), location (room or container), image, and attributes (takable, container, mobile). Link NPCs to conversations.</li>
+            </ul>
+
+            <h3 id="scripts-tab">Scripts Tab (Admin)</h3>
+            <p>Define game logic using simple scripts.</p>
+            <ul>
+                <li><strong>List:</strong> Add, delete, and select scripts.</li>
+                <li><strong>Details Panel:</strong> Define the script's <code>Trigger</code> (e.g., <code>ON_ENTER</code>, <code>ON_TAKE(key)</code>, <code>ON_COMMAND(open door)</code>), an optional <code>Condition</code> (e.g., <code>HAS_ITEM(crowbar)</code>, <code>STATE(power_on)=="true"</code>), and the <code>Action</code> to perform (e.g., <code>SHOW_MESSAGE("It opened!")</code>, <code>GIVE_ITEM(gold)</code>, <code>SET_STATE(door_unlocked, "true")</code>, <code>ADD_SCORE(10)</code>).</li>
+            </ul>
+
+            <h3 id="gesprekken-tab">Gesprekken Tab (Admin)</h3>
+            <p>Create branching dialogues for your NPCs.</p>
+            <ul>
+                <li><strong>List:</strong> Add, delete, and select conversations.</li>
+                <li><strong>Graph View:</strong> Visually map out the conversation flow, connecting nodes representing NPC dialogue and player choices.</li>
+                <li><strong>Details Panel:</strong> Edit the text for NPC lines and player options within the selected conversation node.</li>
+            </ul>
+
+            <h3 id="bestanden-tab">Bestanden Tab (Admin)</h3>
+            <p>Manage uploaded images for your games.</p>
+            <ul>
+                <li>View images categorized by type (Avonturen, Kamers, Entiteiten).</li>
+                <li>Upload new images.</li>
+                <li>Delete unused images.</li>
+                <li>Preview images by clicking on them.</li>
+            </ul>
+
+            <h3 id="speel-modus">Speel Modus</h3>
+            <p>Test your adventure!</p>
+            <ul>
+                <li>Select a game from the Spellen tab or the sidebar list.</li>
+                <li>Switch to the Speel Modus tab.</li>
+                <li>Interact with the game by typing commands (e.g., <code>kijk</code>, <code>ga noord</code>, <code>pak sleutel</code>, <code>gebruik sleutel op deur</code>, <code>praat met wachter</code>).</li>
+                <li>Use <code>opslaan</code> to save progress and <code>laden</code> to restore. <code>reset</code> starts the current game over.</li>
+            </ul>
+
+            <h3 id="scores-tab">Scores Tab</h3>
+            <p>View high scores achieved by users across different games.</p>
+
+            <h3 id="admin-tab">Admin Tab (Admin)</h3>
+            <p>Manage users and system settings.</p>
+            <ul>
+                <li>View, create, edit, and delete user accounts.</li>
+                <li>Change user roles (User/Admin).</li>
+                <li>Configure system settings like the default theme and the Adventure Store API key.</li>
+                <li>View basic system statistics.</li>
+            </ul>
+        </section>
+
+        <section id="basic-concepts">
+            <h2>Basic Concepts</h2>
+            <ul>
+                <li><strong>Rooms:</strong> The locations in your game world.</li>
+                <li><strong>Connections:</strong> Paths between rooms (e.g., North, East, Up). Can be locked.</li>
+                <li><strong>Entities:</strong> Objects (Items) or characters (NPCs) within rooms or carried by the player.</li>
+                <li><strong>Items:</strong> Can be takable, act as containers, or be used as keys.</li>
+                <li><strong>NPCs:</strong> Non-player characters that can have conversations or move around (if mobile).</li>
+                <li><strong>Inventory:</strong> Items the player is currently carrying.</li>
+                <li><strong>Scripts:</strong> Event-driven logic (Trigger -> Condition -> Action).</li>
+                <li><strong>Conversations:</strong> Structured dialogues with NPCs.</li>
+                <li><strong>State Variables:</strong> Used by scripts to track game progress (e.g., <code>door_unlocked</code>).</li>
+            </ul>
+        </section>
+
+        <section id="advanced-features">
+            <h2>Advanced Features</h2>
+            <ul>
+                <li><strong>Visual Room Editor:</strong> Drag rooms, draw connections, see layout.</li>
+                <li><strong>Visual Conversation Editor:</strong> Map dialogue flow visually.</li>
+                <li><strong>Scripting Engine:</strong> Create custom interactions and puzzles.</li>
+                <li><strong>Image Support:</strong> Add visual flair to rooms and entities.</li>
+                <li><strong>Import/Export:</strong> Share or back up your games easily.</li>
+                <li><strong>Adventure Store Integration:</strong> Submit your creations to a central repository (requires API key).</li>
+                <li><strong>User Roles:</strong> Admin users have full editing capabilities.</li>
+                <li><strong>Mobile NPCs:</strong> NPCs can wander between rooms.</li>
+            </ul>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            <ul>
+                <li><strong>Game Not Loading:</strong> Ensure the game exists and you have selected it. Check the browser's developer console (F12) for errors.</li>
+                <li><strong>Cannot Save:</strong> Check for error messages. Ensure the server is running and the database is accessible.</li>
+                <li><strong>Image Not Appearing:</strong> Verify the image was uploaded correctly in the "Bestanden" tab and selected in the room/entity details. Check the file path.</li>
+                <li><strong>Script Not Working:</strong> Double-check the Trigger, Condition, and Action syntax. Use <code>SHOW_MESSAGE</code> actions for debugging.</li>
+                <li><strong>Login Issues:</strong> Verify username and password. Contact an administrator if needed.</li>
+            </ul>
+        </section>
+
+    </div> {# End of help-content #}
+
+</div> {# End of help-page-container #}
+{% endblock %}
+
+{% block scripts %}
+    {# Keep existing smooth scroll script #}
+    <script>
+        // Smooth scroll for Table of Contents links
+        document.querySelectorAll('#toc a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Use scrollIntoView for better cross-browser compatibility
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start' // Align top of section with top of viewport
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
