@@ -1,57 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title|default('Sign In') }} - Text Adventure Builder</title>
+    <title>Text Adventure Builder - Create Your Own Adventures</title>
+
+    <!-- Favicon (Optional) -->
+    <!-- <link rel="icon" href="{{ url_for('serve_static', filename='images/favicon.ico') }}"> -->
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/login.css') }}">
+
+    <!-- Google Fonts (Optional - Example: Roboto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="page-container">
-        <div class="product-info-container">
-            <h1>Welcome to the Text Adventure Builder!</h1>
-            <p>
-                Unleash your creativity and build immersive text-based adventures without writing complex code.
-            </p>
+        <nav class="navbar">
+            <div class="nav-logo">
+                <a href="#">Text Adventure Builder</a>
+                <!-- Optional: Add a small logo image here -->
+                <!-- <img src="{{ url_for('serve_static', filename='images/logo_small.png') }}" alt="Logo"> -->
+            </div>
+            <ul class="nav-links">
+                <li><a href="#product">Product</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#help">Help</a></li>
+                <li><a href="#register" class="nav-register-btn">Register</a></li>
+            </ul>
+        </nav>
 
-        </div>
+        <main class="content-area">
+            <!-- Product Section -->
+            <section id="product" class="content-section">
+                <h2>Build Your World, Tell Your Story</h2>
+                <p>
+                    Welcome to the Text Adventure Builder! Unleash your creativity and craft immersive text-based adventures with our intuitive visual editor. No coding required!
+                </p>
+                <ul>
+                    <li>Design intricate room layouts with simple drag-and-drop.</li>
+                    <li>Create compelling characters (NPCs) and interactive items.</li>
+                    <li>Define puzzles, locks, keys, and branching conversations.</li>
+                    <li>Bring your world to life with images for rooms and entities.</li>
+                    <li>Test your adventure instantly in the integrated play mode.</li>
+                </ul>
+                <p>
+                    Perfect for aspiring game designers, educators, or anyone with a story to tell.
+                </p>
+            </section>
 
-        <div class="login-container">
-            <h1>Sign In</h1>
+            <!-- Login Panel (Integrated) -->
+            <aside class="login-panel">
+                <div class="login-container">
+                    <h3>Sign In</h3>
 
-            <!-- Flash Messages -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <ul class="flash-messages">
-                    {% for category, message in messages %}
-                        <li class="{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <ul class="flash-messages">
+                            {% for category, message in messages %}
+                                <li class="{{ category }}">{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
 
-            {# Use request.args.get('next') to pass the original destination #}
-            <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
-                {{ form.hidden_tag() if form and form.hidden_tag }} {# Include CSRF token if using Flask-WTF #}
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
+                    {# Use request.args.get('next') to pass the original destination #}
+                    <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
+                        {{ form.hidden_tag() if form and form.hidden_tag }} {# Include CSRF token if using Flask-WTF #}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-group remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember Me</label>
+                        </div>
+                        <button type="submit" class="login-button">Login</button>
+                    </form>
+                    <div class="register-prompt">
+                        <span>Don't have an account?</span>
+                        <a href="#register" class="register-link-button">Register Now</a>
+                    </div>
+                    {# Add links for password reset if needed in the future #}
+                    {# <p><a href="#">Forgot Password?</a></p> #}
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+            </aside>
+
+            <!-- Examples Section -->
+            <section id="examples" class="content-section alt-bg">
+                <h2>See What You Can Build</h2>
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <img src="{{ url_for('serve_upload', filename='avonturen/het verlaten kasteel_start.png') }}" alt="Het Verlaten Kasteel Example">
+                        <h4>Het Verlaten Kasteel</h4>
+                        <p>Explore a mysterious castle, solve puzzles, and uncover its secrets.</p>
+                    </div>
+                    <div class="example-card">
+                        <img src="{{ url_for('serve_upload', filename='avonturen/netwerk infiltratie_start.png') }}" alt="Netwerk Infiltratie Example">
+                        <h4>Netwerk Infiltratie</h4>
+                        <p>A cyberpunk adventure where you navigate a secure network.</p>
+                    </div>
+                    <!-- Add more example cards as needed -->
                 </div>
-                <div class="form-group remember-me">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Remember Me</label>
+            </section>
+
+            <!-- Help Section -->
+            <section id="help" class="content-section">
+                <h2>Need Help?</h2>
+                <p>
+                    Getting started is easy! Once logged in, navigate through the tabs to manage your games, rooms, entities, and more.
+                    Use the visual editor to connect rooms and place items. The 'Play' tab lets you test your adventure anytime.
+                </p>
+                <p>
+                    More detailed documentation and tutorials are coming soon!
+                </p>
+            </section>
+
+            <!-- Registration Placeholder Section -->
+            <section id="register" class="content-section alt-bg">
+                <h2>Register (Closed Beta)</h2>
+                <div class="registration-placeholder">
+                    <p>
+                        Thank you for your interest! The Text Adventure Builder is currently in a closed beta phase.
+                    </p>
+                    <p>
+                        Registration will open to the public soon. Stay tuned!
+                    </p>
+                    <!-- Optional: Add a sign-up form for beta notification -->
+                    <!--
+                    <form action="#" method="post">
+                        <label for="beta-email">Get notified when registration opens:</label>
+                        <input type="email" id="beta-email" name="beta-email" placeholder="your.email@example.com">
+                        <button type="submit">Notify Me</button>
+                    </form>
+                    -->
                 </div>
-                <button type="submit" class="login-button">Login</button>
-            </form>
-            {# Add links for registration or password reset if needed in the future #}
-            {# <p style="margin-top: 20px;">
-                <a href="#">Forgot Password?</a> | <a href="#">Register</a>
-            </p> #}
-        </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; {{ now().year }} Text Adventure Builder. All rights reserved.</p>
+            <!-- Add other footer links if needed -->
+        </footer>
     </div>
+
+    <!-- Optional: Add smooth scrolling script -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

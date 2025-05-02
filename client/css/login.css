@@ -1,90 +1,212 @@
 /* /client/css/login.css */
-/* Styles specifically for the login page */
+/* Styles specifically for the NEW landing/login page */
+
+/* --- Variables --- */
+:root {
+    --light-violet: #EDE7F6;
+    --deep-purple: #673AB7;
+    --text-dark: #333;
+    --text-light: #fff;
+    --text-muted: #666;
+    --border-light: #e0e0e0;
+    --gradient-start: var(--light-violet);
+    --gradient-end: #ffffff; /* Gradient to white */
+    --accent-hover: #512DA8; /* Darker purple for hover */
+    --font-family: 'Roboto', sans-serif;
+}
 
 body {
-    font-family: sans-serif;
-    /* Background Image */
-    background-image: url('/uploads/images/ui/login.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Keep background fixed during scroll if page overflows */
-    /* Centering */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: var(--font-family);
+    /* Subtle Gradient Background */
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
     margin: 0;
-    padding: 20px; /* Add some padding for smaller screens */
     box-sizing: border-box;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
 }
 
 .page-container {
-    /* Semi-transparent panel */
-    background-color: rgba(255, 255, 255, 0.88); /* Slightly more opaque */
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 30px 40px; /* More padding */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Add shadow to the panel */
-    /* Layout */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch; /* Align items vertically */
-    gap: 40px;
-    max-width: 950px; /* Slightly wider */
-    width: 100%; /* Responsive width */
-}
-
-.product-info-container {
-    flex: 1;
-    min-width: 300px;
-    max-width: 450px; /* Limit width */
-    text-align: left;
-    color: #111; /* Darker text for contrast */
-}
-
-.product-info-container h1 {
-    color: #004085; /* Darker blue */
-    margin-top: 0; /* Remove default top margin */
-    margin-bottom: 20px;
-    font-size: 1.8em;
-}
-
-.product-info-container p,
-.product-info-container ul {
-    line-height: 1.6;
-    margin-bottom: 15px;
-    font-size: 0.95em;
-}
-
-.product-info-container ul {
-    padding-left: 20px; /* Indent list */
-    list-style: disc;
-}
-.product-info-container strong {
-    font-weight: 600;
-}
-
-.login-container {
-    background-color: #fff; /* Keep solid white */
-    padding: 35px;
-    border-radius: 8px;
-    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */ /* Removed shadow */
-    border: 1px solid #ccc; /* Subtle border */
-    width: 100%;
-    max-width: 360px;
-    text-align: center;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center form vertically if needed */
+    min-height: 100vh;
 }
 
-.login-container h1 {
+/* --- Navigation Bar --- */
+.navbar {
+    background-color: var(--deep-purple);
+    color: var(--text-light);
+    padding: 10px 5%; /* Use percentage for padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; /* Make navbar sticky */
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.nav-logo a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1em;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    color: var(--light-violet);
+    border-bottom-color: var(--light-violet);
+}
+
+.nav-register-btn {
+    background-color: var(--light-violet);
+    color: var(--deep-purple);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-register-btn:hover,
+.nav-register-btn:focus {
+    background-color: #fff;
+    color: var(--deep-purple);
+    border-bottom-color: transparent; /* Override border */
+}
+
+/* --- Main Content Area --- */
+.content-area {
+    display: grid;
+    /* Define grid columns: main content takes more space, login panel less */
+    grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr); /* Responsive columns */
+    gap: 40px;
+    padding: 40px 5%; /* Padding around the content */
+    flex-grow: 1; /* Allow content area to grow */
+    max-width: 1400px; /* Max width for content */
+    margin: 0 auto; /* Center content area */
+}
+
+/* Sections stack on top of each other in the first column */
+#product, #examples, #help, #register {
+    grid-column: 1 / 2; /* Place sections in the first column */
+}
+
+/* Login panel stays in the second column */
+.login-panel {
+    grid-column: 2 / 3; /* Place login panel in the second column */
+    grid-row: 1 / span 4; /* Make login panel span across section rows */
+    position: sticky; /* Make login panel sticky */
+    top: 80px; /* Adjust based on navbar height + desired gap */
+    align-self: start; /* Align to the top of its grid area */
+}
+
+/* --- Content Sections --- */
+.content-section {
+    padding: 30px 0; /* Vertical padding */
+    margin-bottom: 30px; /* Space between sections */
+}
+
+.content-section h2 {
+    color: var(--deep-purple);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 2em;
+    border-bottom: 2px solid var(--light-violet);
+    padding-bottom: 10px;
+}
+
+.content-section p {
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+
+.content-section ul {
+    list-style: disc;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.content-section.alt-bg {
+    /* Optional: Add a slightly different background for visual separation */
+    /* background-color: rgba(255, 255, 255, 0.5); */
+    /* border-radius: 8px; */
+    /* padding: 30px; */
+}
+
+/* --- Examples Section Grid --- */
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.example-card {
+    border: 1px solid black;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.example-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.example-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.example-card h4 {
+    margin: 15px 15px 5px 15px;
+    color: var(--deep-purple);
+}
+
+.example-card p {
+    margin: 0 15px 15px 15px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+/* --- Login Panel --- */
+.login-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-light);
+    text-align: center;
+}
+
+.login-container h3 { /* Changed from h1 */
     margin-top: 0;
     margin-bottom: 25px;
-    color: #333;
+    color: var(--deep-purple);
     font-size: 1.6em;
 }
 
@@ -96,7 +218,7 @@ body {
 .form-group label {
     display: block;
     margin-bottom: 6px;
-    color: #555;
+    color: var(--text-muted);
     font-weight: bold;
     font-size: 0.9em;
 }
@@ -105,16 +227,16 @@ body {
 .form-group input[type="password"] {
     width: 100%;
     padding: 12px; /* Larger padding */
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-light);
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 1em;
 }
 
 .form-group input:focus {
-    border-color: #007bff;
+    border-color: var(--deep-purple);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Focus indicator */
+    box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.25); /* Focus indicator */
 }
 
 .form-group.remember-me {
@@ -133,13 +255,13 @@ body {
 .form-group.remember-me label {
     margin-bottom: 0;
     font-weight: normal;
-    color: #555;
+    color: var(--text-muted);
     font-size: 0.9em;
     vertical-align: middle; /* Align label better */
 }
 
 .login-button {
-    background-color: #007bff;
+    background-color: var(--deep-purple);
     color: white;
     padding: 12px 20px;
     border: none;
@@ -152,7 +274,29 @@ body {
 }
 
 .login-button:hover {
-    background-color: #0056b3;
+    background-color: var(--accent-hover);
+}
+
+.register-prompt {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-light);
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.register-prompt span {
+    margin-right: 5px;
+}
+
+.register-link-button {
+    color: var(--deep-purple);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-link-button:hover {
+    text-decoration: underline;
 }
 
 /* Flash Messages */
@@ -176,18 +320,59 @@ body {
 .flash-messages .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
 .flash-messages .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
+/* --- Registration Placeholder --- */
+.registration-placeholder {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px dashed var(--deep-purple);
+}
+
+.registration-placeholder p {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--deep-purple);
+    color: var(--light-violet);
+    text-align: center;
+    padding: 15px 5%;
+    margin-top: auto; /* Push footer to the bottom */
+    font-size: 0.9em;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .page-container {
-        flex-direction: column; /* Stack elements vertically */
-        padding: 20px;
-        gap: 20px;
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 5%;
     }
-    .product-info-container {
-        max-width: none; /* Allow full width */
-        text-align: center; /* Center text on small screens */
+    .nav-links {
+        margin-top: 10px;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    .nav-register-btn {
+        display: inline-block; /* Make it take width */
+        text-align: center;
+    }
+    .content-area {
+        grid-template-columns: 1fr; /* Stack columns */
+        padding: 20px 5%;
+        gap: 20px;
     }
     .login-container {
         max-width: 400px; /* Allow login container to be a bit wider */
+    }
+    .login-panel {
+        grid-column: 1 / 2; /* Take full width */
+        grid-row: auto; /* Don't span rows */
+        position: static; /* Remove sticky positioning */
+        margin-bottom: 30px; /* Add space below login panel */
     }
 }

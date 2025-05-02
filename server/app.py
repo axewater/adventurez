@@ -1,5 +1,6 @@
 import os, uuid
 from flask import Flask, jsonify, send_from_directory, render_template
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect
 from flask_login import LoginManager
@@ -40,6 +41,11 @@ def create_app(config_name='default'):
     from flask_login import login_required
     cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
     login_manager.anonymous_user = AnonymousUser
+
+    # Context processor to inject 'now' function into templates
+    @app.context_processor
+    def inject_now():
+        return {'now': datetime.datetime.utcnow}
 
     @login_manager.user_loader
     def load_user(user_id):
