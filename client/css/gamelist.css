@@ -1,0 +1,100 @@
+
+#game-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    flex-grow: 1; /* Takes available space */
+}
+
+#game-list li {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically center items */
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    overflow: hidden; /* Prevent content spill */
+}
+
+#game-list li img {
+    width: 75px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    object-fit: cover; /* Scale image to cover, cropping if needed */
+    margin-right: 10px; /* Space between image and text */
+    border-radius: 3px; /* Slightly rounded corners */
+    flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+#game-list li:hover {
+    background-color: #d0d0d0;
+}
+
+#game-list li.selected {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    font-weight: bold;
+}
+
+/* Sidebar Game Action Buttons */
+#game-actions button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px; /* Consistent padding */
+    font-size: 0.95em; /* Consistent font size */
+    font-weight: 500; /* Slightly bolder than normal */
+    text-align: center;
+    border: 1px solid #adadad; /* Subtle border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Dark text */
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease; /* Smooth hover */
+}
+
+#game-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#game-actions button:not(:disabled):hover {
+    background-color: #e0e0e0; /* Darker grey on hover */
+    border-color: #999;
+}
+
+/* Specific style for the New Game button */
+#new-game-btn:not(:disabled) {
+    background-color: #007bff; /* Blue */
+    border-color: #007bff;
+    color: white; /* White text */
+}
+
+#new-game-btn:not(:disabled):hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3;
+}
+
+/* Specific style for the Settings button */
+#game-settings-btn:not(:disabled) {
+    background-color: #ffc107; /* Yellow background */
+    border-color: #ffc107;
+}
+
+/* Specific style for the Delete button */
+#delete-game-btn:not(:disabled) {
+    background-color: #dc3545; /* Red background */
+    border-color: #dc3545;
+    color: white; /* White text */
+}
+
+#delete-game-btn:not(:disabled):hover {
+    background-color: #c82333; /* Darker red on hover */
+    border-color: #c82333;
+}
+
+/* Specific style for the Import/Export button */
+#import-export-toggle-btn:not(:disabled) {
+    background-color: #6c757d; /* Secondary grey */
+    border-color: #6c757d;
+    color: white;
+}

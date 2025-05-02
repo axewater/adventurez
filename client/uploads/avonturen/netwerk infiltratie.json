@@ -1,0 +1,799 @@
+{
+  "game_info": {
+    "id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+    "name": "Netwerk Infiltratie",
+    "created_at": "2024-01-01T10:00:00Z",
+    "updated_at": "2024-01-01T10:00:00Z",
+    "start_image_path": "cyberpunk_start.png",
+    "description": "Neo-Kyoto, 2077. De stad glinstert onder een eeuwige neonregen. Als 'ghost' infiltreer je het zwaarbeveiligde hoofdkwartier van OmniCorp. Je missie: steel de 'Project Chimera' data voordat het online gaat. Vind wachtwoorden, kraak systemen en ontwijk de beveiliging. De toekomst hangt aan een zijden draadje... of beter gezegd, een glasvezelkabel.",
+    "win_image_path": "cyberpunk_win.png"
+  },
+  "rooms": [
+    {
+      "id": "r001",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Donker Steegje",
+      "description": "Je staat in een smal, vochtig steegje achter het OmniCorp gebouw. De lucht is zwaar van de geur van synthetisch voedsel en ozon. Regen tikt op metalen afdakjes boven je. Er is een onopvallende metalen deur in het noorden, waarschijnlijk een dienstingang.",
+      "pos_x": 100,
+      "pos_y": 500,
+      "sort_index": 0,
+      "image_path": "steegje.png"
+    },
+    {
+      "id": "r002",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Server Onderhoudsruimte",
+      "description": "De metalen deur leidt naar een kleine, rommelige ruimte vol zoemende servers en loshangende kabels. Het ruikt naar stof en oververhitte elektronica. Een flikkerende TL-buis verlicht een werkbank met gereedschap en een openstaande laptop (Onderhoudslaptop). In de oostmuur is een toegangsluik naar de onderhoudstunnels.",
+      "pos_x": 100,
+      "pos_y": 450,
+      "sort_index": 1,
+      "image_path": "server_onderhoud.png"
+    },
+    {
+      "id": "r003",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Onderhoudstunnels - Knooppunt Alpha",
+      "description": "Je bevindt je in een krap, betonnen tunnelcomplex. Leidingen en datakabels lopen langs de muren. Het geluid van de stad is hier gedempt. Er zijn tunnels die naar het noorden (richting liftkern) en het oosten (naar koelingsysteem) leiden. Een zwak zoemend geluid komt uit het oosten.",
+      "pos_x": 200,
+      "pos_y": 450,
+      "sort_index": 2,
+      "image_path": "tunnels_alpha.png"
+    },
+    {
+      "id": "r004",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Koelsysteem Controle",
+      "description": "Deze ruimte is gevuld met grote, luidruchtige machines die koude lucht blazen. Condens druppelt van de leidingen. Een controlepaneel (Koelingspaneel) met knipperende lampjes staat tegen de muur. De enige uitgang is terug naar het westen.",
+      "pos_x": 150,
+      "pos_y": 450,
+      "sort_index": 3,
+      "image_path": "koeling_controle.png"
+    },
+    {
+      "id": "r005",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Liftkern Toegang",
+      "description": "De tunnel komt uit bij de basis van een liftkern. Je ziet de kabels van een grote dienstlift omhoog verdwijnen. Er is een bedieningspaneel naast de liftdeuren (Liftpaneel Niveau 0) en een deur naar het oosten die leidt naar de Beveiligingspost.",
+      "pos_x": 200,
+      "pos_y": 400,
+      "sort_index": 4,
+      "image_path": "liftkern_basis.png"
+    },
+    {
+      "id": "r006",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Beveiligingspost Niveau 0",
+      "description": "Een kleine, functionele post met een bureau, een monitor die camerabeelden toont (nu offline), en een wapenrek. Op het bureau ligt een half opgegeten maaltijd en een toegangspas (Toegangspas Niveau 1). De enige uitgang is naar het westen.",
+      "pos_x": 250,
+      "pos_y": 400,
+      "sort_index": 5,
+      "image_path": "beveiligingspost_n0.png"
+    },
+    {
+      "id": "r007",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Lift - Niveau 10 (Kantoorverdieping)",
+      "description": "De dienstlift stopt met een schok. De deuren openen naar een brede, strak verlichte gang op de kantoorverdieping. Je hoort het gedempte geroezemoes van activiteit. De liftdeuren sluiten achter je. De gang loopt naar het noorden. Er is ook een deur naar het westen gemarkeerd 'Technisch Onderhoud'.",
+      "pos_x": 200,
+      "pos_y": 300,
+      "sort_index": 6,
+      "image_path": "lift_n10.png"
+    },
+    {
+      "id": "r008",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Technisch Onderhoud Niveau 10",
+      "description": "Een kleine opslagruimte met reserve onderdelen en diagnoseapparatuur. Een technicus (Bezorgde Technicus) zit ineengedoken bij een open paneel, mompelend over 'netwerk spikes'. Op een plank ligt een data-chip (Data-chip 'IcePick'). De enige uitgang is naar het oosten.",
+      "pos_x": 150,
+      "pos_y": 300,
+      "sort_index": 7,
+      "image_path": "onderhoud_n10.png"
+    },
+    {
+      "id": "r009",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Kantoorgang Niveau 10",
+      "description": "Een lange, steriele gang met deuren aan weerszijden. Holografische advertenties flikkeren aan de muren. Aan het einde van de gang in het noorden is een zware deur gemarkeerd 'Datacenter Toegang'. Een deur in het oosten leidt naar de 'Surveillance Hub'.",
+      "pos_x": 200,
+      "pos_y": 250,
+      "sort_index": 8,
+      "image_path": "gang_n10.png"
+    },
+    {
+      "id": "r010",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Surveillance Hub",
+      "description": "Deze kamer wordt gedomineerd door een muur van monitoren die live feeds van over het hele gebouw tonen. De meeste camera's lijken echter gestoord of tonen statische ruis. Een enkele bewaker zit onderuitgezakt in een stoel, slapend. Er is een terminal (Security Terminal) op een console. De enige uitgang is naar het westen.",
+      "pos_x": 250,
+      "pos_y": 250,
+      "sort_index": 9,
+      "image_path": "surveillance_hub.png"
+    },
+    {
+      "id": "r011",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Datacenter Voorkamer",
+      "description": "Een steriele voorkamer met luchtontvochtigers die zoemen. Een grote, gepantserde deur in het noorden blokkeert de toegang tot het hoofd-datacenter. Er is een biometrische scanner en een kaartlezer naast de deur. Een netwerkterminal (Netwerk Terminal) staat in een hoek.",
+      "pos_x": 200,
+      "pos_y": 200,
+      "sort_index": 10,
+      "image_path": "datacenter_voorkamer.png"
+    },
+    {
+      "id": "r012",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Hoofd Datacenter",
+      "description": "Rijen en rijen torenhoge serverracks vullen deze ijskoude ruimte, badend in het blauwe licht van status-LEDs. Het gezoem is hier oorverdovend. In het midden staat een verhoogd platform met de hoofdconsole (Mainframe Console). Een smalle dienstdeur is zichtbaar in de oostmuur.",
+      "pos_x": 200,
+      "pos_y": 150,
+      "sort_index": 11,
+      "image_path": "datacenter_main.png"
+    },
+    {
+      "id": "r013",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Verbindingsgang",
+      "description": "Een smalle, metalen gang die duidelijk minder gebruikt wordt. Er hangt een geur van smeerolie. De gang loopt naar het noorden, naar wat lijkt op een laboratorium.",
+      "pos_x": 250,
+      "pos_y": 150,
+      "sort_index": 12,
+      "image_path": "verbindingsgang.png"
+    },
+    {
+      "id": "r014",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Project Chimera Lab",
+      "description": "Dit laboratorium is gevuld met geavanceerde apparatuur: genetische sequencers, neurale interfaces en tanks met ondefinieerbare biologische experimenten. Op een centrale werkbank ligt een beveiligde data-opslag (Chimera Data Drive). Een terminal (Lab Terminal) toont complexe simulaties. Een deur in het westen leidt terug naar de verbindingsgang.",
+      "pos_x": 250,
+      "pos_y": 100,
+      "sort_index": 13,
+      "image_path": "lab_chimera.png"
+    },
+    {
+      "id": "r015",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Nooduitgang Schacht",
+      "description": "Een smalle metalen schacht met een ladder die omhoog leidt. Het geluid van de wind is hoorbaar van boven. Dit lijkt een ontsnappingsroute te zijn.",
+      "pos_x": 200,
+      "pos_y": 100,
+      "sort_index": 14,
+      "image_path": "nooduitgang_schacht.png"
+    },
+    {
+      "id": "r016",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "title": "Dak OmniCorp Toren",
+      "description": "Je staat op het winderige dak, hoog boven de neonverlichte stad. De regen prikt op je huid. Een landingsplatform in de verte is gemarkeerd met knipperende lichten - je extractiepunt. Je hebt het gehaald!",
+      "pos_x": 200,
+      "pos_y": 50,
+      "sort_index": 15,
+      "image_path": "dak_omnicorp.png"
+    }
+  ],
+  "entities": [
+    {
+      "id": "e001",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r002",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Onderhoudslaptop",
+      "description": "Een oude, gehavende laptop die openstaat op een onderhoudslog. Er flikkert een prompt. Misschien kun je hier iets nuttigs vinden?",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "laptop.png"
+    },
+    {
+      "id": "e002",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r004",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Koelingspaneel",
+      "description": "Een complex paneel met diverse meters en knoppen die de temperatuur en luchtstroom van het datacenter regelen. Er is een toegangspoort voor diagnostiek.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "controlepaneel.png"
+    },
+    {
+      "id": "e003",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r005",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Liftpaneel Niveau 0",
+      "description": "Een standaard liftpaneel met knoppen voor verschillende verdiepingen. Vereist een toegangspas.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "liftpaneel.png"
+    },
+    {
+      "id": "e004",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r006",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Toegangspas Niveau 1",
+      "description": "Een standaard OmniCorp toegangspas met 'Niveau 1 Clearence'. Ziet eruit alsof hij haastig is achtergelaten.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "toegangspas1.png"
+    },
+    {
+      "id": "e005",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r008",
+      "container_id": null,
+      "type": "NPC",
+      "name": "Bezorgde Technicus",
+      "description": "Een jonge technicus in een OmniCorp overall. Hij ziet er gestrest uit en prutst aan een open paneel vol draden.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": "c001",
+      "image_path": "technicus.png"
+    },
+    {
+      "id": "e006",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r008",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Data-chip 'IcePick'",
+      "description": "Een kleine, zwarte data-chip met het label 'IcePick v2.1'. Lijkt op een soort hacking tool.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "datachip.png"
+    },
+    {
+      "id": "e007",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r010",
+      "container_id": null,
+      "type": "NPC",
+      "name": "Slapende Bewaker",
+      "description": "Een bewaker in uniform, diep in slaap in zijn stoel. Een lege koffiebeker staat naast hem.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "bewaker_slapend.png"
+    },
+    {
+      "id": "e008",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r010",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Security Terminal",
+      "description": "Een geavanceerde terminal die toegang geeft tot camerafeeds, deurcontroles en beveiligingslogs. Vereist authenticatie.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "security_terminal.png"
+    },
+    {
+      "id": "e009",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r011",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Netwerk Terminal",
+      "description": "Een terminal specifiek voor netwerkdiagnostiek en -beheer. Er knippert een login prompt.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "netwerk_terminal.png"
+    },
+    {
+      "id": "e010",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r012",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Mainframe Console",
+      "description": "Het zenuwcentrum van het datacenter. Vanaf hier kan de kern van het OmniCorp netwerk benaderd worden. Zwaar beveiligd.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "mainframe_console.png"
+    },
+    {
+      "id": "e011",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r014",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Chimera Data Drive",
+      "description": "Een glanzende, metalen datadrager met het 'Project Chimera' logo. Dit is je doelwit. Het is vergrendeld in een houder op de werkbank.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "data_drive.png"
+    },
+    {
+      "id": "e012",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": "r014",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Lab Terminal",
+      "description": "Een terminal die gebruikt wordt voor de experimenten in dit lab. Toont complexe biologische data en simulaties. Vereist waarschijnlijk lab-specifieke credentials.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "lab_terminal.png"
+    },
+    {
+      "id": "e013",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Exploit 'Overload'",
+      "description": "Een stukje code ontworpen om koelsystemen tijdelijk te overbelasten.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null
+    },
+    {
+      "id": "e014",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Admin Wachtwoord Fragment",
+      "description": "Een versleuteld fragment dat deel uitmaakt van een admin wachtwoord.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null
+    },
+    {
+      "id": "e015",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Toegangspas Niveau 2",
+      "description": "Een toegangspas met 'Niveau 2 Clearence'. Nodig voor gevoeligere zones.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "toegangspas2.png"
+    },
+    {
+      "id": "e016",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Ontgrendelde Chimera Data",
+      "description": "De Project Chimera data. Je hebt het! Nu snel hier wegwezen.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": "data_drive_unlocked.png"
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn001",
+      "from_room_id": "r001",
+      "to_room_id": "r002",
+      "direction": "noord",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn002",
+      "from_room_id": "r002",
+      "to_room_id": "r001",
+      "direction": "zuid",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn003",
+      "from_room_id": "r002",
+      "to_room_id": "r003",
+      "direction": "oost",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn004",
+      "from_room_id": "r003",
+      "to_room_id": "r002",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn005",
+      "from_room_id": "r003",
+      "to_room_id": "r004",
+      "direction": "oost",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn006",
+      "from_room_id": "r004",
+      "to_room_id": "r003",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn007",
+      "from_room_id": "r003",
+      "to_room_id": "r005",
+      "direction": "noord",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn008",
+      "from_room_id": "r005",
+      "to_room_id": "r003",
+      "direction": "zuid",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn009",
+      "from_room_id": "r005",
+      "to_room_id": "r006",
+      "direction": "oost",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn010",
+      "from_room_id": "r006",
+      "to_room_id": "r005",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn011",
+      "from_room_id": "r005",
+      "to_room_id": "r007",
+      "direction": "omhoog",
+      "is_locked": true,
+      "required_key_id": "e004"
+    },
+    {
+      "id": "conn012",
+      "from_room_id": "r007",
+      "to_room_id": "r005",
+      "direction": "omlaag",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn013",
+      "from_room_id": "r007",
+      "to_room_id": "r008",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn014",
+      "from_room_id": "r008",
+      "to_room_id": "r007",
+      "direction": "oost",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn015",
+      "from_room_id": "r007",
+      "to_room_id": "r009",
+      "direction": "noord",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn016",
+      "from_room_id": "r009",
+      "to_room_id": "r007",
+      "direction": "zuid",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn017",
+      "from_room_id": "r009",
+      "to_room_id": "r010",
+      "direction": "oost",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn018",
+      "from_room_id": "r010",
+      "to_room_id": "r009",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn019",
+      "from_room_id": "r009",
+      "to_room_id": "r011",
+      "direction": "noord",
+      "is_locked": true,
+      "required_key_id": "e015"
+    },
+    {
+      "id": "conn020",
+      "from_room_id": "r011",
+      "to_room_id": "r009",
+      "direction": "zuid",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn021",
+      "from_room_id": "r011",
+      "to_room_id": "r012",
+      "direction": "noord",
+      "is_locked": true,
+      "required_key_id": null
+    },
+    {
+      "id": "conn022",
+      "from_room_id": "r012",
+      "to_room_id": "r011",
+      "direction": "zuid",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn023",
+      "from_room_id": "r012",
+      "to_room_id": "r013",
+      "direction": "oost",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn024",
+      "from_room_id": "r013",
+      "to_room_id": "r012",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn025",
+      "from_room_id": "r013",
+      "to_room_id": "r014",
+      "direction": "noord",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn026",
+      "from_room_id": "r014",
+      "to_room_id": "r013",
+      "direction": "west",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn027",
+      "from_room_id": "r012",
+      "to_room_id": "r015",
+      "direction": "noord",
+      "is_locked": true,
+      "required_key_id": null
+    },
+    {
+      "id": "conn028",
+      "from_room_id": "r015",
+      "to_room_id": "r012",
+      "direction": "zuid",
+      "is_locked": false,
+      "required_key_id": null
+    },
+    {
+      "id": "conn029",
+      "from_room_id": "r015",
+      "to_room_id": "r016",
+      "direction": "omhoog",
+      "is_locked": false,
+      "required_key_id": null
+    }
+  ],
+  "scripts": [
+    {
+      "id": "s001",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(onderzoek laptop)",
+      "condition": "CURRENT_ROOM(r002)",
+      "action": "SHOW_MESSAGE('Je ziet een logbestand openstaan. De laatste regel vermeldt: \"Koelsysteem test voltooid. Standaard wachtwoord 'coolmaster3000' nog steeds actief.\"')\nADD_SCORE(5)"
+    },
+    {
+      "id": "s002",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(gebruik wachtwoord coolmaster3000 op koelingspaneel)",
+      "condition": "CURRENT_ROOM(r004)",
+      "action": "SHOW_MESSAGE('Toegang verleend tot koelingspaneel. Je ziet opties voor diagnostiek en overbelasting. Er is ook een data-poort. Er valt een klein object uit de poort.')\nGIVE_ITEM(Exploit 'Overload')\nADD_SCORE(15)"
+    },
+    {
+      "id": "s003",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(gebruik overload op koelingspaneel)",
+      "condition": "CURRENT_ROOM(r004) AND HAS_ITEM(Exploit 'Overload')",
+      "action": "SHOW_MESSAGE('Je activeert de exploit. De machines beginnen te sputteren en vonken te slaan. Een alarm klinkt in de verte. De temperatuur in het datacenter zal nu stijgen, wat de beveiliging kan afleiden.')\nSET_STATE(koeling_gesaboteerd, True)\nADD_SCORE(25)"
+    },
+    {
+      "id": "s004",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(gebruik toegangspas niveau 1 op liftpaneel niveau 0)",
+      "condition": "CURRENT_ROOM(r005) AND HAS_ITEM(Toegangspas Niveau 1)",
+      "action": "SHOW_MESSAGE('De kaartlezer licht groen op. Je hoort de lift aankomen.')\nSET_STATE(unlocked_conn011, True)\nADD_SCORE(10)"
+    },
+    {
+      "id": "s005",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_TAKE(Toegangspas Niveau 1)",
+      "condition": null,
+      "action": "ADD_SCORE(5)"
+    },
+    {
+      "id": "s006",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_TAKE(Data-chip 'IcePick')",
+      "condition": null,
+      "action": "ADD_SCORE(10)"
+    },
+    {
+      "id": "s007",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(gebruik icepick op security terminal)",
+      "condition": "CURRENT_ROOM(r010) AND HAS_ITEM(Data-chip 'IcePick')",
+      "action": "SHOW_MESSAGE('De IcePick exploit forceert toegang tot de terminal! Je ziet een optie om camera's uit te schakelen en de logboeken te doorzoeken. Je vindt een logbericht: \"Nieuwe Level 2 passen uitgegeven. Autorisatiecode: OMNISEC-734\". Er ligt nu een pas naast de terminal.')\nGIVE_ITEM(Toegangspas Niveau 2)\nSET_STATE(cameras_disabled, True)\nADD_SCORE(30)"
+    },
+    {
+      "id": "s008",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(gebruik toegangspas niveau 2 op noord)",
+      "condition": "CURRENT_ROOM(r009) AND HAS_ITEM(Toegangspas Niveau 2)",
+      "action": "SHOW_MESSAGE('De kaartlezer bij de Datacenter deur accepteert de pas. De zware deur zoeft open.')\nSET_STATE(unlocked_conn019, True)\nADD_SCORE(15)"
+    },
+    {
+      "id": "s009",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(onderzoek netwerk terminal)",
+      "condition": "CURRENT_ROOM(r011)",
+      "action": "SHOW_MESSAGE('De terminal vraagt om netwerkbeheerder credentials. Er is ook een optie voor \"Wachtwoord Herstel\" die een beveiligingsvraag stelt: \"Naam van het eerste prototype?\"')\nADD_SCORE(5)"
+    },
+    {
+      "id": "s010",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(antwoord Icarus op netwerk terminal)",
+      "condition": "CURRENT_ROOM(r011)",
+      "action": "SHOW_MESSAGE('Correct! Toegang tot netwerkbeheer verleend. Je ziet een optie om de datacenter deur (noord) te ontgrendelen.')\nSET_STATE(unlocked_conn021, True)\nADD_SCORE(20)"
+    },
+    {
+      "id": "s011",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(hack mainframe console)",
+      "condition": "CURRENT_ROOM(r012) AND HAS_ITEM(Data-chip 'IcePick')",
+      "action": "SHOW_MESSAGE('Je sluit de IcePick aan. Na enkele zenuwslopende seconden krijg je beperkte toegang. Je vindt een versleuteld wachtwoordfragment en een log over een nooduitgang.')\nGIVE_ITEM(Admin Wachtwoord Fragment)\nSET_STATE(unlocked_conn027, True)\nADD_SCORE(50)"
+    },
+    {
+      "id": "s012",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(onderzoek lab terminal)",
+      "condition": "CURRENT_ROOM(r014)",
+      "action": "SHOW_MESSAGE('De terminal is vergrendeld. Er is een post-it opgeplakt met \"Gebruikersnaam: Dr. Aris Thorne. Wachtwoord: zie whiteboard\". Op het whiteboard staat \"Project Chimera - Fase 3. Launch code: Griffin7\".')\nADD_SCORE(10)"
+    },
+    {
+      "id": "s013",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(gebruik wachtwoord Griffin7 op lab terminal)",
+      "condition": "CURRENT_ROOM(r014)",
+      "action": "SHOW_MESSAGE('Toegang tot Lab Terminal verleend! Je ziet opties om experimenten te monitoren en de houder van de Chimera Data Drive te ontgrendelen.')\nSET_STATE(lab_terminal_accessed, True)\nADD_SCORE(25)"
+    },
+    {
+      "id": "s014",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(ontgrendel data drive)",
+      "condition": "CURRENT_ROOM(r014) AND STATE(lab_terminal_accessed)==True",
+      "action": "SHOW_MESSAGE('Je activeert de ontgrendelingsprocedure. De houder opent met een klik. Je kunt de Chimera Data Drive nu pakken.')\nGIVE_ITEM(Ontgrendelde Chimera Data)\nREMOVE_ITEM(Chimera Data Drive)\nADD_SCORE(100)"
+    },
+    {
+      "id": "s015",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_ENTER(r016)",
+      "condition": "HAS_ITEM(Ontgrendelde Chimera Data)",
+      "action": "SHOW_MESSAGE('Je hebt de data en bent ontsnapt! Missie geslaagd!')\nSET_STATE(game_won, True)\nADD_SCORE(200)"
+    },
+    {
+      "id": "s016",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "trigger": "ON_COMMAND(pak chimera data drive)",
+      "condition": "CURRENT_ROOM(r014)",
+      "action": "SHOW_MESSAGE('De data drive zit vast in de houder. Je moet deze eerst ontgrendelen via de Lab Terminal.')"
+    }
+  ],
+  "conversations": [
+    {
+      "id": "c001",
+      "game_id": "a1b2c3d4-e5f6-7890-1234-abcdef000001",
+      "name": "Gesprek Bezorgde Technicus",
+      "structure": {
+        "start_node": "groet",
+        "nodes": {
+          "groet": {
+            "npc_text": "Oh! Wie ben jij? Ik... ik zag net de gekste dingen op het netwerk. Spikes, overloads... Ik denk dat iemand probeert in te breken!",
+            "options": [
+              {
+                "text": "Wat voor spikes?",
+                "next_node": "spikes_info"
+              },
+              {
+                "text": "Misschien kan ik helpen?",
+                "next_node": "hulp_aanbod"
+              },
+              {
+                "text": "Ik ben hier voor onderhoud.",
+                "next_node": "onderhoud_smoes"
+              }
+            ]
+          },
+          "spikes_info": {
+            "npc_text": "Energiepieken op de hoofdlijnen, data corruptie... het lijkt wel een gerichte aanval! Ik heb het hoofd van beveiliging proberen te bereiken, maar geen reactie. Zijn wachtwoord voor de netwerk terminal is gebaseerd op het eerste prototype... uhm... Icarus, geloof ik.",
+            "options": [
+              {
+                "text": "Icarus? Bedankt voor de tip.",
+                "next_node": "einde_tip"
+              }
+            ]
+          },
+          "hulp_aanbod": {
+            "npc_text": "Jij? Nou ja, alle hulp is welkom. Als je bij de Netwerk Terminal in de Datacenter Voorkamer kunt komen, kun je misschien zien wat er aan de hand is. Het wachtwoord... ik mompelde het net... iets met het eerste prototype, 'Icarus'!",
+            "options": [
+              {
+                "text": "Ik zal kijken wat ik kan doen.",
+                "next_node": "einde_hulp"
+              }
+            ]
+          },
+          "onderhoud_smoes": {
+            "npc_text": "Onderhoud? Nu? Met deze storingen? Nou ja, wees voorzichtig dan. Er gebeuren rare dingen.",
+            "options": [
+              {
+                "text": "Zal ik doen.",
+                "next_node": "einde_neutraal"
+              }
+            ]
+          },
+          "einde_tip": {
+            "npc_text": "Graag gedaan. Ik hoop dat het helpt. Ik ga proberen dit paneel te fixen.",
+            "options": []
+          },
+          "einde_hulp": {
+            "npc_text": "Oké, succes! Ik blijf hier nog even.",
+            "options": []
+          },
+          "einde_neutraal": {
+            "npc_text": "Blijf alert.",
+            "options": []
+          }
+        }
+      }
+    }
+  ]
+}

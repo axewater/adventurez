@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Text Adventure Builder - Editor{% endblock %}
+
+{% block content %}
+<div id="main-container">
+
+
+    <main id="main-panel">
+        <nav id="editor-tabs">
+            {% if current_user.role.value == 'admin' %}
+                {# Admin Tabs - Spellen is now default active #}
+                <button class="tab-button active" data-tab="spellen">Spellen</button>
+                <button class="tab-button" data-tab="rooms">Kamers</button>
+                <button class="tab-button" data-tab="entities">Entiteiten</button>
+                <button class="tab-button" data-tab="scripts">Scripts</button>
+                <button class="tab-button" data-tab="conversations">Gesprekken</button>
+                <button class="tab-button" data-tab="files">Bestanden</button>
+                <button class="tab-button" data-tab="play">Speel Modus</button>
+                <button class="tab-button" data-tab="scores">Scores</button>
+                <button class="tab-button" data-tab="admin">Admin</button>
+            {% else %}
+                {# Non-Admin Tabs - Spellen is now default active #}
+                <button class="tab-button active" data-tab="spellen">Spellen</button>
+                <button class="tab-button" data-tab="play">Speel Modus</button>
+                <button class="tab-button" data-tab="scores">Scores</button>
+            {% endif %}
+        </nav>
+
+        <div id="tab-content">
+            {# Define Spellen Tab Pane first and make it active #}
+            <div id="spellen-tab" class="tab-pane active">
+                {% include 'partials/tabs/spellen_tab.html' %}
+            </div>
+
+            {% if current_user.role.value == 'admin' %}
+                {# Admin Panes - Rooms is no longer default active #}
+                <div id="rooms-tab" class="tab-pane">
+                    {% include 'partials/tabs/rooms_tab.html' %}
+                </div>
+                <div id="entities-tab" class="tab-pane">
+                    {% include 'partials/tabs/entities_tab.html' %}
+                </div>
+                <div id="conversations-tab" class="tab-pane">
+                    {% include 'partials/tabs/conversations_tab.html' %}
+                </div>
+                <div id="files-tab" class="tab-pane">
+                    {% include 'partials/tabs/files_tab.html' %}
+                </div>
+                <div id="scripts-tab" class="tab-pane">
+                     {% include 'partials/tabs/scripts_tab.html' %}
+                </div>
+                 <div id="play-tab" class="tab-pane">
+                    {% include 'partials/tabs/play_tab.html' %}
+                </div>
+                 <div id="scores-tab" class="tab-pane">
+                    {% include 'partials/tabs/scores_tab.html' %}
+                </div>
+                <div id="admin-tab" class="tab-pane">
+                    {% include 'partials/tabs/admin_tab.html' %}
+                </div>
+            {% else %}
+                {# Non-Admin Panes - Play is no longer default active #}
+                <div id="play-tab" class="tab-pane">
+                    {% include 'partials/tabs/play_tab.html' %}
+                </div>
+                <div id="scores-tab" class="tab-pane">
+                    {% include 'partials/tabs/scores_tab.html' %}
+                </div>
+                {# Note: Spellen tab pane is already defined above and active #}
+            {% endif %}
+        </div>
+    </main>
+</div>
+
+<!-- Modals -->
+
+<!-- Entity Image Popup -->
+<div id="entity-image-popup" class="image-popup-container">
+    {% include 'partials/modals/entity_image_popup.html' %}
+</div>
+
+{% if current_user.role.value == 'admin' %}
+<!-- Modal for Adding/Editing Entity from Graph Panel (Admin only) -->
+<div id="entity-graph-modal" class="modal-container">
+    {% include 'partials/modals/entity_graph_modal.html' %}
+</div>
+{% endif %}
+
+<!-- NEW: Import/Export Panel -->
+<div id="import-export-panel" class="slide-panel">
+    {% include 'partials/modals/import_export_panel.html' %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- Use url_for for the main script to ensure correct path resolution -->
+    <script type="module" src="{{ url_for('serve_static', filename='js/main.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,73 @@
+<div id="admin-panel-content" class="admin-panel-container">
+    <h2>Administrator Panel</h2>
+
+    <!-- Admin Sub-Navigation (Optional, could use sections directly) -->
+    <div class="admin-nav">
+        <button class="admin-nav-btn active" data-section="stats">Statistics</button>
+        <button class="admin-nav-btn" data-section="users">User Management</button>
+        <button class="admin-nav-btn" data-section="settings">Settings</button>
+    </div>
+
+    <!-- Admin Sections -->
+    <div id="admin-sections-content">
+        <!-- Statistics Section -->
+        <div id="admin-stats-section" class="admin-section active">
+            <h3>Statistics</h3>
+            <div id="admin-stats-loading">Loading...</div>
+            <div id="admin-stats-data" style="display: none;">
+                <ul>
+                    <li><strong>Users:</strong> <span id="stats-user-count">0</span></li>
+                    <li><strong>Games:</strong> <span id="stats-game-count">0</span></li>
+                    <li><strong>Rooms:</strong> <span id="stats-room-count">0</span></li>
+                    <li><strong>Entities:</strong> <span id="stats-entity-count">0</span></li>
+                    <li><strong>Scripts:</strong> <span id="stats-script-count">0</span></li>
+                    <li><strong>Conversations:</strong> <span id="stats-conversation-count">0</span></li>
+                    <li><strong>Saved Games:</strong> <span id="stats-saved-game-count">0</span></li>
+                    <li><strong>High Scores:</strong> <span id="stats-high-score-count">0</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- User Management Section -->
+        <div id="admin-users-section" class="admin-section">
+            <h3>User Management</h3>
+            <button id="add-user-btn" class="admin-action-btn">Add New User</button>
+            <div id="admin-users-loading">Loading...</div>
+            <table id="admin-users-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User rows will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="admin-settings-section" class="admin-section">
+            <h3>System Settings</h3>
+            <div id="admin-settings-loading">Loading...</div>
+            <form id="admin-settings-form" style="display: none;">
+                <div class="form-group">
+                    <label for="setting-default-theme">Default Theme:</label>
+                    <select id="setting-default-theme" name="default_theme">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select>
+                </div>
+                <!-- NEW: Adventure Store API Key Setting -->
+                <div class="form-group">
+                    <label for="setting-adventure-store-api-key">Adventure Store API Key:</label>
+                    <input type="password" id="setting-adventure-store-api-key" name="adventure_store_api_key" placeholder="Enter API key...">
+                </div>
+                <!-- Add more settings here as needed -->
+                <button type="submit" id="save-admin-settings-btn" class="admin-action-btn">Save Settings</button>
+            </form>
+        </div>
+    </div>
+</div>

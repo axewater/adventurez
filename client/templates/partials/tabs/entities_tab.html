@@ -1,0 +1,77 @@
+<!-- Initial message shown when no game is selected -->
+<p id="entities-tab-placeholder">Selecteer een spel om entiteiten te bewerken.</p>
+
+<!-- Main content area for the entity editor, hidden initially -->
+<div id="entity-editor-content" class="editor-view-container" style="display: none;">
+    <div class="entity-editor-layout">
+        <div id="entity-list-container">
+            <h4>Entiteiten Lijst</h4>
+            <input type="text" id="entity-search-input" placeholder="Filter entiteiten..." style="margin-bottom: 10px; padding: 6px; width: calc(100% - 14px);">
+            <button id="add-entity-btn">Nieuwe Entiteit Toevoegen</button>
+            <ul id="entity-list-ul">
+                <!-- Entity list items will be populated here -->
+            </ul>
+        </div>
+        <div id="entity-details-panel">
+            <p id="entity-details-placeholder">Selecteer een entiteit uit de lijst of voeg een nieuwe toe.</p>
+            <form id="entity-details-form" style="display: none;">
+                <label for="entity-name-input">Naam:</label>
+                <input type="text" id="entity-name-input" required>
+
+                <label for="entity-description-textarea">Beschrijving:</label>
+                <textarea id="entity-description-textarea" rows="3"></textarea>
+
+                <!-- NEW: Pickup Message (only for ITEMs) -->
+                <label for="entity-pickup-message-textarea" id="entity-pickup-message-label" style="display: none;">Oppak Bericht (optioneel):</label>
+                <textarea id="entity-pickup-message-textarea" rows="2" style="display: none;"></textarea>
+
+                <label for="entity-type-select">Type:</label>
+                <select id="entity-type-select" required>
+                    <option value="ITEM">Item</option>
+                    <option value="NPC">NPC</option>
+                </select>
+
+                <label for="entity-location-select">Locatie (Kamer of Container):</label>
+                <select id="entity-location-select">
+                    <option value="">-- Niet in een locatie --</option>
+                    <!-- Room options will be populated here -->
+                </select>
+
+                <!-- NEW: Conversation Dropdown (only for NPCs) -->
+                <div id="entity-conversation-section" style="display: none;">
+                    <label for="entity-conversation-select">Gesprek:</label>
+                    <select id="entity-conversation-select">
+                        <option value="">-- Geen gesprek --</option>
+                        <!-- Conversation options will be populated here -->
+                    </select>
+                </div>
+
+                <!-- NEW: Entity Image Selection -->
+                <div class="entity-image-control-wrapper">
+                    <label for="entity-image-select">Plaatje:</label>
+                    <select id="entity-image-select">
+                        <option value="">-- Standaard Plaatje --</option>
+                        <!-- Image options will be populated here -->
+                    </select>
+                    <img id="entity-image-thumbnail" src="#" alt="Gekozen plaatje" title="Klik om te vergroten">
+                </div>
+
+                <div class="entity-attributes">
+                    <label>Attributen:</label>
+                    <input type="checkbox" id="entity-is-takable-checkbox">
+                    <label for="entity-is-takable-checkbox" class="checkbox-label">Kan opgepakt</label>
+                    <input type="checkbox" id="entity-is-container-checkbox">
+                    <label for="entity-is-container-checkbox" class="checkbox-label">Container</label>
+                    <!-- NEW: Mobile NPC Checkbox -->
+                    <input type="checkbox" id="entity-is-mobile-checkbox">
+                    <label for="entity-is-mobile-checkbox" class="checkbox-label">Mobiel (Wandert)</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="save-entity-btn">Wijzigingen Opslaan</button>
+                    <button type="button" id="delete-entity-btn" class="danger">Entiteit Verwijderen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

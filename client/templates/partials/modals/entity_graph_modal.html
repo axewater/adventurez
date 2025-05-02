@@ -1,0 +1,57 @@
+<div class="modal-content">
+    <button id="entity-graph-modal-close" class="modal-close-btn" title="Sluiten">&times;</button>
+    <h3 id="entity-graph-modal-title">Nieuwe Entiteit Toevoegen</h3>
+    <button type="submit" id="entity-graph-submit" form="entity-graph-form">Aanmaken</button>
+    <form id="entity-graph-form">
+        <input type="hidden" id="entity-graph-room-id">
+        <input type="hidden" id="entity-graph-entity-id">
+
+        <label for="entity-graph-name">Naam:</label>
+        <input type="text" id="entity-graph-name" required>
+
+        <label for="entity-graph-description">Beschrijving:</label>
+        <textarea id="entity-graph-description" rows="3"></textarea>
+
+        <label for="entity-graph-pickup-message-textarea" id="entity-graph-pickup-message-label" style="display: none;">Oppak Bericht (optioneel):</label>
+        <textarea id="entity-graph-pickup-message-textarea" rows="2" style="display: none;"></textarea>
+
+        <label for="entity-graph-type">Type:</label>
+        <select id="entity-graph-type" required>
+            <option value="ITEM" selected>Item</option>
+            <option value="NPC">NPC</option>
+        </select>
+
+        <label for="entity-graph-location-select">Locatie (Kamer of Container):</label>
+        <select id="entity-graph-location-select">
+            <option value="">-- Niet in een locatie --</option>
+            <!-- Room/Container options will be populated here -->
+        </select>
+
+        <div id="entity-graph-conversation-section" style="display: none;">
+            <label for="entity-graph-conversation-select">Gesprek:</label>
+            <select id="entity-graph-conversation-select">
+                <option value="">-- Geen gesprek --</option>
+                <!-- Conversation options will be populated here -->
+            </select>
+        </div>
+
+        <div class="entity-image-control-wrapper" id="entity-graph-image-wrapper">
+            <label for="entity-graph-image-select">Plaatje:</label>
+            <select id="entity-graph-image-select">
+                <option value="">-- Standaard Plaatje --</option>
+                <!-- Image options will be populated here -->
+            </select>
+            <img id="entity-graph-image-thumbnail" src="#" alt="Gekozen plaatje" title="Klik om te vergroten">
+        </div>
+
+        <div class="entity-attributes" id="entity-graph-attributes">
+            <label>Attributen:</label>
+            <input type="checkbox" id="entity-graph-is-takable">
+            <label for="entity-graph-is-takable" class="checkbox-label">Kan opgepakt</label>
+            <input type="checkbox" id="entity-graph-is-container">
+            <label for="entity-graph-is-container" class="checkbox-label">Container</label>
+            <input type="checkbox" id="entity-graph-is-mobile">
+            <label for="entity-graph-is-mobile" class="checkbox-label">Mobiel (Wandert)</label>
+        </div>
+    </form>
+</div>

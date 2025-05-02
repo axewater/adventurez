@@ -1,0 +1,22 @@
+<div class="modal-content">
+    <button id="user-preferences-modal-close" class="modal-close-btn" title="Sluiten">&times;</button>
+    <h3>Gebruikersvoorkeuren</h3>
+    <form id="user-preferences-form">
+        <div class="form-group">
+            <label for="prefs-theme-select">Thema Voorkeur:</label>
+            <select id="prefs-theme-select" name="theme_preference">
+                <option value="system">Systeem Standaard</option>
+                <option value="light">Licht</option>
+                <option value="dark">Donker</option>
+            </select>
+            <small>Kies je persoonlijke thema. 'Systeem Standaard' gebruikt het thema ingesteld door de administrator.</small>
+        </div>
+
+        <!-- Add more preference options here in the future -->
+        <!-- e.g., Language, Font Size, etc. -->
+
+        <div class="form-actions">
+            <button type="submit" id="user-preferences-submit">Voorkeuren Opslaan</button>
+        </div>
+    </form>
+</div>

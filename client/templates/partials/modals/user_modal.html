@@ -1,0 +1,37 @@
+<div class="modal-content">
+    <button id="user-modal-close" class="modal-close-btn" title="Sluiten">&times;</button>
+    <h3 id="user-modal-title">Gebruiker Toevoegen</h3>
+    <form id="user-modal-form">
+        <input type="hidden" id="user-modal-user-id"> <!-- Hidden field for user ID during edit -->
+
+        <div class="form-group">
+            <label for="user-modal-name">Gebruikersnaam:</label>
+            <input type="text" id="user-modal-name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="user-modal-email">Email:</label>
+            <input type="email" id="user-modal-email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="user-modal-password">Wachtwoord:</label>
+            <input type="password" id="user-modal-password" name="password">
+            <small id="user-modal-password-hint">Laat leeg om wachtwoord niet te wijzigen (bij bewerken).</small>
+        </div>
+
+        <div class="form-group">
+            <label for="user-modal-role">Rol:</label>
+            <select id="user-modal-role" name="role" required>
+                <option value="user">Gebruiker (User)</option>
+                <option value="admin">Administrator (Admin)</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" id="user-modal-submit">Aanmaken</button>
+            <!-- Delete button only shown when editing -->
+            <button type="button" id="user-modal-delete-btn" class="danger" style="display: none; margin-left: auto;">Verwijderen</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,47 @@
+<!-- Initial message shown when no game is selected -->
+<p id="scripts-tab-placeholder">Selecteer een spel om scripts te bewerken.</p>
+
+<!-- Main content area for the script editor, hidden initially -->
+<div id="script-editor-content" class="editor-view-container" style="display: none;">
+    <div class="script-editor-layout" style="display: flex; flex-grow: 1; gap: 20px;">
+        <div id="script-list-container" style="width: 250px; border-right: 1px solid #ccc; padding-right: 20px; display: flex; flex-direction: column; overflow-y: auto;">
+            <h4>Scripts Lijst</h4>
+            <button id="add-script-btn" style="width: 100%; padding: 8px; margin-bottom: 15px; background-color: #f0ad4e; color: white; border: none; border-radius: 4px; cursor: pointer;">Nieuw Script Toevoegen</button>
+            <ul id="script-list-ul" style="list-style: none; padding: 0; margin: 0; flex-grow: 1;">
+                <!-- Script list items will be populated here -->
+                <li>Scripts laden...</li>
+            </ul>
+        </div>
+        <div id="script-details-panel" style="flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto;">
+            <p id="script-details-placeholder" style="margin: auto; color: #666;">Selecteer een script uit de lijst of voeg een nieuw toe.</p>
+            <form id="script-details-form" style="display: none;">
+                <label for="script-trigger-input" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Trigger:</label>
+                <input type="text" id="script-trigger-input" required placeholder="bijv., ON_ENTER, ON_TAKE(sleutel)" style="width: calc(100% - 22px); padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;">
+
+                <label for="script-condition-textarea" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Voorwaarde (Optioneel):</label>
+                <!-- NEW: Helper Icons for Conditions -->
+                <div class="script-helper-icons">
+                    <span class="script-helper-icon" data-type="condition" data-command="HAS_ITEM" title="HAS_ITEM(item_name)">🎒?</span>
+                    <span class="script-helper-icon" data-type="condition" data-command="CURRENT_ROOM" title="CURRENT_ROOM(&quot;Kamertitel&quot;)">🚪?</span>
+                    <span class="script-helper-icon" data-type="condition" data-command="STATE" title="STATE(variable_name) == &quot;value&quot;">⚙️?</span>
+                </div>
+                <textarea id="script-condition-textarea" rows="3" placeholder="bijv., HAS_ITEM(sleutel), NPC_STATE(wacht)=='slapend'" style="width: calc(100% - 22px); padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; resize: vertical;"></textarea>
+
+                <label for="script-action-textarea" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Actie:</label>
+                <!-- NEW: Helper Icons for Actions -->
+                <div class="script-helper-icons">
+                    <span class="script-helper-icon" data-type="action" data-command="SHOW_MESSAGE" title="SHOW_MESSAGE(&quot;Your message here&quot;)">💬</span>
+                    <span class="script-helper-icon" data-type="action" data-command="SET_STATE" title="SET_STATE(variable_name, &quot;value&quot;)">⚙️=</span>
+                    <span class="script-helper-icon" data-type="action" data-command="ADD_SCORE" title="ADD_SCORE(points)">⭐+</span>
+                    <span class="script-helper-icon" data-type="action" data-command="GIVE_ITEM" title="GIVE_ITEM(item_name)">🎒+</span>
+                </div>
+                <textarea id="script-action-textarea" rows="5" required placeholder="bijv., SHOW_MESSAGE('Deur ontgrendeld!'), GIVE_ITEM(munt)" style="width: calc(100% - 22px); padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; resize: vertical;"></textarea>
+
+                <div class="form-actions">
+                    <button type="submit" id="save-script-btn">Wijzigingen Opslaan</button>
+                    <button type="button" id="delete-script-btn" class="danger">Script Verwijderen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

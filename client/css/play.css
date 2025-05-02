@@ -1,0 +1,164 @@
+
+/* Play Mode Specific */
+/* Styles specific to the play mode tab pane */
+#play-tab {
+    /* display: flex; <-- REMOVED: This was overriding the default .tab-pane display: none */
+    flex-direction: column;
+    height: 100%; /* Ensure it fills the available space */
+}
+
+/* NEW: Wrapper for the actual play content */
+#play-content-wrapper {
+    display: none; /* Hidden initially */
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%; /* Ensure it fills the tab pane */
+}
+
+#play-output {
+    flex-grow: 1; /* Allow text area to grow and fill space */
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    padding: 10px;
+    white-space: pre-wrap; /* Preserve formatting */
+    overflow-y: auto; /* NEW: Add scrollbar when needed */
+    max-height: 150px; /* NEW: Limit the maximum height */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* NEW: Styling for room title in play mode */
+#play-output .room-title {
+    font-size: 1.2em; /* Make it larger */
+    font-weight: bold; /* Ensure it's bold */
+}
+
+/* NEW: Ensure 'strong' tags within play output are bold */
+/* (Usually default, but good to be explicit) */
+#play-output strong {
+    font-weight: bold;
+}
+
+#play-input-container {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Align items vertically */
+    gap: 5px; /* Space between input and button */
+    flex-shrink: 0; /* Prevent shrinking */
+    margin-top: 10px; /* Add some space above */
+}
+
+#play-input {
+    flex-grow: 1; /* Allow input to take available space */
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#history-prev-btn {
+    padding: 8px 10px; /* Adjust padding */
+}
+
+/* NEW: Play Start Overlay Styles */
+#play-start-overlay {
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#play-start-image {
+    max-width: 80%;
+    max-height: 70vh;
+    object-fit: contain;
+    margin-bottom: 15px;
+    cursor: pointer; /* Explicitly set cursor for the image */
+}
+
+/* NEW: Play Win Overlay Styles (similar to start overlay) */
+#play-win-overlay {
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#play-win-image {
+    max-width: 80%;
+    max-height: 70vh;
+    object-fit: contain;
+    margin-bottom: 15px;
+    cursor: pointer; /* Explicitly set cursor for the image */
+}
+
+
+
+/* Play Mode Buttons (Save, Load, Reset) */
+#play-controls button {
+    padding: 4px 8px; /* Reduced padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    font-size: 1.2em; /* Adjust icon size */
+    line-height: 1; /* Center icon vertically */
+    min-width: 30px; /* Ensure minimum width */
+    transition: background-color 0.2s ease;
+}
+
+#save-game-btn {
+    background-color: #28a745; /* Green */
+}
+#save-game-btn:hover {
+    background-color: #218838;
+}
+
+#load-game-btn {
+    background-color: #007bff; /* Blue */
+}
+#load-game-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Reset button already has .danger class, but we can style the ID too */
+#reset-game-btn {
+    background-color: #dc3545; /* Red */
+}
+#reset-game-btn:hover {
+    background-color: #c82333;
+}
+
+/* NEW: Fullscreen Button Style (can be adjusted) */
+#toggle-fullscreen-btn {
+    background-color: #6c757d; /* Secondary grey */
+}
+#toggle-fullscreen-btn:hover {
+    background-color: #5a6268;
+}
+
+/* NEW: Score Display Styles (Moved from style2.css and adjusted) */
+#player-score-display {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text */
+    padding: 4px 10px; /* Reduced padding */
+    border-radius: 10px; /* Smaller radius */
+    font-weight: bold;
+    font-size: 0.85em; /* Smaller font size */
+    line-height: 1.2; /* Adjust line height for vertical alignment */
+    display: none; /* Hidden by default, shown by JS */
+}
+
+/* Utility */
+button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}

@@ -1,0 +1,31 @@
+<!-- Placeholder shown when no game is selected -->
+<p class="placeholder">Selecteer een spel om te testen.</p>
+
+<!-- NEW: Start Game Overlay -->
+<div id="play-start-overlay" style="display: none; cursor: pointer; text-align: center; padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <img id="play-start-image" src="#" alt="Klik om te starten" style="max-width: 80%; max-height: 70vh; object-fit: contain; margin-bottom: 15px;">
+    <p id="play-start-description">Klik op het plaatje om het spel te starten!</p>
+</div>
+
+<!-- Existing Play Mode Content (initially hidden) -->
+<div id="play-content-wrapper" style="display: none; flex-direction: column; flex-grow: 1;">
+    <div id="play-controls" style="margin-bottom: 10px; display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
+    <button id="save-game-btn" title="Spel Opslaan">💾</button>
+    <button id="load-game-btn" title="Spel Laden">📂</button>
+    <button id="reset-game-btn" class="danger" title="Spel Resetten">🗑️</button>
+    <button id="toggle-fullscreen-btn" title="Focus Modus (Verberg UI)">🔎</button>
+    <span id="player-score-display" style="display: none;">Score: 0</span>
+    </div>
+    <img id="play-room-image" src="/uploads/images/kamers/standaard_kamer.png" alt="Room Image" style="max-width: 100%; height: auto; max-height: 400px; margin-bottom: 10px; object-fit: contain; flex-shrink: 0;">
+    <div id="play-output" style="flex-grow: 1; overflow-y: auto; border: 1px solid #ccc; background-color: #f8f8f8; padding: 10px; white-space: pre-wrap; margin-bottom: 10px;"></div>
+    <div id="play-input-container" style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
+        <input type="text" id="play-input" placeholder="Voer commando in..." style="flex-grow: 1;">
+        <button id="history-prev-btn" title="Vorige commando (↑)">▲</button>
+    </div>
+</div>
+
+<!-- NEW: Win Game Overlay -->
+<div id="play-win-overlay" style="display: none; cursor: pointer; text-align: center; padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <img id="play-win-image" src="#" alt="Gefeliciteerd!" style="max-width: 80%; max-height: 70vh; object-fit: contain; margin-bottom: 15px;">
+    <p id="play-win-description">Gefeliciteerd! Je hebt het spel gewonnen! Klik om terug te keren naar het begin.</p>
+</div>

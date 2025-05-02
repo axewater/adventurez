@@ -1,0 +1,108 @@
+/* --- Conversation Editor Specific Styles --- */
+.conversation-editor-layout {
+    display: flex;
+    flex-grow: 1;
+    gap: 20px;
+    overflow: hidden; /* Prevent layout overflow */
+}
+
+#conversation-list-container {
+    width: 250px;
+    border-right: 1px solid #ccc;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#conversation-details-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#conversation-list-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+#conversation-list-ul li {
+    cursor: pointer;
+    padding: 8px;
+    margin-bottom: 4px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+#conversation-list-ul li:hover {
+    background-color: #efefef;
+}
+
+#conversation-list-ul li.selected {
+    background-color: #fff8e1; /* Light yellow */
+    border-color: #ffecb3;
+    font-weight: bold;
+}
+
+#conversation-details-form textarea {
+    min-height: 150px; /* Ensure textarea is reasonably sized */
+}
+
+/* --- Conversation Graph Styles --- */
+#conversation-graph-view {
+    flex-grow: 1; /* Take available space */
+    position: relative; /* For potential absolute positioning inside */
+    overflow: hidden; /* Hide anything overflowing */
+    background-color: #e9e9e9; /* Slightly different background */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 400px; /* Ensure it has some height */
+}
+
+#conversation-graph-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#conversation-graph-container svg {
+    display: block; /* Remove extra space below SVG */
+}
+
+/* Node Styles */
+.conv-node {
+    stroke-width: 1.5px;
+    transition: fill 0.2s ease;
+}
+
+.conv-node.selected {
+    stroke: #ff8c00; /* Orange stroke for selected */
+    stroke-width: 3px;
+}
+
+/* Link Styles */
+.conv-link {
+    stroke-opacity: 0.7;
+}
+
+/* Link Label Styles */
+.conv-link-label {
+    fill: #444;
+    font-size: 9px;
+    pointer-events: none; /* Labels don't block interaction */
+}
+
+/* Node Text Styles */
+.conv-node-label {
+    fill: #111;
+    font-size: 10px;
+    font-weight: bold;
+    pointer-events: none;
+    text-shadow: 0 0 2px #fff, 0 0 2px #fff; /* Basic halo for readability */
+}

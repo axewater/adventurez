@@ -1,0 +1,43 @@
+<p id="conversations-tab-placeholder">Selecteer een spel om gesprekken te bewerken.</p>
+<div id="conversation-editor-content" class="editor-view-container" style="display: none;">
+    <!-- View Switcher -->
+    <div class="view-switcher">
+        <button class="view-switch-btn active" data-view="editor">JSON Editor</button>
+        <button class="view-switch-btn" data-view="graph">Grafiek Weergave</button>
+    </div>
+
+    <!-- JSON Editor View -->
+    <div id="conversation-editor-view" class="conversation-editor-layout view-pane active" style="display: flex; flex-grow: 1; gap: 20px;">
+        <div id="conversation-list-container" style="width: 250px; border-right: 1px solid #ccc; padding-right: 20px; display: flex; flex-direction: column; overflow-y: auto;">
+            <h4>Gesprekken Lijst</h4>
+            <button id="add-conversation-btn" style="width: 100%; padding: 8px; margin-bottom: 15px; background-color: #ff8c00; color: white; border: none; border-radius: 4px; cursor: pointer;">Nieuw Gesprek Toevoegen</button>
+            <ul id="conversation-list-ul" style="list-style: none; padding: 0; margin: 0; flex-grow: 1;">
+
+                <!-- Conversation list items will be populated here -->
+                <li>Gesprekken laden...</li>
+            </ul>
+        </div>
+        <div id="conversation-details-panel" style="flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto;">
+            <p id="conversation-details-placeholder" style="margin: auto; color: #666;">Selecteer een gesprek uit de lijst of voeg een nieuw toe.</p>
+            <form id="conversation-details-form" style="display: none;">
+                <label for="conversation-name-input" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Naam (voor editor):</label>
+                <input type="text" id="conversation-name-input" required placeholder="bijv., Wachter Begroeting" style="width: calc(100% - 22px); padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;">
+
+                <label for="conversation-structure-textarea" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Gespreksstructuur (JSON):</label>
+                <textarea id="conversation-structure-textarea" rows="15" required placeholder='bijv., { "start_node": "greet", "nodes": { ... } }' style="width: calc(100% - 22px); padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9em; resize: vertical; font-family: monospace;"></textarea>
+                <small><i>Tip: Gebruik een online JSON validator om de structuur te controleren.</i></small>
+
+                <div class="form-actions">
+                    <button type="submit" id="save-conversation-btn">Wijzigingen Opslaan</button>
+                    <button type="button" id="delete-conversation-btn" class="danger">Gesprek Verwijderen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Graph View -->
+    <div id="conversation-graph-view" class="view-pane">
+        <div id="conversation-graph-container"></div>
+        <!-- Optional: Add a details panel for the graph view later -->
+    </div>
+</div>

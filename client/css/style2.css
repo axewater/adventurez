@@ -1,0 +1,395 @@
+/* /client/style.css */
+/* Basic styling - can be greatly expanded */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+#topbar {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#topbar h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+#game-status span {
+    margin-right: 15px;
+}
+
+/* NEW: Logout Button Styles */
+.logout-button {
+    display: inline-block; /* Allow padding and margins */
+    padding: 6px 12px; /* Adjust padding to match other buttons/tabs */
+    background-color: #6c757d; /* Use a neutral grey, similar to disabled buttons */
+    color: white;
+    text-decoration: none; /* Remove underline */
+    border: none;
+    border-radius: 4px; /* Match other button styles */
+    margin-left: 15px; /* Space from user info */
+    cursor: pointer;
+    font-size: 0.9em; /* Slightly smaller font */
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+}
+
+.logout-button:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+    color: white; /* Ensure text remains white */
+}
+
+/* Save Status Indicator Styles */
+#save-status-indicator {
+    font-style: italic;
+    color: #a0a0a0; /* Default/Saved color */
+}
+#save-status-indicator.status-unsaved {
+    color: #ffc107; /* Warning yellow for unsaved */
+}
+
+.play-room-image {
+    margin-top: 20px auto;
+}
+
+/* NEW: Save Icon in Game List */
+.save-icon {
+    margin-left: 8px; /* Space between name and icon */
+    font-size: 0.9em; /* Slightly smaller */
+    color: #555;     /* Grey color */
+    vertical-align: middle;
+    cursor: default; /* Indicate it's not clickable */
+}
+
+/* --- NEW: High Scores Table Styles --- */
+.scores-table {
+    width: 100%;
+    border-collapse: collapse; /* Merge borders */
+    margin-top: 15px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scores-table th,
+.scores-table td {
+    border: 1px solid #ddd; /* Light grey border */
+    padding: 10px 12px; /* Padding inside cells */
+    text-align: left; /* Align text left by default */
+}
+
+.scores-table th {
+    background-color: #f2f2f2; /* Light grey background for headers */
+    font-weight: bold;
+    white-space: nowrap; /* Prevent game names from wrapping */
+}
+
+.scores-table td.score-cell,
+.scores-table td.total-score-cell {
+    text-align: right; /* Align scores right */
+    font-family: monospace; /* Use monospace font for numbers */
+    font-size: 1.1em;
+}
+
+/* --- NEW: Slide-in Panel Styles --- */
+.slide-panel {
+    position: fixed; /* Position relative to viewport */
+    top: 0;
+    right: 0;
+    width: 350px; /* Adjust width as needed */
+    height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Light background */
+    border-left: 1px solid #ccc;
+    box-shadow: -3px 0 6px rgba(0,0,0,0.1);
+    padding: 20px;
+    padding-top: 50px; /* Space for close button */
+    box-sizing: border-box;
+    z-index: 1050; /* Ensure it's above most other elements */
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+
+    /* Animation */
+    transform: translateX(100%); /* Start off-screen */
+    visibility: hidden;
+    transition: transform 0.3s ease-out, visibility 0s 0.3s;
+}
+
+.slide-panel.visible {
+    transform: translateX(0); /* Slide into view */
+    visibility: visible;
+    transition-delay: 0s; /* Apply visibility change immediately on show */
+}
+
+/* Close button inside the panel */
+#import-export-panel .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    color: #6c757d;
+}
+#import-export-panel .close-btn:hover {
+    color: #343a40;
+}
+
+/* Panel Content Styling */
+#import-export-panel h3,
+#import-export-panel h4 {
+    margin-top: 0;
+    color: #343a40;
+}
+
+#import-export-panel label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#import-export-panel select,
+#import-export-panel input[type="file"],
+#import-export-panel button.panel-action-btn {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+#import-export-panel button.panel-action-btn {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+#import-export-panel button.panel-action-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+#import-export-panel hr {
+    margin: 25px 0;
+    border: none;
+    border-top: 1px solid #dee2e6;
+}
+
+/* --- NEW: Script Helper Icon Styles --- */
+.script-helper-icons {
+    display: inline-block; /* Keep icons next to label */
+    margin-left: 10px; /* Space between label and icons */
+    vertical-align: middle; /* Align with label text */
+}
+
+.script-helper-icon {
+    display: inline-block;
+    cursor: pointer;
+    padding: 2px 5px;
+    margin: 0 2px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    font-size: 0.9em;
+}
+.script-helper-icon:hover { background-color: #e0e0e0; }
+
+
+/* --- Script Editor Specific Styles --- */
+.script-editor-layout {
+    display: flex;
+    flex-grow: 1;
+    gap: 20px;
+    overflow: hidden; /* Prevent layout overflow */
+}
+
+#script-list-container {
+    width: 250px;
+    border-right: 1px solid #ccc;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#script-details-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#script-list-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.form-group.read-only label {
+    color: #555; /* Slightly dimmer label */
+}
+
+.form-group.read-only span {
+    display: inline-block;
+    padding: 8px 0; /* Align roughly with input padding */
+    color: #333;
+    font-style: italic;
+    max-width: 100%; /* Prevent overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#submit-store-status {
+    margin-left: 15px;
+    font-style: italic;
+    color: #555;
+}
+
+#game-actions #submit-to-store-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+#game-actions #submit-to-store-btn:hover:not(:disabled) {
+    background-color: #218838;
+}
+
+#game-actions #submit-to-store-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* --- NIEUW: Spellen Grid Tab Styles --- */
+#spellen-grid-container {
+    padding: 20px;
+    height: 100%; /* Zorg dat container de hoogte vult */
+    overflow-y: auto; /* Scrollen indien nodig */
+    box-sizing: border-box;
+}
+
+#spellen-grid-container h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tab-actions {
+    margin-bottom: 15px; /* Ruimte onder de knoppen */
+}
+
+.tab-action-btn { /* Basisstijl, kan verder aangepast worden */ }
+
+/* NIEUW: Stijl voor icon buttons in tab actions */
+.tab-action-btn.icon-btn {
+    font-size: 1.5em; /* Maak icoon groter */
+    padding: 5px 10px; /* Pas padding aan voor icoon */
+    line-height: 1; /* Zorg voor betere verticale uitlijning */
+    background-color: #e0e0e0; /* Lichte achtergrond */
+}
+
+.spellen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Ruimte tussen kaarten */
+}
+
+#spellen-grid-placeholder {
+    grid-column: 1 / -1; /* Span over alle kolommen */
+    text-align: center;
+    color: #888;
+    padding: 40px;
+}
+
+.spel-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Voorkomt dat inhoud uitsteekt */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Hover effect transitie */
+}
+
+.spel-card-thumbnail {
+    width: 100%;
+    /* NIEUW: Maak thumbnail vierkant */
+    height: 200px; /* Vaste hoogte */
+    width: 200px; /* Vaste breedte */
+    object-fit: cover; /* Zorgt dat afbeelding de ruimte vult zonder vervorming */
+    align-self: center; /* Centreer de afbeelding als de kaart breder is */
+    border-bottom: 1px solid #eee;
+}
+
+.spel-card-info {
+    padding: 10px 15px;
+    flex-grow: 1; /* Zorgt dat info-sectie groeit */
+}
+
+.spel-card-title {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.spel-card-actions {
+    display: flex;
+    justify-content: flex-end; /* Knoppen rechts uitlijnen */
+    padding: 5px 10px;
+    background-color: #f8f9fa; /* Lichte achtergrond voor actiebalk */
+    border-top: 1px solid #eee;
+}
+
+.spel-action-btn {
+    background: none;
+    border: none;
+    font-size: 0.9em; /* Grotere iconen */
+    cursor: pointer;
+    color: #555;
+    transition: transform 0.1s ease-out, color 0.2s ease; /* Hover effect transitie */
+}
+
+.spel-action-btn:hover {
+    color: #007bff; /* Blauw bij hover */
+    transform: scale(1.1); /* Maak knop iets groter bij hover */
+}
+
+.spel-action-btn.danger:hover {
+    color: #dc3545; /* Rood bij hover voor delete */
+}
+
+.spel-action-btn.admin-only {
+    /* Standaard verborgen, wordt getoond via JS/CSS op basis van rol */
+    display: none;
+}
+
+/* Toon admin knoppen als body data-user-role="admin" heeft */
+body[data-user-role="admin"] .spel-action-btn.admin-only {
+    display: inline-block;
+}
+
+/* NIEUW: Hover effect voor de hele kaart */
+.spel-card:hover {
+    transform: translateY(-5px); /* Til kaart iets op */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Duidelijkere schaduw */
+}
+
+/* --- NEW: Delete Confirmation Modal Specific Styles --- */
+.modal-content.danger-modal h3 {
+    color: #dc3545; /* Red color for danger title */
+}
+.modal-content.danger-modal .form-actions {
+    justify-content: flex-end; /* Align buttons to the right */
+}

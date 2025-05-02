@@ -1,0 +1,206 @@
+/* /client/css/admin.css */
+/* Styles specifically for the Administrator Panel Tab */
+
+.admin-panel-container {
+    padding: 20px;
+    background-color: var(--bg-color); /* Use theme background */
+    color: var(--text-color); /* Use theme text color */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between main sections */
+}
+
+.admin-panel-container h2,
+.admin-panel-container h3 {
+    color: var(--text-color);
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Admin Sub-Navigation */
+.admin-nav {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px; /* Space below nav */
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.admin-nav-btn {
+    padding: 8px 15px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    border-bottom: 3px solid transparent; /* For active indicator */
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    font-size: 1em;
+}
+
+.admin-nav-btn:hover {
+    background-color: var(--panel-bg-color); /* Subtle hover */
+}
+
+.admin-nav-btn.active {
+    border-bottom-color: var(--accent-color); /* Use theme accent color */
+    font-weight: bold;
+}
+
+/* Admin Sections */
+.admin-section {
+    display: none; /* Hide inactive sections */
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--panel-bg-color); /* Slightly different background for sections */
+}
+
+.admin-section.active {
+    display: block; /* Show active section */
+}
+
+/* Loading Indicators */
+#admin-stats-loading,
+#admin-users-loading,
+#admin-settings-loading {
+    color: var(--secondary-color);
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Statistics Section */
+#admin-stats-data ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#admin-stats-data li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+#admin-stats-data li:last-child {
+    border-bottom: none;
+}
+
+#admin-stats-data strong {
+    display: inline-block;
+    min-width: 150px; /* Align values */
+}
+
+/* User Management Table */
+#admin-users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: var(--bg-color);
+}
+
+#admin-users-table th,
+#admin-users-table td {
+    border: 1px solid var(--border-color);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#admin-users-table thead {
+    background-color: var(--panel-bg-color); /* Header background */
+}
+
+#admin-users-table th {
+    font-weight: bold;
+}
+
+#admin-users-table tbody tr:hover {
+    background-color: var(--panel-bg-color); /* Row hover effect */
+}
+
+/* Action Buttons within the table */
+#admin-users-table .small-action-btn {
+    padding: 4px 8px;
+    font-size: 0.9em;
+    margin-right: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#admin-users-table .small-action-btn:hover {
+    background-color: #e0e0e0; /* Slightly darker hover */
+    border-color: #bbb;
+}
+
+#admin-users-table .small-action-btn.danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+#admin-users-table .small-action-btn.danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+
+/* Settings Form */
+#admin-settings-form {
+    margin-top: 15px;
+}
+
+#admin-settings-form .form-group {
+    margin-bottom: 15px;
+}
+
+#admin-settings-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#admin-settings-form select {
+    width: 100%;
+    max-width: 300px; /* Limit width of select */
+    padding: 8px 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    font-size: 1em;
+}
+
+/* General Admin Action Buttons (e.g., Add User, Save Settings) */
+.admin-action-btn {
+    padding: 10px 15px;
+    font-size: 1em;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--primary-color); /* Use theme primary color */
+    color: var(--button-text-color);
+    transition: background-color 0.2s ease;
+    margin-top: 10px; /* Add some space above buttons */
+}
+
+.admin-action-btn:hover {
+    filter: brightness(110%); /* Simple hover effect */
+}
+
+.admin-action-btn:disabled {
+    background-color: var(--secondary-color);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Specific button adjustments if needed */
+#add-user-btn {
+    margin-bottom: 15px; /* Space between add button and table */
+    background-color: var(--accent-color); /* Use accent for add */
+}

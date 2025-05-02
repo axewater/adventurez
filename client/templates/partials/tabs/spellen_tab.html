@@ -1,0 +1,37 @@
+<div id="spellen-grid-container">
+    <h2>Geïnstalleerde Spellen</h2>
+
+    {% if current_user.role.value == 'admin' %}
+    <div class="tab-actions">
+        <button id="spellen-tab-new-game-btn" class="tab-action-btn icon-btn" title="Nieuw Spel">➕</button>
+        <button id="spellen-tab-import-game-btn" class="tab-action-btn icon-btn" title="Importeer Spel">⬆️</button>
+    </div>
+    {% endif %}
+    <div id="spellen-grid" class="spellen-grid">
+        <!-- Spel kaarten worden hier dynamisch ingevoegd door JavaScript -->
+        <div id="spellen-grid-placeholder">
+            <i>Laden...</i>
+        </div>
+    </div>
+</div>
+
+<!-- Template voor een enkele spel kaart (wordt niet direct getoond) -->
+<template id="spel-card-template">
+    <div class="spel-card">
+        <img src="/uploads/avonturen/standaard_spel_start.png" alt="Spel Thumbnail" class="spel-card-thumbnail">
+        <div class="spel-card-info">
+            <h4 class="spel-card-title">Spel Naam</h4>
+            <!-- Voeg hier eventueel meer metadata toe, zoals versie of beschrijving -->
+            <!-- <p class="spel-card-description">Korte beschrijving...</p> -->
+        </div>
+        <div class="spel-card-actions">
+            <button class="spel-action-btn play" title="Spelen">▶️</button>
+            <!-- Knoppen hieronder alleen tonen voor admin -->
+            <button class="spel-action-btn settings admin-only" title="Instellingen">⚙️</button>
+            <button class="spel-action-btn submit-store admin-only" title="Submit to Store">📤</button>
+            <button class="spel-action-btn export admin-only" title="Exporteren">💾</button>
+            <button class="spel-action-btn compress admin-only" title="Comprimeer Afbeeldingen">📦</button>
+            <button class="spel-action-btn delete admin-only danger" title="Verwijderen">🗑️</button>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,251 @@
+/* /client/css/filebrowser.css */
+/* Styles specifically for the File Manager tab */
+
+#file-manager-content {
+    padding: 15px;
+    border: 1px solid #eee;
+    background-color: #fdfdfd;
+    border-radius: 4px;
+    /* Ensure it takes up space if needed */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* Add transition for drag-over effect */
+    border: 2px dashed transparent; /* Start transparent */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    min-height: 150px; /* Ensure drop zone has some height */
+    position: relative; /* Needed for potential overlay */
+}
+
+#file-path-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between path and button */
+    margin-bottom: 10px;
+}
+
+.small-btn {
+    padding: 3px 8px;
+    font-size: 0.85em;
+}
+
+#current-file-path {
+    font-size: 0.9em;
+    color: #555;
+    flex-grow: 1; /* Take available space */
+    /* Removed margin-bottom, handled by container */
+}
+#current-file-path span.breadcrumb-separator {
+    color: #666;
+}
+
+#file-manager-content button {
+    /* General button styling if needed, or rely on global styles */
+}
+
+/* Icon Buttons (New Folder, Upload File) */
+#upload-file-btn-icon,
+#new-folder-btn-icon {
+    background: none;
+    border: none;
+    font-size: 1.2em; /* Make icon slightly larger */
+    cursor: pointer;
+    padding: 2px 5px;
+    color: #007bff; /* Use a theme color */
+    line-height: 1; /* Adjust line height for better alignment */
+    transition: color 0.2s ease;
+}
+
+#upload-file-btn-icon:hover,
+#new-folder-btn-icon:hover {
+    color: #0056b3; /* Darker color on hover */
+}
+
+#upload-file-btn-icon:disabled, #new-folder-btn-icon:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+#file-list-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove spacing between cells */
+    margin-top: 10px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    overflow: hidden; /* Ensures border-radius applies to content */
+    table-layout: fixed; /* Helps with consistent column widths */
+}
+
+#file-list-table thead {
+    background-color: #f8f9fa; /* Light grey background for header */
+    border-bottom: 2px solid #dee2e6; /* Stronger border for header */
+}
+
+#file-list-table th {
+    padding: 10px 8px;
+    text-align: left;
+    font-weight: 600; /* Slightly bolder */
+    cursor: pointer; /* Indicate sortable */
+    position: relative; /* For positioning sort arrows */
+    white-space: nowrap; /* Prevent header text wrapping */
+}
+
+#file-list-table th:hover {
+    background-color: #e9ecef; /* Darker hover for header cells */
+}
+
+/* Sort indicator arrows */
+#file-list-table th .sort-arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    vertical-align: middle;
+    margin-left: 5px;
+    opacity: 0.4; /* Dim by default */
+}
+
+#file-list-table th.sort-asc .sort-arrow {
+    border-bottom: 5px solid #333; /* Arrow pointing up */
+    opacity: 1;
+}
+
+#file-list-table th.sort-desc .sort-arrow {
+    border-top: 5px solid #333; /* Arrow pointing down */
+    opacity: 1;
+}
+
+#file-list-table tbody tr {
+    border-bottom: 1px solid #eee; /* Separator line for rows */
+    cursor: pointer; /* Indicate rows are clickable */
+    transition: background-color 0.15s ease-in-out;
+}
+
+#file-list-table tbody tr:last-child {
+    border-bottom: none; /* No border for the last row */
+}
+
+#file-list-table tbody tr:hover {
+    background-color: #f5f5f5; /* Light grey background on hover */
+}
+
+#file-list-table td {
+    padding: 8px 8px;
+    vertical-align: middle; /* Align content vertically */
+    text-align: left;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Show ellipsis (...) for overflow */
+}
+
+/* Column Widths (adjust as needed) */
+#file-list-table th:nth-child(1), /* Name */
+#file-list-table td:nth-child(1) { width: 60%; }
+
+#file-list-table th:nth-child(2), /* Size */
+#file-list-table td:nth-child(2) {
+    width: 15%;
+    text-align: right; /* Right-align size */
+}
+
+#file-list-table th:nth-child(3), /* Type / Actions */
+#file-list-table td:nth-child(3) { width: 25%; }
+
+#file-list-table tbody tr.up-directory td {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#file-list-table tbody tr.up-directory:hover {
+    background-color: #e0e0e0;
+}
+
+#file-list-table td .file-icon {
+    vertical-align: middle; /* Ensure icon aligns with text */
+    margin-right: 5px;
+}
+
+.file-icon {
+    display: inline-block;
+    width: 1.2em; /* Adjust size as needed */
+    height: 1.2em;
+    margin-right: 8px; /* Space between icon and text */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain; /* Scale icon nicely */
+    vertical-align: middle; /* Align icon with text */
+}
+
+.icon-folder::before { content: '📁'; } /* Folder */
+.icon-up::before { content: '⬆️'; } /* Up arrow */
+.icon-image::before { content: '🖼️'; } /* Image */
+.icon-doc::before { content: '📄'; } /* Document */
+.icon-pdf::before { content: '📕'; } /* PDF */
+.icon-audio::before { content: '🎵'; } /* Audio */
+.icon-video::before { content: '🎬'; } /* Video */
+.icon-archive::before { content: '📦'; } /* Archive */
+.icon-unknown::before { content: '❔'; } /* Unknown */
+
+#current-file-path a.breadcrumb-link {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#current-file-path a.breadcrumb-link:hover {
+    text-decoration: underline;
+}
+
+#current-file-path span.breadcrumb-current {
+    font-weight: bold;
+    color: #333; /* Darker color for current directory */
+}
+
+#custom-context-menu {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    padding: 5px 0;
+    z-index: 1000;
+    min-width: 150px; /* Ensure minimum width */
+    border-radius: 3px;
+}
+
+#custom-context-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#custom-context-menu li {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #333;
+}
+
+#custom-context-menu li:hover {
+    background-color: #eee;
+}
+
+#custom-context-menu li.separator {
+    border-top: 1px solid #eee;
+    margin: 5px 0;
+    padding: 0; /* No padding for separator */
+    height: 1px;
+}
+
+#custom-context-menu li .menu-icon {
+    margin-right: 8px;
+    display: inline-block;
+    width: 1em; /* Align icons */
+    text-align: center;
+}
+
+/* Drag and Drop Visual Cue */
+#file-manager-content.drag-over {
+    border-color: #007bff; /* Highlight border */
+    background-color: #f0f8ff; /* Light blue background */
+}

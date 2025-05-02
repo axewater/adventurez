@@ -1,0 +1,199 @@
+.entity-editor-layout {
+    display: flex;
+    flex-grow: 1;
+    gap: 20px;
+    overflow: hidden;
+}
+
+#entity-list-container {
+    width: 250px;
+    border-right: 1px solid #ccc;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+#entity-list-container h4 {
+    margin-top: 0;
+}
+
+#add-entity-btn {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    background-color: #5bc0de; /* Info Blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#add-entity-btn:hover {
+    background-color: #31b0d5;
+}
+
+#entity-search-input {
+    margin-bottom: 10px;
+    padding: 6px;
+    width: calc(100% - 14px);
+}
+
+#entity-list-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Take remaining space */
+}
+
+#entity-list-ul li {
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    /* Add type indicator later? */
+}
+
+#entity-list-ul li:hover {
+    background-color: #e9e9e9;
+}
+
+#entity-list-ul li.selected {
+    background-color: #d9edf7; /* Light blue */
+    border-color: #bce8f1;
+    font-weight: bold;
+}
+
+#entity-details-panel {
+    flex-grow: 1; /* Take remaining width */
+    display: flex;
+    flex-direction: column; /* Keep column layout for form */
+    overflow-y: auto; /* Allow details scrolling */
+}
+
+#entity-details-placeholder {
+    margin: auto; /* Center the placeholder text */
+    color: #666;
+}
+
+#entity-details-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#entity-details-form input[type="text"],
+#entity-details-form textarea,
+#entity-details-form select {
+    width: calc(100% - 22px); /* Account for padding/border */
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+#entity-details-form textarea {
+    resize: vertical; /* Allow vertical resize */
+}
+
+/* Style for entity attribute checkboxes */
+.entity-attributes {
+    margin-top: 15px;
+}
+.entity-attributes label.checkbox-label {
+    display: inline-block; /* Keep label next to checkbox */
+    margin-left: 5px;
+    margin-right: 15px;
+    font-weight: normal; /* Normal weight for checkbox labels */
+}
+
+/* NEW: Styles for Entity Image Control Wrapper */
+.entity-image-control-wrapper {
+    display: flex;
+    align-items: center; /* Vertically align label, select, and image */
+    gap: 10px; /* Space between elements */
+    margin-top: 15px; /* Same margin as other labels */
+}
+
+/* NEW: Styles for Entity Image Thumbnail */
+#entity-image-thumbnail {
+    max-width: 50px; /* Limit thumbnail width */
+    max-height: 50px; /* Limit thumbnail height */
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 3px;
+    cursor: pointer; /* Indicate it's clickable */
+    display: none; /* Hidden by default */
+}
+
+/* --- Styles for Entity Modal (#entity-graph-modal) --- */
+
+/* General Modal Content Styling */
+#entity-graph-modal .modal-content {
+    padding-bottom: 60px; /* Add padding at the bottom to prevent overlap with fixed button */
+}
+
+/* Apply similar label styling as the main panel, but slightly smaller */
+#entity-graph-modal label {
+    display: block;
+    margin-top: 10px; /* Slightly less margin */
+    margin-bottom: 3px;
+    font-weight: bold;
+    font-size: 0.9em; /* Slightly smaller font */
+}
+
+/* Ensure inputs, dropdowns, and textareas take full width */
+#entity-graph-modal input[type="text"],
+#entity-graph-modal select,
+#entity-graph-modal textarea {
+    width: calc(100% - 22px); /* Account for padding/border */
+    padding: 7px 9px; /* Slightly smaller padding */
+    font-size: 0.95em; /* Slightly smaller font */
+    margin-bottom: 10px; /* Add some space below */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Ensure the image wrapper in the modal behaves correctly */
+#entity-graph-modal .entity-image-control-wrapper {
+    margin-top: 10px; /* Adjust margin */
+}
+
+/* Ensure the thumbnail in the modal uses the same styles */
+#entity-graph-modal #entity-graph-image-thumbnail {
+    max-width: 50px;
+    max-height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+}
+
+/* Style for entity attribute checkboxes in the modal */
+#entity-graph-modal .entity-attributes {
+    margin-top: 15px;
+}
+#entity-graph-modal .entity-attributes label.checkbox-label {
+    display: inline-block;
+    margin-left: 3px; /* Smaller margin */
+    margin-right: 10px; /* Smaller margin */
+    font-weight: normal;
+    font-size: 0.9em; /* Smaller font */
+}
+
+#entity-graph-submit {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+}
+
+#entity-graph-submit:hover {
+    background-color: #1e8c37; /* Lighter green for the "light up" effect */
+    cursor: pointer; /* Changes cursor to a hand icon */
+}

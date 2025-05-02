@@ -1,0 +1,36 @@
+<div class="modal-content">
+    <button id="game-settings-modal-close" class="modal-close-btn" title="Sluiten">&times;</button>
+    <h3>Spel Instellingen</h3>
+    <form id="game-settings-form">
+        <label for="game-settings-name-input">Spel Naam:</label>
+        <input type="text" id="game-settings-name-input" required>
+
+        <label for="game-settings-description-textarea">Omschrijving (getoond bij start):</label>
+        <textarea id="game-settings-description-textarea" rows="4" placeholder="Voer hier de omschrijving van het spel in..."></textarea>
+
+        <div class="game-image-control-wrapper">
+            <label for="game-start-image-select">Start Plaatje:</label>
+            <select id="game-start-image-select">
+                <option value="">-- Standaard Plaatje --</option>
+                <!-- Image options will be populated here -->
+            </select>
+            <img id="game-start-image-thumbnail" src="#" alt="Gekozen start plaatje" title="Klik om te vergroten">
+        </div>
+
+        <div class="game-image-control-wrapper">
+            <label for="game-win-image-select">Win Plaatje:</label>
+            <select id="game-win-image-select">
+                <option value="">-- Standaard Plaatje --</option>
+                <!-- Image options will be populated here -->
+            </select>
+            <img id="game-win-image-thumbnail" src="#" alt="Gekozen win plaatje" title="Klik om te vergroten">
+        </div>
+
+        <div class="game-version-display" style="margin-top: 15px; font-size: 0.9em; color: #555;">
+            <label>Versies:</label>
+            <span>Adventure: <strong id="game-settings-version">Laden...</strong></span> |
+            <span>Builder: <strong id="game-settings-builder-version">Laden...</strong></span>
+        </div>
+        <button type="submit" id="game-settings-submit">Opslaan</button>
+    </form>
+</div>

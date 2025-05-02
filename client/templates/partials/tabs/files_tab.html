@@ -1,0 +1,16 @@
+<h3>Bestandsbeheer</h3>
+<!-- Add drag-and-drop hint -->
+<div id="file-manager-content" style="display: flex; flex-direction: column; gap: 15px; border: 2px dashed transparent; transition: border-color 0.3s ease, background-color 0.3s ease;">
+    <!-- Removed file-upload-section -->
+    <div id="file-path-controls" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <div id="current-file-path" style="font-size: 0.9em; color: #555; flex-grow: 1;">Laden...</div>
+        <!-- Add Upload File Button next to New Folder -->
+        <button id="upload-file-btn-icon" title="Bestand(en) Uploaden" style="background: none; border: none; font-size: 1.2em; cursor: pointer; padding: 2px 5px;">+📄</button>
+        <button id="new-folder-btn-icon" title="Nieuwe Map" style="background: none; border: none; font-size: 1.2em; cursor: pointer; padding: 2px 5px;">+📁</button>
+    </div>
+    <table id="file-list-table">
+        <!-- Table header will be rendered by JS -->
+        <thead></thead>
+        <tbody><tr><td><i>Laden...</i></td></tr></tbody>
+    </table>
+</div>

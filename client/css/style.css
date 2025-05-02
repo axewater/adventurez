@@ -1,0 +1,613 @@
+/* --- Theme Variables --- */
+:root {
+    /* Default (Light Theme) */
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --accent-color: #4CAF50; /* Green */
+    --border-color: #cccccc;
+    --panel-bg-color: #f8f9fa;
+    --input-bg-color: #ffffff;
+    --input-border-color: #ced4da;
+    --button-bg-color: #007bff;
+    --button-text-color: #ffffff;
+    --modal-bg-color: #fefefe;
+    --link-color: #007bff;
+}
+
+#main-container {
+    display: flex;
+    flex-grow: 1; /* Takes remaining height */
+    height: calc(100vh - 50px); /* Adjust height based on topbar */
+    overflow: hidden; /* Prevent scrollbars on container */
+}
+
+#sidebar {
+    width: 250px;
+    background-color: var(--panel-bg-color); /* Use theme variable */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color); /* Use theme variable */
+    transition: width 0.5s ease, padding 0.5s ease, border 0.5s ease; /* NEW: Transition for fullscreen */
+    overflow-y: auto; /* Allow sidebar scrolling if needed */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+}
+
+#sidebar h2 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color); /* Use theme variable */
+    padding-bottom: 10px;
+}
+
+#main-panel {
+    flex-grow: 1; /* Takes remaining width */
+    display: flex;
+    flex-direction: column;
+    transition: width 0.5s ease; /* NEW: Transition for fullscreen */
+    overflow: hidden; /* Prevent scrollbars on container */
+}
+
+#editor-tabs {
+    background-color: var(--panel-bg-color); /* Use theme variable */
+    padding: 5px 10px 0 10px;
+    border-bottom: 1px solid var(--border-color); /* Use theme variable */
+    flex-shrink: 0; /* Prevent tabs from shrinking */
+    transition: height 0.5s ease, padding 0.5s ease, opacity 0.5s ease; /* NEW: Transition for fullscreen */
+}
+
+#editor-tabs .tab-button {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    border-bottom: 3px solid transparent; /* For active indicator */
+    margin-bottom: -1px; /* Overlap border */
+}
+
+#editor-tabs .tab-button.active {
+    border-bottom: 3px solid var(--accent-color); /* Use theme variable */
+    font-weight: bold;
+}
+
+#tab-content {
+    flex-grow: 1; /* Takes remaining height */
+    padding: 10px;
+    overflow-y: auto; /* Allow content scrolling */
+    background-color: var(--bg-color); /* Use theme variable */
+    transition: padding 0.5s ease; /* NEW: Transition for fullscreen */
+    display: flex; /* Ensure child panes can grow */
+}
+
+.tab-pane {
+    display: none; /* Hide inactive tabs */
+    width: 100%; /* Ensure pane tries to take full width */
+}
+
+.tab-pane.active {
+    display: flex; /* Use flexbox for active tab */
+    flex-direction: column; /* Stack children vertically */
+    flex-grow: 1; /* Allow active pane to fill space */
+}
+
+/* --- Room Editor Specific Styles --- */
+
+/* Container for different views within the room editor */
+.editor-view-container {
+    height: 100%; /* Allow inner elements to use height */
+    display: flex; /* Use flexbox */
+    flex-direction: column;
+    flex-grow: 1; /* Ensure container takes space */
+}
+
+.view-switcher {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color); /* Use theme variable */
+    flex-shrink: 0; /* Prevent switcher from shrinking */
+}
+
+.view-switch-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    border: 1px solid var(--border-color); /* Use theme variable */
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+.view-switch-btn.active {
+    background-color: var(--accent-color); /* Use theme variable */
+    color: white;
+    border-color: #4CAF50;
+}
+
+.room-editor-layout {
+    display: flex;
+    flex-grow: 1; /* Fill remaining space */
+    gap: 20px;
+    overflow: hidden; /* Prevent layout overflow */
+}
+
+#room-list-container {
+    width: 250px;
+    border-right: 1px solid var(--border-color); /* Use theme variable */
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allow room list scrolling */
+    flex-shrink: 0; /* Prevent list container shrinking */
+}
+
+#room-list-container h4 {
+    margin-top: 0;
+}
+
+#add-room-btn {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    background-color: var(--accent-color); /* Use theme variable */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#add-room-btn:hover {
+    background-color: #4cae4c;
+}
+
+.form-actions {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color); /* Use theme variable */
+    display: flex;
+    gap: 10px;
+}
+
+.form-actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#save-room-btn {
+    background-color: var(--accent-color); /* Use theme variable */
+    color: white;
+}
+#save-room-btn:hover {
+    background-color: #218838;
+}
+
+#delete-room-btn.danger {
+    background-color: #dc3545; /* Red */
+    color: white;
+    margin-left: auto; /* Push delete button to the right */
+}
+#delete-room-btn.danger:hover {
+    background-color: #c82333;
+}
+
+/* Styles for the specific view panes */
+.view-pane {
+    display: none; /* Hide inactive views */
+    flex-grow: 1; /* Allow view to fill space */
+    overflow: hidden; /* Prevent content spilling */
+    height: 100%; /* Ensure view pane takes height */
+}
+.view-pane.active {
+    display: flex; /* Use flex for layout within the active pane */
+    
+    position: relative; /* Needed for absolute positioning of the panel */
+}
+
+#graph-container {
+    flex-grow: 1; /* Allow graph container to grow */
+    width: 100%; /* Take full width */
+    /* height: 100%; REMOVED - Let flex grow handle height */
+    border: 1px solid var(--border-color); /* Use theme variable */
+    overflow: hidden; /* Hide SVG overflow */
+    background-color: #fdfdfd; /* Light background for graph */
+}
+
+/* NEW: Graph Details Panel Styles */
+.graph-side-panel {
+    position: absolute; /* Position relative to room-graph-view */
+    right: 0;
+    top: 0;
+    width: 300px; /* Adjust width as needed */
+    height: 100%; /* Fill height of parent */
+    background-color: var(--panel-bg-color); /* Use theme variable */
+    border-left: 1px solid #ccc;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    padding: 15px;
+    box-sizing: border-box;
+    /* overflow-y: auto; Keep this if content might overflow */
+    display: flex;
+    flex-direction: column;
+    z-index: 10; /* Ensure it's above the graph */
+    /* Animation properties */
+    opacity: 0;
+    transform: translateX(100%); /* Start off-screen to the right */
+    visibility: hidden; /* Hidden by default */
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s 0.3s; /* Delay visibility change on hide */
+}
+
+.graph-side-panel.visible {
+    opacity: 1;
+    transform: translateX(0); /* Slide into view */
+    visibility: visible;
+    transition-delay: 0s; /* Apply visibility change immediately on show */
+}
+
+.graph-side-panel .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+/* --- Styling for Graph Details Panel Elements --- */
+
+#graph-details-panel h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color); /* Use theme variable */
+    padding-bottom: 10px;
+}
+
+#graph-details-panel label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 3px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#graph-details-panel input[type="text"],
+#graph-details-panel textarea {
+    width: calc(100% - 22px); /* Account for padding/border */
+    padding: 8px 10px;
+    border: 1px solid var(--border-color); /* Use theme variable */
+    border-radius: 4px;
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+#graph-details-panel textarea {
+    resize: vertical; /* Allow vertical resize */
+    min-height: 60px; /* Ensure a minimum height */
+}
+
+/* Style the save button like other primary save buttons */
+#save-graph-room-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--accent-color); /* Use theme variable */
+    color: white;
+    font-size: 0.95em;
+    margin-top: 10px; /* Space above button */
+}
+#save-graph-room-btn:hover {
+    background-color: #218838;
+}
+
+#graph-details-panel hr {
+    border: none;
+    border-top: 1px solid var(--border-color); /* Use theme variable */
+    margin: 20px 0;
+}
+
+/* D3 Graph Styles */
+#graph-container svg { /* Target the SVG explicitly */
+    display: block; /* Remove potential extra space below SVG */
+    width: 100%;
+    height: 100%;
+}
+
+.nodes rect {
+    stroke: #333;
+    stroke-width: 1.5px;
+}
+
+.nodes rect.selected {
+    fill: var(--accent-color); /* Use theme variable */
+    stroke: #265c28;
+    stroke-width: 2px;
+}
+
+.nodes rect.drop-target-active {
+    stroke: #ffc107; /* Yellow border */
+    stroke-width: 3px;
+    stroke-dasharray: 5, 5; /* Dashed border */
+}
+
+.link-groups path.connection-path {
+    stroke: #999;
+    stroke-opacity: 0.6;
+    transition: stroke 0.2s ease-in-out; /* Add hover effect */
+}
+
+.link-groups path.connection-path:hover {
+    stroke: #ff8c00; /* Highlight on hover */
+    stroke-opacity: 1.0;
+}
+
+.node-texts text { /* Base style for all text within node-texts group */
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: 10px;
+    fill: white; /* Default fill for node labels */
+}
+
+.node-texts text.node-label {
+    fill: white;
+}
+
+.node-texts text.start-indicator {
+    fill: #FFD700; /* Gold color for the start indicator */
+    font-size: 9px;
+    font-style: italic;
+}
+
+.link-groups text.link-label { /* Target labels within link groups */
+    fill: #555;
+    font-size: 8px;
+    /* pointer-events: none; Re-enable pointer events if needed for clicking label */
+    text-anchor: middle;
+    paint-order: stroke; /* Make text more readable over lines */
+    dominant-baseline: central;
+}
+
+/* Styles for the entity list within the graph panel */
+#graph-room-entities-list {
+    flex-grow: 1; /* Allow list to take available space */
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 15px; /* Space below list */
+    overflow-y: auto; /* Add scroll if list is long */
+    max-height: 200px; /* Limit height to prevent panel stretching */
+}
+
+#graph-room-entities-list li {
+    padding: 6px 10px;
+    margin-bottom: 3px;
+    background-color: var(--input-bg-color); /* Use theme variable */
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    font-size: 0.9em;
+    cursor: grab; /* Indicate draggability */
+    transition: background-color 0.2s ease;
+}
+#graph-room-entities-list li:hover {
+    background-color: #e0e0e0;
+}
+
+/* Style the add entity button like other secondary action buttons */
+#add-entity-in-graph-btn {
+    /* Inherits .small-action-btn styles if defined, otherwise add basic styling */
+    padding: 6px 12px;
+    font-size: 0.9em;
+    /* Add other styles like background, border, color if needed */
+}
+
+/* NEW: Style for the description text inside the popup */
+#entity-image-popup-description {
+    margin-top: 10px; /* Space between image and text */
+    font-size: 0.9em;
+    color: #333;
+    text-align: center;
+    max-height: 10vh; /* Limit height to prevent excessive stretching */
+    overflow-y: auto; /* Add scroll if text is long */
+}
+
+.popup-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 5px;
+}
+
+.popup-close-btn:hover {
+    color: #000;
+}
+
+/* --- NEW: Modal Styles --- */
+.modal-container {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity (overlay) */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.modal-container.visible {
+    display: flex; /* Use flex to center content */
+}
+
+.modal-content {
+    background-color: var(--modal-bg-color); /* Use theme variable */
+    margin: auto; /* Auto margins also help center */
+    padding: 20px 30px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more specific */
+    max-width: 500px; /* Maximum width */
+    border-radius: 5px;
+    position: relative; /* For positioning the close button AND the submit button */
+    /* Add padding to prevent content overlap with absolutely positioned elements */
+    padding-top: 60px; /* Increase top padding to make space for the button */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* --- NEW: Play Mode Fullscreen Styles --- */
+
+/* Apply transitions to elements that will be hidden/resized */
+#topbar {
+    transition: height 0.5s ease, padding 0.5s ease, opacity 0.5s ease;
+}
+
+body.playmode-fullscreen {
+    overflow: hidden; /* Prevent scrollbars when elements are hidden */
+}
+
+body.playmode-fullscreen #topbar {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+    border: none;
+}
+
+body.playmode-fullscreen #sidebar {
+    width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border: none;
+    overflow: hidden;
+}
+
+body.playmode-fullscreen #editor-tabs {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+    border: none;
+}
+
+/* Make the main container and panel take full viewport height when topbar is gone */
+body.playmode-fullscreen #main-container {
+    height: 100vh;
+}
+
+/* Ensure play tab content uses the full available space */
+body.playmode-fullscreen #play-tab {
+    padding: 5px; /* Reduce padding slightly */
+}
+
+body.playmode-fullscreen #play-room-image {
+    max-height: 65vh; /* Allow image to be larger in fullscreen */
+}
+
+/* --- Flash Message Styles --- */
+#flash-message-container {
+    position: fixed; /* Position relative to the viewport */
+    bottom: 20px; /* Distance from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    background-color: rgba(0, 0, 0, 0.75); /* Dark semi-transparent background */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000; /* Ensure it's above other elements */
+    opacity: 0; /* Start invisible */
+    transition: opacity 0.5s ease-in-out; /* Smooth fade transition */
+    pointer-events: none; /* Don't block clicks */
+}
+
+#flash-message-container.visible {
+    opacity: 1; /* Make visible */
+}
+
+/* --- NEW: Image Popup Styles --- */
+.image-popup-container {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Center the popup */
+    max-width: 60%; /* Limit width */
+    max-height: 70%; /* Limit height */
+    padding: 25px; /* Padding around the image */
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1001; /* Ensure it's above flash messages and other content */
+    border-radius: 5px;
+    overflow: hidden; /* Prevent content spill */
+}
+
+.image-popup-container.visible {
+    display: block; /* Show the popup */
+}
+
+.image-popup-container img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(70vh - 50px); /* Adjust based on padding */
+    height: auto;
+    object-fit: contain; /* Scale image while preserving aspect ratio */
+}
+
+/* --- NEW: Game Settings Modal Image Thumbnails --- */
+.game-image-control-wrapper {
+    display: flex;
+    align-items: center; /* Vertically align label, select, and image */
+    gap: 10px; /* Space between elements */
+    margin-top: 15px; /* Same margin as other labels */
+}
+
+#game-start-image-thumbnail,
+#game-win-image-thumbnail {
+    max-width: 150px; /* Limit thumbnail width */
+    max-height: 150px; /* Limit thumbnail height */
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 3px;
+    cursor: pointer; /* Indicate it's clickable */
+    display: inline-block; /* Ensure it displays */
+    object-fit: contain; /* Scale image while preserving aspect ratio within bounds */
+}
+
+/* --- NEW: Dark Theme --- */
+body.theme-dark {
+    --bg-color: #22272e;
+    --text-color: #cdd9e5;
+    --primary-color: #58a6ff;
+    --secondary-color: #8b949e;
+    --accent-color: #3fb950; /* Darker green */
+    --border-color: #444c56;
+    --panel-bg-color: #2d333b;
+    --input-bg-color: #22272e;
+    --input-border-color: #444c56;
+    --button-bg-color: #377ec8;
+    --button-text-color: #ffffff;
+    --modal-bg-color: #2d333b;
+    --link-color: #58a6ff;
+    color-scheme: dark; /* Hint for browser UI like scrollbars */
+}

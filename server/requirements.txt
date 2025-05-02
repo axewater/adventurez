@@ -1,0 +1,11 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+python-dotenv
+argon2-cffi
+psycopg2-binary
+Flask-Login
+Flask-CORS
+requests
+dotenv
+Pillow

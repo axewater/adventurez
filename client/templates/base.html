@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Text Adventure Builder{% endblock %}</title>
+
+    <!-- Include D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Common Stylesheets -->
+
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/style2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/play.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/gamelist.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/entity.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/convo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/filebrowser.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/roomlist.css') }}">
+    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/admin.css') }}">
+
+    <!-- Placeholder for additional head content -->
+    {% block head_extra %}{% endblock %}
+</head>
+<body data-user-role="{{ current_user.role.value if current_user.is_authenticated else 'guest' }}" data-app-version="{{ app_version }}">
+    <header id="topbar">
+        <h1>Text Adventure Builder</h1>
+        <div id="status-area">
+            {% if current_user.is_authenticated %}
+                <span class="user-info">
+                    Logged in as:
+                    <a href="#" id="user-prefs-link" title="Gebruikersvoorkeuren">{{ current_user.name }}</a>
+                    ({{ current_user.role.value }})</span>
+                <a href="{{ url_for('auth.logout') }}" class="logout-button">Logout</a>
+            {% endif %}
+            <div id="game-status">
+                <span>No game loaded</span>
+                <span id="save-status-indicator" class="status-saved">Saved</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content block -->
+    {% block content %}
+    <!-- Page-specific content will go here -->
+    {% endblock %}
+
+    <!-- Flash Message Container -->
+    <div id="flash-message-container"></div>
+
+    <!-- User Preferences Modal Container -->
+    <div id="user-preferences-modal" class="modal-container">
+        {% include 'partials/modals/preferences_modal.html' %}
+    </div>
+
+    <!-- Modal for Game Settings (Admin only) -->
+    <div id="game-settings-modal" class="modal-container">
+        {% include 'partials/modals/game_settings_modal.html' %}
+    </div>
+
+    <!-- Modal for Adding/Editing User (Admin only) -->
+    <div id="user-modal" class="modal-container">
+        {% include 'partials/modals/user_modal.html' %}
+    </div>
+
+    <!-- NEW: Modal for Submitting Game to Store (Admin only) -->
+    <div id="submit-to-store-modal" class="modal-container">
+        {% include 'partials/modals/submit_to_store_modal.html' %}
+    </div>
+
+    <!-- NEW: Modal for Delete Confirmation -->
+    <div id="delete-confirmation-modal" class="modal-container">
+        {% include 'partials/modals/delete_confirmation_modal.html' %}
+    </div>
+
+    <!-- Placeholder for page-specific scripts -->
+    {% block scripts %}
+    <!-- Page-specific scripts will go here -->
+    {% endblock %}
+</body>
+</html>

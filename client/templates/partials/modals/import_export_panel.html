@@ -1,0 +1,21 @@
+<button id="import-export-close-btn" class="close-btn" title="Sluiten">&times;</button>
+<h3>Import / Export</h3>
+
+<section id="export-section">
+    <h4>Exporteer Spel</h4>
+    <label for="export-game-select">Selecteer Spel:</label>
+    <select id="export-game-select">
+        <option value="">-- Kies een spel --</option>
+        <!-- Game options populated by JS -->
+    </select>
+    <button id="panel-export-btn" class="panel-action-btn" disabled>Exporteer Gekozen Spel</button>
+</section>
+
+<hr>
+
+<section id="import-section">
+    <h4>Importeer Spel (.zip)</h4>
+    <label for="panel-import-input">Selecteer .zip bestand:</label>
+    <input type="file" id="panel-import-input" accept=".zip">
+    <!-- Import is triggered on file selection -->
+</section>

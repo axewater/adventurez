@@ -1,0 +1,112 @@
+<!-- Initial message shown when no game is selected -->
+<p id="rooms-tab-placeholder">Selecteer een spel om kamers te bewerken.</p>
+
+<!-- Main content area for the room editor, hidden initially -->
+<div id="room-editor-content" class="editor-view-container" style="display: none;">
+    <!-- View Switcher -->
+    <div class="view-switcher">
+        <button class="view-switch-btn active" data-view="graph">Grafiek Weergave</button>
+        <button class="view-switch-btn" data-view="list-details">Lijst & Details</button>
+    </div>
+
+    <!-- List & Details View -->
+    <div id="room-list-details-view" class="room-editor-layout view-pane">
+        <div id="room-list-container">
+            <h4>Kamer Lijst</h4>
+            <button id="add-room-btn">Nieuwe Kamer Toevoegen</button>
+            <ul id="room-list-ul">
+                <!-- Room list items will be populated here -->
+            </ul>
+        </div>
+        <div id="room-details-panel">
+            <p id="room-details-placeholder">Selecteer een kamer uit de lijst om te bewerken of voeg een nieuwe toe. Volgorde veranderen door te klikken/slepen.<br> De kamer die bovenaan de lijst staat is het beginpunt wanneer u de "Speel Modus" start.</p>
+            <form id="room-details-form" style="display: none;">
+                <label for="room-title-input">Titel:</label>
+                <input type="text" id="room-title-input" required>
+
+                <label for="room-description-textarea">Beschrijving:</label>
+                <textarea id="room-description-textarea" rows="5"></textarea>
+
+                <!-- NEW: Room ID Display -->
+                <div class="room-id-display">
+                    <label>Kamer ID:</label>
+                    <span id="room-id-value"></span>
+                    <button type="button" id="copy-room-id-btn" title="Kopieer ID naar klembord">📋</button>
+                </div>
+
+                <!-- Room Image Selection with Thumbnail -->
+                <div class="room-image-control-wrapper">
+                    <label for="room-image-select">Plaatje:</label>
+                    <select id="room-image-select">
+                        <option value="">-- Standaard Plaatje --</option>
+                        <!-- Image options will be populated here -->
+                    </select>
+                    <img id="room-image-thumbnail" src="#" alt="Gekozen kamer plaatje" title="Klik om te vergroten">
+                </div>
+                <div id="room-connections-section">
+                    <h5>Verbindingen</h5>
+                    <ul id="room-connections-list">
+                        <!-- Connections will be listed here -->
+                    </ul>
+                    <div id="add-connection-form">
+                        <h6>Verbinding Toevoegen</h6>
+                        <select id="connection-direction-select">
+                            <option value="">Richting...</option>
+                            <option value="noord">Noord</option>
+                            <option value="zuid">Zuid</option>
+                            <option value="oost">Oost</option>
+                            <option value="west">West</option>
+                            <option value="omhoog">Omhoog</option>
+                            <option value="omlaag">Omlaag</option>
+                            <option value="in">In</option>
+                            <option value="uit">Uit</option>
+                            <!-- Add other custom directions if needed -->
+                        </select>
+                        <select id="connection-target-room-select">
+                            <option value="">Naar Kamer...</option>
+                            <!-- Target rooms will be populated here -->
+                        </select>
+                        <button type="button" id="add-connection-btn">Toevoegen</button>
+                    </div>
+                </div>
+
+                <!-- NEW: Section for Entities in this Room -->
+                <div id="room-detail-entities-section">
+                    <h5>Entiteiten in deze kamer</h5>
+                    <ul id="room-detail-entities-list">
+                        <!-- Entities will be listed here -->
+                    </ul>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="save-room-btn">Wijzigingen Opslaan</button>
+                    <button type="button" id="delete-room-btn" class="danger">Kamer Verwijderen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Graph View -->
+    <div id="room-graph-view" class="view-pane active">
+        <div id="graph-container"></div>
+        <!-- NEW: Details Panel within Graph View -->
+        <div id="graph-details-panel" class="graph-side-panel">
+            <button id="close-graph-panel-btn" class="close-btn" title="Sluiten">&times;</button>
+            <h4>Kamer Details</h4>
+            <form id="graph-room-details-form">
+                <input type="hidden" id="graph-room-id-input">
+                <label for="graph-room-title-input">Titel:</label>
+                <input type="text" id="graph-room-title-input" required>
+
+                <label for="graph-room-description-textarea">Beschrijving:</label>
+                <textarea id="graph-room-description-textarea" rows="6"></textarea>
+                <button type="submit" id="save-graph-room-btn">Opslaan</button>
+            </form>
+            <hr>
+            <h5>Entiteiten in deze kamer</h5>
+            <ul id="graph-room-entities-list"></ul>
+            <!-- NEW: Button to add entity -->
+            <button type="button" id="add-entity-in-graph-btn" class="small-action-btn">Nieuwe Entiteit</button>
+        </div>
+    </div>
+</div>
