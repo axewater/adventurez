@@ -1,14 +1,7 @@
-{% extends "base.html" %}
+{# Link the CSS file specific to this tab's content #}
+<link rel="stylesheet" href="{{ url_for('serve_static', filename='css/help.css') }}">
 
-{% block title %}Help - Text Adventure Builder{% endblock %}
-
-{% block head_extra %}
-    {# Link the new CSS file specific to this page #}
-    <link rel="stylesheet" href="{{ url_for('serve_static', filename='css/help.css') }}">
-{% endblock %}
-
-{% block content %}
-{# NEW: Wrapper div for Flexbox layout #}
+{# Wrapper div for Flexbox layout #}
 <div class="help-page-container">
 
     {# Table of Contents (Moved outside main content) #}
@@ -179,26 +172,22 @@
     </div> {# End of help-content #}
 
 </div> {# End of help-page-container #}
-{% endblock %}
 
-{% block scripts %}
-    {# Keep existing smooth scroll script #}
-    <script>
-        // Smooth scroll for Table of Contents links
-        document.querySelectorAll('#toc a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    // Use scrollIntoView for better cross-browser compatibility
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start' // Align top of section with top of viewport
-                    });
-                }
-            });
+{# Keep existing smooth scroll script #}
+<script>
+    // Smooth scroll for Table of Contents links
+    document.querySelectorAll('#toc a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Use scrollIntoView for better cross-browser compatibility
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // Align top of section with top of viewport
+                });
+            }
         });
-    </script>
-{% endblock %}
-
+    });
+</script>

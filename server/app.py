@@ -58,12 +58,6 @@ def create_app(config_name='default'):
         app_version = app.config.get('APP_VERSION', 'N/A')
         return render_template('index.html', app_version=app_version)
 
-    @app.route('/help')
-    def help_page():
-        """Serves the help page."""
-        # No login required for this page
-        return render_template('help.html')
-
     @app.route('/<path:filename>')
     def serve_static(filename):
         return send_from_directory(client_folder, filename)

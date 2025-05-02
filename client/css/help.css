@@ -20,7 +20,7 @@
     border-radius: 5px;
     height: fit-content; /* Adjust height to content */
     position: sticky; /* Keep TOC visible */
-    top: 70px; /* Adjust based on topbar height + desired gap */
+    top: 10px; /* Adjust top offset for being inside a tab */
     align-self: flex-start; /* Align to the top */
 }
 

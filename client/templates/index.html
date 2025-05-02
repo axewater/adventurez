@@ -17,12 +17,14 @@
                 <button class="tab-button" data-tab="conversations">Gesprekken</button>
                 <button class="tab-button" data-tab="files">Bestanden</button>
                 <button class="tab-button" data-tab="play">Speel Modus</button>
+                <button class="tab-button" data-tab="help">Help</button>
                 <button class="tab-button" data-tab="scores">Scores</button>
                 <button class="tab-button" data-tab="admin">Admin</button>
             {% else %}
                 {# Non-Admin Tabs - Spellen is now default active #}
                 <button class="tab-button active" data-tab="spellen">Spellen</button>
                 <button class="tab-button" data-tab="play">Speel Modus</button>
+                <button class="tab-button" data-tab="help">Help</button>
                 <button class="tab-button" data-tab="scores">Scores</button>
             {% endif %}
         </nav>
@@ -53,6 +55,9 @@
                  <div id="play-tab" class="tab-pane">
                     {% include 'partials/tabs/play_tab.html' %}
                 </div>
+                <div id="help-tab" class="tab-pane">
+                    {% include 'partials/tabs/help_tab.html' %}
+                </div>
                  <div id="scores-tab" class="tab-pane">
                     {% include 'partials/tabs/scores_tab.html' %}
                 </div>
@@ -63,6 +68,9 @@
                 {# Non-Admin Panes - Play is no longer default active #}
                 <div id="play-tab" class="tab-pane">
                     {% include 'partials/tabs/play_tab.html' %}
+                </div>
+                <div id="help-tab" class="tab-pane">
+                    {% include 'partials/tabs/help_tab.html' %}
                 </div>
                 <div id="scores-tab" class="tab-pane">
                     {% include 'partials/tabs/scores_tab.html' %}

@@ -33,7 +33,6 @@
                     <a href="#" id="user-prefs-link" title="Gebruikersvoorkeuren">{{ current_user.name }}</a>
                     ({{ current_user.role.value }})</span>
                 <a href="{{ url_for('auth.logout') }}" class="logout-button">Logout</a>
-                <a href="{{ url_for('help_page') }}" class="help-link">Help</a>
             {% endif %}
             <div id="game-status">
                 <span>No game loaded</span>
