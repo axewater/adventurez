@@ -317,7 +317,7 @@
       "game_id": "29d04e7c-037a-4aa2-917b-cf14b8717ad8",
       "trigger": "ON_COMMAND(lees boek)",
       "condition": "HAS_ITEM(Oud Boek)",
-      "action": "SHOW_MESSAGE(\"Je opent het stoffige boek. Tussen de pagina's vind je een los briefje met daarop \u00e9\u00e9n woord: 'fortuna'. Verder lees je: 'De heer van het kasteel waart nog rond in zijn favoriete kamer, de plaats van kennis. Alleen het woord van geluk kan zijn ziel kalmeren en de weg naar de schat onthullen.'\")\nADD_SCORE(5)"
+      "action": "SHOW_MESSAGE(\"Je opent het stoffige boek. Tussen de pagina's vind je een los briefje met daarop één woord: 'fortuna'. Verder lees je: 'De heer van het kasteel waart nog rond in zijn favoriete kamer, de plaats van kennis. Alleen het woord van geluk kan zijn ziel kalmeren en de weg naar de schat onthullen.'\")\nADD_SCORE(5)"
     },
     {
       "id": "af0ba1ce-d7c5-40bd-98e3-84a8ce267594",
@@ -330,7 +330,7 @@
       "id": "a8cf808d-6087-41d9-97f9-4e920b688974",
       "game_id": "29d04e7c-037a-4aa2-917b-cf14b8717ad8",
       "trigger": "ON_COMMAND(gebruik roestige sleutel op west)",
-      "condition": "CURRENT_ROOM(3c5b2b7b-4b65-4555-961c-34ce1415da15)\nHAS_ITEM(Roestige Sleutel)",
+      "condition": "CURRENT_ROOM(\"Grote Hal\")\nHAS_ITEM(Roestige Sleutel)",
       "action": "SHOW_MESSAGE(\"Je hoort een klik. De deur naar het westen is nu open.\")\nSET_STATE(unlocked_west,True)\nADD_SCORE(15)"
     },
     {

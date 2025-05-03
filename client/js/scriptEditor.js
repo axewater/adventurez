@@ -2,13 +2,12 @@
 import * as api from './api.js';
 import * as state from './state.js';
 import * as uiUtils from './uiUtils.js';
-import { dispatchGameDataChangedEvent } from './uiUtils.js'; // Import the dispatcher
-import { updateSaveStatusIndicator } from './uiUtils.js'; // Import save status updater
+import { dispatchGameDataChangedEvent } from './uiUtils.js';
+import { updateSaveStatusIndicator } from './uiUtils.js';
 
 // --- DOM Elements ---
 const scriptsTabPlaceholder = document.getElementById('scripts-tab-placeholder');
 const scriptEditorContent = document.getElementById('script-editor-content');
-// const scriptListContainer = document.getElementById('script-list-container'); // Not directly manipulated here
 const scriptListUl = document.getElementById('script-list-ul');
 const addScriptBtn = document.getElementById('add-script-btn');
 const scriptDetailsPanel = document.getElementById('script-details-panel');
@@ -442,12 +441,12 @@ function handleHelperIconClick(event) {
             });
             break;
         case 'CURRENT_ROOM':
-            // Insert placeholder with quotes for the title
+            // Insert placeholder with quotes for the title - Updated to use title
             insertTextAtCursor(textarea, 'CURRENT_ROOM("ROOM_TITLE")');
             const rooms = state.currentRooms;
             // Show dropdown with room titles, value is also the title
             showTemporaryDropdown(textarea, rooms.map(r => ({ label: r.title, value: r.title })), (selectedTitle) => {
-                // Replace the placeholder, keeping the quotes
+                // Replace the placeholder, keeping the quotes - Updated to use title
                 textarea.value = textarea.value.replace('"ROOM_TITLE"', `"${selectedTitle}"`);
             });
             break;

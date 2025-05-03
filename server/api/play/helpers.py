@@ -100,7 +100,7 @@ def evaluate_condition(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: 
     # current_locations = state.entity_locations.setdefault(game_id, {}) # Ensure exists if needed
 
     # Split the condition string into individual lines and evaluate each
-    condition_lines = condition_str.strip().split('\n')
+    condition_lines = condition_str.strip().split('\n') # Split by newline for multiple conditions (AND logic)
 
     for line in condition_lines:
         line = line.strip().lower()
@@ -131,17 +131,17 @@ def evaluate_condition(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: 
                 print(f"Warning: Invalid state condition format: {line}")
                 result_for_line = False
         elif line.startswith("current_room("):
-            # Expect format: CURRENT_ROOM("Room Title")
+            # Expect format: CURRENT_ROOM("Room Title") - case-insensitive title match
             try:
                 # Extract the title between the quotes
                 match = re.match(r'current_room\("(.+?)"\)', line, re.IGNORECASE)
                 if match and current_room_id:
                     expected_room_title = match.group(1).strip()
                     current_room = db.session.get(Room, current_room_id)
-                    result_for_line = current_room and current_room.title.lower() == expected_room_title.lower()
+                    result_for_line = current_room is not None and current_room.title.lower() == expected_room_title.lower()
                 else:
                     print(f"Warning: Invalid CURRENT_ROOM format or missing current_room_id. Line: '{line}'")
-                    result_for_line = False
+                    result_for_line = False # Condition fails if format is wrong or no room ID
             except Exception as e: # Catch potential errors during DB access or comparison
                 print(f"Error evaluating CURRENT_ROOM condition: {line}. Error: {e}")
                 result_for_line = False
@@ -263,7 +263,7 @@ def find_and_execute_scripts(user_id: uuid.UUID, game_id: uuid.UUID, trigger_typ
     script_messages: List[str] = []
     # Use the passed current_room_id_for_condition for condition evaluation
     total_points_awarded = 0
-    for script in scripts:
+    for script in scripts: 
         if evaluate_condition(user_id, game_id, current_room_id_for_condition, script.condition):
             action_result, points_awarded = execute_action(user_id, game_id, script.action)
             total_points_awarded += points_awarded
