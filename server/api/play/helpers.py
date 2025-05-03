@@ -4,7 +4,7 @@ from typing import Optional, Dict, Any, Set, List, Union, Tuple, TypedDict
 
 from flask_login import current_user
 from app import db
-from models import Room, Connection, Entity, Script, EntityType, HighScore, User, Game
+from models import Room, Connection, Entity, Script, EntityType, HighScore, User, Game, Conversation
 from . import state
 
 # --- Helper Functions ---
@@ -247,6 +247,50 @@ def execute_action(user_id: uuid.UUID, game_id: uuid.UUID, action_str: Optional[
 
     return "\n".join(action_messages), points_awarded_this_action
 
+# --- NEW: Moved from inventory_actions.py ---
+def find_item_in_inventory(user_id: uuid.UUID, game_id: uuid.UUID, item_name_lower: str) -> Optional[Union[Entity, str]]:
+    """Finds an item in the player's inventory by name. Returns Entity, None, or 'AMBIGUOUS'."""
+    current_inventory_ids = state.player_inventory.get(user_id, {}).get(game_id, set())
+    if not current_inventory_ids:
+        return None
+
+    items_in_inventory = db.session.query(Entity).filter(
+        Entity.id.in_(current_inventory_ids),
+        db.func.lower(Entity.name) == item_name_lower,
+        Entity.type == EntityType.ITEM # Ensure it's an item
+    ).all()
+
+    if len(items_in_inventory) == 1:
+        return items_in_inventory[0]
+    elif len(items_in_inventory) > 1:
+        return "AMBIGUOUS"
+    else:
+        return None
+
+# --- NEW: Moved from interaction_actions.py ---
+def find_target_in_room(user_id: uuid.UUID, game_id: uuid.UUID, room_id: uuid.UUID, target_name_lower: str, entity_type: Optional[EntityType] = None) -> Tuple[Optional[Entity], Optional[Connection]]:
+    """Finds an entity or connection in the current room by name/direction."""
+    # 1. Check for Entity first (using current location)
+    target_entity = None
+    all_game_entities = db.session.query(Entity).filter_by(game_id=game_id).all() # Inefficient, optimize later
+    for entity in all_game_entities:
+        loc_info = get_current_entity_location(user_id, game_id, entity.id)
+        # Check if entity is in the current room and matches the name and optionally type
+        if isinstance(loc_info, dict) and loc_info.get('room_id') == room_id and entity.name.lower() == target_name_lower:
+            if entity_type is None or entity.type == entity_type:
+                target_entity = entity
+                break # Found entity
+
+    if target_entity:
+        return target_entity, None
+
+    # 2. If not an entity, check if it's a Connection Direction
+    target_connection = db.session.query(Connection).filter_by(
+        from_room_id=room_id, direction=target_name_lower
+    ).first()
+
+    return None, target_connection
+
 # Define a type for the return value of find_and_execute_scripts
 class ScriptExecutionResult(TypedDict):
     messages: str
@@ -285,126 +329,4 @@ def find_and_execute_scripts(user_id: uuid.UUID, game_id: uuid.UUID, trigger_typ
         "points_awarded": total_points_awarded,
         "win_image_path": win_image_path,
         "game_won": game_won
-    }
-
-def get_valid_npc_exits(room_id: uuid.UUID, current_game_vars: Dict[str, Any]) -> List[Connection]:
-    """Finds all connections leading FROM a room that are currently passable by an NPC."""
-    valid_exits = []
-    connections = db.session.query(Connection).filter_by(from_room_id=room_id).all()
-    for conn in connections:
-        connection_state_key = f'unlocked_{conn.direction.lower()}'
-        is_unlocked_in_state = current_game_vars.get(connection_state_key, False) is True
-
-        if not conn.is_locked or is_unlocked_in_state:
-            valid_exits.append(conn)
-    return valid_exits
-
-def get_arrival_direction(exit_direction: str) -> str:
-    """Returns the direction description for arrival based on the exit direction used."""
-    reverse_map = {
-        "noord": "het Zuiden",
-        "zuid": "het Noorden",
-        "oost": "het Westen",
-        "west": "het Oosten",
-        "omhoog": "Beneden",
-        "omlaag": "Boven",
-        "in": "Buiten",
-        "uit": "Binnen",
-        # Add more specific directions if needed
-    }
-    # Default to the direction itself if not found (shouldn't happen with standard directions)
-    return reverse_map.get(exit_direction.lower(), exit_direction.capitalize())
-
-# Define a type for NPC movement details
-class NpcMovementDetail(TypedDict):
-    npc_id: uuid.UUID
-    npc_name: str
-    from_room_id: uuid.UUID
-    to_room_id: uuid.UUID
-    direction_used: str
-
-def _handle_npc_movement(user_id: uuid.UUID, game_id: uuid.UUID) -> List[NpcMovementDetail]:
-    """
-    Processes movement for all mobile NPCs in the game for the current turn.
-    Updates temporary entity locations and returns details of NPCs that moved.
-    """
-    moved_npcs: List[NpcMovementDetail] = []
-    current_game_vars = state.game_states.setdefault(user_id, {}).setdefault(game_id, {})
-    current_locations = state.entity_locations.setdefault(user_id, {}).setdefault(game_id, {})
-
-    # Get all mobile NPCs for this game
-    mobile_npcs = db.session.query(Entity).filter_by(
-        game_id=game_id,
-        is_mobile=True,
-        type=EntityType.NPC
-    ).all()
-
-    for npc in mobile_npcs:
-        # 1. Check if NPC is currently in a room
-        npc_loc_info = get_current_entity_location(user_id, game_id, npc.id)
-        if not isinstance(npc_loc_info, dict) or 'room_id' not in npc_loc_info:
-            continue # NPC is not in a room (maybe inventory, container, or unplaced)
-
-        current_room_id = npc_loc_info['room_id']
-
-        # 2. Decide if the NPC wants to move (25% chance)
-        if random.random() <= 0.25: # 25% chance to move
-            # 3. Find valid exits
-            valid_exits = get_valid_npc_exits(current_room_id, current_game_vars)
-            if not valid_exits:
-                continue # No valid exits from current room
-
-            # 4. Choose a random exit
-            chosen_exit = random.choice(valid_exits)
-            next_room_id = chosen_exit.to_room_id
-
-            # 5. Update temporary location and record movement
-            current_locations[npc.id] = {'room_id': next_room_id}
-            moved_npcs.append({'npc_id': npc.id, 'npc_name': npc.name, 'from_room_id': current_room_id, 'to_room_id': next_room_id, 'direction_used': chosen_exit.direction})
-            print(f"NPC Movement: {npc.name} moved from {current_room_id} to {next_room_id} via {chosen_exit.direction}")
-
-    return moved_npcs
-
-def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uuid.UUID, command_text: str) -> Dict[str, Any]:
-    """Processes a player command and updates the game state."""
-
-    # --- Process NPC Movement FIRST ---
-    npc_movements_this_turn = _handle_npc_movement(user_id, game_id)
-
-    parts = command_text.split(maxsplit=1)
-    verb = parts[0].lower()
-    if len(parts) > 1:
-        arg = parts[1].strip()
-    else:
-        arg = ""
-
-    current_room = db.session.get(Room, current_room_id)
-    current_inventory_ids = state.player_inventory.setdefault(user_id, {}).setdefault(game_id, set())
-    current_game_vars = state.game_states.setdefault(user_id, {}).setdefault(game_id, {})
-    current_locations = state.entity_locations.setdefault(user_id, {}).setdefault(game_id, {})
-
-    # --- Add NPC Arrival Notifications ---
-    # Check which NPCs moved *into* the player's *final* room this turn
-    npc_arrival_messages = []
-    for move in npc_movements_this_turn:
-        if move['to_room_id'] == current_room_id:
-            arrival_direction = get_arrival_direction(move['direction_used'])
-            npc_arrival_messages.append(f"{move['npc_name']} komt binnenwandelen vanuit {arrival_direction}.")
-    if npc_arrival_messages:
-        final_message = "\n".join(npc_arrival_messages) + "\n\n"
-    else:
-        final_message = ""
-
-    # Rest of the command processing...
-    # ...
-
-    current_score = current_game_vars.get('player_score', 0)
-
-    return {
-        "message": final_message,
-        "next_room_id": current_room_id,
-        "room_image_path": current_room.image_path if current_room else None,
-        "points_awarded": 0, # Placeholder, update later
-        "game_won": False, # Placeholder, update later
-        "win_image_path": None # Placeholder, update later
     }
