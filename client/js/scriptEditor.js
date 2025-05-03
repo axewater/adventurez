@@ -11,7 +11,7 @@ const scriptEditorContent = document.getElementById('script-editor-content');
 const scriptListUl = document.getElementById('script-list-ul');
 const addScriptBtn = document.getElementById('add-script-btn');
 const scriptDetailsPanel = document.getElementById('script-details-panel');
-const scriptSearchInput = document.getElementById('script-search-input'); // NEW: Search input
+const scriptSearchInput = document.getElementById('script-search-input');
 const scriptDetailsPlaceholder = document.getElementById('script-details-placeholder');
 const scriptDetailsForm = document.getElementById('script-details-form');
 const scriptTriggerInput = document.getElementById('script-trigger-input');
@@ -76,12 +76,12 @@ async function fetchScriptsForGame(gameId) {
 function renderScriptList() {
     if (!scriptListUl) return;
 
-    // NEW: Get search term
+    // Get search term
     const searchTerm = scriptSearchInput?.value.toLowerCase() || '';
 
     scriptListUl.innerHTML = ''; // Clear list
 
-    // NEW: Filter scripts based on search term
+    // Filter scripts based on search term
     const filteredScripts = state.currentScripts.filter(script => {
         if (!searchTerm) return true; // Show all if search is empty
         const triggerMatch = script.trigger?.toLowerCase().includes(searchTerm);
@@ -444,6 +444,9 @@ function handleHelperIconClick(event) {
         case 'SHOW_MESSAGE': insertTextAtCursor(textarea, 'SHOW_MESSAGE("Your message here")'); break;
         case 'SET_STATE': insertTextAtCursor(textarea, 'SET_STATE(variable_name, "value")'); break;
         case 'ADD_SCORE': insertTextAtCursor(textarea, 'ADD_SCORE(10)'); break;
+        case 'SET_GAME_LOSS': insertTextAtCursor(textarea, 'SET_STATE(game_loss, True)'); break;
+        case 'SET_LOSS_REASON': insertTextAtCursor(textarea, 'SET_STATE(loss_reason, "You lost because...")'); break;
+        case 'SET_LOSS_IMAGE': insertTextAtCursor(textarea, 'SET_STATE(loss_image, "custom_loss_image.jpg")'); break;
         case 'STATE': insertTextAtCursor(textarea, 'STATE(variable_name) == "value"'); break;
 
         // Insertions Requiring Selection
@@ -508,12 +511,12 @@ export function initializeScriptEditor() {
         }
     });
 
-    // NEW: Add event listener for helper icons using event delegation
+    // Add event listener for helper icons using event delegation
     if (scriptDetailsPanel) {
         scriptDetailsPanel.addEventListener('click', handleHelperIconClick);
     }
 
-    // NEW: Add event listener for search input
+    // Add event listener for search input
     if (scriptSearchInput) {
         scriptSearchInput.addEventListener('input', renderScriptList);
     } else {

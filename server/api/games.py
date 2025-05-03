@@ -74,11 +74,13 @@ def create_game():
     description = data.get('description', 'Click the picture to start the game!') # Use default if not provided
     start_image_path = data.get('start_image_path') # Can be null
     win_image_path = data.get('win_image_path') # Can be null
+    loss_image_path = data.get('loss_image_path') # NEW: Get loss image path
 
     new_game = Game(name=name,
                     description=description,
                     start_image_path=start_image_path,
                     win_image_path=win_image_path,
+                    loss_image_path=loss_image_path, # NEW: Set loss image path
                     version='1.0.0', # Initial adventure version
                     builder_version=current_app.config['APP_VERSION']) # Set current builder version
     try:
@@ -142,6 +144,7 @@ def update_game(game_id):
         # Update image paths if provided (allow setting to null)
         game.start_image_path = data.get('start_image_path', game.start_image_path)
         game.win_image_path = data.get('win_image_path', game.win_image_path)
+        game.loss_image_path = data.get('loss_image_path', game.loss_image_path) # NEW: Update loss image path
         # Update description if provided (allow setting to null or empty)
         game.description = data.get('description', game.description)
         # Update the builder version used to save these settings
@@ -242,6 +245,8 @@ def export_game(game_id):
             image_paths_to_include.add(('avonturen', game.start_image_path))
         if game.win_image_path:
             image_paths_to_include.add(('avonturen', game.win_image_path))
+        if game.loss_image_path: # NEW: Include loss image
+            image_paths_to_include.add(('avonturen', game.loss_image_path))
         for room in rooms:
             if room.image_path:
                 image_paths_to_include.add(('images/kamers', room.image_path))
@@ -328,7 +333,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
                     data = json.load(json_file)
                 except json.JSONDecodeError:
                     return jsonify({"error": "Invalid JSON data in 'game_data.json'"}), 400
-    except Exception as e:
+    except Exception as e: 
         return jsonify({"error": f"Error processing ZIP file '{filename_for_error_reporting}': {str(e)}"}), 400
 
     # --- Basic Validation ---
@@ -356,6 +361,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
             description=game_info.get('description'),
             start_image_path=game_info.get('start_image_path'),
             win_image_path=game_info.get('win_image_path'),
+            loss_image_path=game_info.get('loss_image_path'), # NEW: Import loss image path
             version=game_info.get('version', '1.0.0'), # Get version from import or default
             builder_version=game_info.get('builder_version', current_app.config['APP_VERSION']) # Get builder version or use current
             # created_at, updated_at, id are handled by defaults/DB
@@ -565,6 +571,7 @@ def import_game_from_zip_path(zip_file_path: str) -> Game:
                 description=game_info.get('description'),
                 start_image_path=game_info.get('start_image_path'),
                 win_image_path=game_info.get('win_image_path'),
+                loss_image_path=game_info.get('loss_image_path'), # NEW: Import loss image path
                 version=game_info.get('version', '1.0.0'), # Get version from import or default
                 builder_version=game_info.get('builder_version', current_app.config['APP_VERSION']) # Get builder version or use current
             )

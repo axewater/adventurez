@@ -59,6 +59,10 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
 
     game_won = False
     win_image_path = None
+    game_loss = False # NEW: Loss status
+    loss_reason = None # NEW: Reason for losing
+    loss_image_path = None # NEW: Path to loss image
+    default_loss_image = "standaard_verloren.jpg" # Hardcoded default
 
     # --- Execute ON_COMMAND scripts first ---
     # TODO: Improve trigger matching (e.g., ON_COMMAND(verb), ON_COMMAND(verb object))
@@ -71,6 +75,11 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
         if script_result_on_command["game_won"]:
             game_won = True
             win_image_path = script_result_on_command["win_image_path"]
+        # NEW: Check for loss state from script
+        if script_result_on_command["game_loss"]:
+            game_loss = True
+            loss_reason = script_result_on_command["loss_reason"]
+            loss_image_path = script_result_on_command["loss_image"] # Custom image from script
 
     # --- Process Verb (if not handled by script) ---
     if not command_handled_by_script:
@@ -83,6 +92,11 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
             points_awarded += result["points_awarded"]
             game_won = result["game_won"] or game_won # Keep existing win state if true
             win_image_path = result["win_image_path"] or win_image_path
+            # NEW: Check loss state from look command (e.g., ON_LOOK script)
+            if result.get("game_loss"): # Check if key exists and is true
+                game_loss = True
+                loss_reason = result.get("loss_reason")
+                loss_image_path = result.get("loss_image")
 
         elif verb in ["gebruik", "use"]:
             result = handle_use_command(user_id, game_id, current_room_id, argument)
@@ -111,6 +125,11 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
                 points_awarded += move_result["points_awarded"]
                 game_won = move_result["game_won"] or game_won
                 win_image_path = move_result["win_image_path"] or win_image_path
+                # NEW: Check loss state from movement (e.g., ON_ENTER script)
+                if move_result.get("game_loss"):
+                    game_loss = True
+                    loss_reason = move_result.get("loss_reason")
+                    loss_image_path = move_result.get("loss_image")
 
         elif verb in direction_map:
             # Handle single-letter movement commands directly
@@ -121,6 +140,11 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
             points_awarded += move_result["points_awarded"]
             game_won = move_result["game_won"] or game_won
             win_image_path = move_result["win_image_path"] or win_image_path
+            # NEW: Check loss state from movement (e.g., ON_ENTER script)
+            if move_result.get("game_loss"):
+                game_loss = True
+                loss_reason = move_result.get("loss_reason")
+                loss_image_path = move_result.get("loss_image")
 
         # Inventory Commands
         elif verb in ["inventaris", "inv", "i"]: # Added 'i'
@@ -132,6 +156,11 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
              points_awarded += result["points_awarded"]
              game_won = result["game_won"] or game_won
              win_image_path = result["win_image_path"] or win_image_path
+             # NEW: Check loss state from take command (e.g., ON_TAKE script)
+             if result.get("game_loss"):
+                 game_loss = True
+                 loss_reason = result.get("loss_reason")
+                 loss_image_path = result.get("loss_image")
 
         elif verb in ["stop", "leg", "put"]:
             # Check if it's 'stop X in Y' or just 'leg neer X'
@@ -165,6 +194,18 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
     if npc_arrival_messages:
         response_message = "\n".join(npc_arrival_messages) + "\n\n" + response_message # Prepend arrival messages
 
+    # --- Determine Final Loss Image Path ---
+    if game_loss:
+        # Priority: Custom script image > Game default loss image > Hardcoded default
+        if not loss_image_path: # If script didn't provide one
+            game = db.session.get(Game, game_id)
+            if game and game.loss_image_path:
+                loss_image_path = game.loss_image_path
+            else:
+                loss_image_path = default_loss_image # Fallback to hardcoded
+        # Ensure win state is false if loss state is true
+        game_won = False
+
     # --- Final Response Formatting ---
     final_message = response_message.strip()
     if not final_message and command_handled_by_script:
@@ -186,5 +227,8 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
         "points_awarded": points_awarded,
         "current_room_id": str(next_room_id),
         "game_won": game_won, # NEW: Include win status
-        "win_image_path": win_image_path # NEW: Include win image path if won
+        "win_image_path": win_image_path, # NEW: Include win image path if won
+        "game_loss": game_loss, # NEW: Include loss status
+        "loss_reason": loss_reason, # NEW: Include loss reason if lost
+        "loss_image_path": loss_image_path # NEW: Include loss image path if lost
     }

@@ -44,6 +44,8 @@ const gameStartImageSelect = document.getElementById('game-start-image-select');
 const gameStartImageThumbnail = document.getElementById('game-start-image-thumbnail');
 const gameWinImageSelect = document.getElementById('game-win-image-select');
 const gameWinImageThumbnail = document.getElementById('game-win-image-thumbnail');
+const gameLossImageSelect = document.getElementById('game-loss-image-select'); // NEW: Loss image select
+const gameLossImageThumbnail = document.getElementById('game-loss-image-thumbnail'); // NEW: Loss image thumbnail
 const gameSettingsModalTitle = document.querySelector('#game-settings-modal .modal-content h3'); // Get the title element
 const gameSettingsSubmitBtn = document.getElementById('game-settings-submit');
 const gameSettingsVersionSpan = document.getElementById('game-settings-version'); // NEW: Version span
@@ -414,8 +416,10 @@ async function openGameSettingsModal(mode = 'edit', gameId = null) {
         gameSettingsDescriptionTextarea.value = '';
         await populateGameImageDropdown(gameStartImageSelect, 'start', null);
         await populateGameImageDropdown(gameWinImageSelect, 'win', null);
+        await populateGameImageDropdown(gameLossImageSelect, 'loss', null); // NEW: Populate loss dropdown
         updateGameImageThumbnail(gameStartImageThumbnail, 'start', null);
         updateGameImageThumbnail(gameWinImageThumbnail, 'win', null);
+        updateGameImageThumbnail(gameLossImageThumbnail, 'loss', null); // NEW: Update loss thumbnail
         gameSettingsVersionSpan.textContent = '1.0.0'; // NEW: Set default version
         gameSettingsBuilderVersionSpan.textContent = document.body.dataset.appVersion || 'N/A'; // NEW: Set current builder version
     } else { // mode === 'edit'
@@ -431,8 +435,10 @@ async function openGameSettingsModal(mode = 'edit', gameId = null) {
         gameSettingsDescriptionTextarea.value = currentGame.description || '';
         await populateGameImageDropdown(gameStartImageSelect, 'start', currentGame.start_image_path);
         await populateGameImageDropdown(gameWinImageSelect, 'win', currentGame.win_image_path);
+        await populateGameImageDropdown(gameLossImageSelect, 'loss', currentGame.loss_image_path); // NEW: Populate loss dropdown
         updateGameImageThumbnail(gameStartImageThumbnail, 'start', currentGame.start_image_path);
         updateGameImageThumbnail(gameWinImageThumbnail, 'win', currentGame.win_image_path);
+        updateGameImageThumbnail(gameLossImageThumbnail, 'loss', currentGame.loss_image_path); // NEW: Update loss thumbnail
         gameSettingsVersionSpan.textContent = currentGame.version || 'N/A'; // NEW: Display version
         gameSettingsBuilderVersionSpan.textContent = document.body.dataset.appVersion || 'N/A'; // NEW: Display builder version
     }
@@ -448,9 +454,9 @@ function closeGameSettingsModal() {
 }
 
 /**
- * Populates a game image dropdown (start or win).
- * @param {HTMLSelectElement} selectElement - The dropdown element.
- * @param {'start'|'win'} imageType - The type of image (used for default).
+ * Populates a game image dropdown (start, win, or loss).
+ * @param {HTMLSelectElement|null} selectElement - The dropdown element.
+ * @param {'start'|'win'|'loss'} imageType - The type of image (used for default).
  * @param {string|null} selectedImagePath - The currently selected image path.
  */
 async function populateGameImageDropdown(selectElement, imageType, selectedImagePath) {
@@ -476,15 +482,17 @@ async function populateGameImageDropdown(selectElement, imageType, selectedImage
 }
 
 /**
- * Updates a game image thumbnail (start or win).
- * @param {HTMLImageElement} thumbnailElement - The thumbnail img element.
- * @param {'start'|'win'} imageType - The type of image (used for default).
+ * Updates a game image thumbnail (start, win, or loss).
+ * @param {HTMLImageElement|null} thumbnailElement - The thumbnail img element.
+ * @param {'start'|'win'|'loss'} imageType - The type of image (used for default).
  * @param {string|null} imagePath - The image path filename.
  */
 function updateGameImageThumbnail(thumbnailElement, imageType, imagePath) {
     const defaultImagePath = imageType === 'start'
         ? '/uploads/avonturen/standaard_spel_start.png'
-        : '/uploads/avonturen/standaard_spel_win.png';
+        : imageType === 'win'
+            ? '/uploads/avonturen/standaard_spel_win.png'
+            : '/uploads/avonturen/standaard_verloren.jpg'; // NEW: Default loss image
     if (!thumbnailElement) return;
 
     const imageUrl = imagePath ? `/uploads/avonturen/${imagePath}` : defaultImagePath;
@@ -503,6 +511,7 @@ async function handleSaveGameSettings(event) {
         start_image_path: gameStartImageSelect.value || null, // Use null if default selected
         description: gameSettingsDescriptionTextarea.value.trim() || '',
         win_image_path: gameWinImageSelect.value || null,   // Use null if default selected
+        loss_image_path: gameLossImageSelect.value || null, // NEW: Get loss image path
         version: '1.0.0', // NEW: Set default version
         builder_version: document.body.dataset.appVersion || 'N/A' // NEW: Set current builder version
     };
@@ -761,8 +770,12 @@ export function initializeGameManager() {
     if (gameWinImageSelect) {
         gameWinImageSelect.addEventListener('change', () => updateGameImageThumbnail(gameWinImageThumbnail, 'win', gameWinImageSelect.value));
     }
+    if (gameLossImageSelect) { // NEW: Add listener for loss image select
+        gameLossImageSelect.addEventListener('change', () => updateGameImageThumbnail(gameLossImageThumbnail, 'loss', gameLossImageSelect.value));
+    }
     if (gameStartImageThumbnail) gameStartImageThumbnail.addEventListener('click', () => uiUtils.showImagePopup(gameStartImageThumbnail.src));
     if (gameWinImageThumbnail) gameWinImageThumbnail.addEventListener('click', () => uiUtils.showImagePopup(gameWinImageThumbnail.src));
+    if (gameLossImageThumbnail) gameLossImageThumbnail.addEventListener('click', () => uiUtils.showImagePopup(gameLossImageThumbnail.src)); // NEW: Add listener for loss image thumbnail popup
 
     // NEW: Add listeners for delete confirmation modal
     if (deleteConfirmCloseBtn) deleteConfirmCloseBtn.addEventListener('click', closeDeleteConfirmationModal);

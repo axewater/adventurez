@@ -74,7 +74,7 @@ def format_room_description(user_id: uuid.UUID, game_id: uuid.UUID, room: Room) 
         sorted_connections = sorted(connections, key=lambda c: c.direction)
         for conn in sorted_connections:
             exit_str = conn.direction.upper() # Use direction as the base for the state key
-            # Check if the connection is inherently locked AND not marked as unlocked in the current game state
+            # Check if the connection is inherently locked AND not marked as unlocked in the current game state (using lowercase key)
             # Use the current_game_vars fetched at the start of the function
             connection_state_key = f'unlocked_{conn.direction.lower()}' # Key based on direction
             is_unlocked_in_state = current_game_vars.get(connection_state_key, False) is True # Default to False if key not found
@@ -119,13 +119,21 @@ def evaluate_condition(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: 
             # Example: state(door_unlocked) == "true"
             match = re.match(r"state\((.+?)\)\s*==\s*['\"]?(.+?)['\"]?$", line)
             if match:
-                var_name = match.group(1).strip()
+                var_name = match.group(1).strip().lower() # Use lowercase key for lookup
                 expected_value_str = match.group(2).strip()
                 current_value = current_game_vars.get(var_name)
-                # Compare based on expected type (simple comparison for now)
+
+                # Compare based on the type of the actual stored value
                 if isinstance(current_value, bool):
                     result_for_line = current_value == (expected_value_str.lower() == 'true')
-                else:
+                elif isinstance(current_value, (int, float)):
+                    try:
+                        # Try comparing numerically
+                        expected_num = float(expected_value_str) if '.' in expected_value_str else int(expected_value_str)
+                        result_for_line = current_value == expected_num
+                    except ValueError:
+                        result_for_line = False # Cannot compare numerically if expected value isn't a number
+                else: # String or other types (including None)
                     result_for_line = str(current_value).lower() == expected_value_str.lower()
             else:
                 print(f"Warning: Invalid state condition format: {line}")
@@ -171,6 +179,8 @@ def execute_action(user_id: uuid.UUID, game_id: uuid.UUID, action_str: Optional[
     action_messages: List[str] = []
     points_awarded_this_action = 0
     for command in action_commands:
+        # Reset temporary loss state flags for each command line within an action block
+        # game_loss = False # No, these should persist across lines in an action block
         command = command.strip()
         if not command: continue # Skip empty lines
 
@@ -200,17 +210,32 @@ def execute_action(user_id: uuid.UUID, game_id: uuid.UUID, action_str: Optional[
             # Execute SET_STATE but DO NOT add to action_messages
             try:
                 content = command[10:-1].strip()
-                var_name, value = content.split(",", 1)
-                var_name = var_name.strip()
-                # Convert 'true'/'false' strings to actual booleans if needed, or store as string
-                value_str = value.strip().strip('"\'') # Keep value as string for now
+                var_name, value = content.split(",", 1) # Split only on the first comma
+                var_name = var_name.strip().lower() # Normalize variable name to lowercase
+                value_str = value.strip().strip('"\'')
+                parsed_value: Any # Type hint
+
+                # Parse value correctly (boolean, integer, float, or string)
                 if value_str.lower() == 'true':
-                    current_game_vars[var_name] = True
+                    parsed_value = True
                 elif value_str.lower() == 'false':
-                    current_game_vars[var_name] = False
+                    parsed_value = False
                 else:
-                    current_game_vars[var_name] = value_str # Store as string otherwise
-                print(f"Set game state: {var_name} = {current_game_vars[var_name]}")
+                    try:
+                        parsed_value = int(value_str) # Try integer
+                    except ValueError:
+                        try:
+                            parsed_value = float(value_str) # Try float
+                        except ValueError:
+                            parsed_value = value_str # Fallback to string
+
+                # Store the parsed value in the game state
+                current_game_vars[var_name] = parsed_value
+                print(f"Set game state: {var_name} = {parsed_value} (Type: {type(parsed_value)})")
+
+                # Optional: Add special type enforcement for specific keys if needed after storing
+                # if var_name == 'game_loss': current_game_vars['game_loss'] = bool(parsed_value)
+
             except Exception as e:
                 print(f"Warning: Invalid SET_STATE format: {command}. Error: {e}")
         # Add other actions like REMOVE_ITEM, MOVE_ENTITY, etc. here
@@ -297,6 +322,9 @@ class ScriptExecutionResult(TypedDict):
     points_awarded: int
     win_image_path: Optional[str]
     game_won: bool
+    loss_reason: Optional[str] # NEW: Reason for losing
+    loss_image: Optional[str] # NEW: Custom loss image from script
+    game_loss: bool # NEW: Loss status
 
 def find_and_execute_scripts(user_id: uuid.UUID, game_id: uuid.UUID, trigger_type: str, context: Optional[Dict] = None, current_room_id_for_condition: Optional[uuid.UUID] = None) -> ScriptExecutionResult:
     """Finds scripts matching the trigger, evaluates conditions, executes actions, and checks for win state."""
@@ -320,13 +348,24 @@ def find_and_execute_scripts(user_id: uuid.UUID, game_id: uuid.UUID, trigger_typ
 
     game_won = current_game_vars.get('game_won', False) is True
     win_image_path = None
+    game_loss = current_game_vars.get('game_loss', False) is True # NEW: Check loss state
+    loss_reason = current_game_vars.get('loss_reason') if game_loss else None # NEW: Get reason if lost
+    loss_image = current_game_vars.get('loss_image') if game_loss else None # NEW: Get custom image if lost
+
     if game_won:
         game = db.session.get(Game, game_id)
         win_image_path = game.win_image_path if game else None
+        # Ensure loss state is false if won
+        game_loss = False
+        loss_reason = None
+        loss_image = None
 
     return {
         "messages": "\n".join(script_messages),
         "points_awarded": total_points_awarded,
         "win_image_path": win_image_path,
-        "game_won": game_won
+        "game_won": game_won,
+        "loss_reason": loss_reason, # NEW
+        "loss_image": loss_image, # NEW
+        "game_loss": game_loss # NEW
     }

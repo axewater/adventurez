@@ -27,6 +27,7 @@ let currentConversationNodeType = "options";
  * @param {boolean} [isInitialization=false] - Flag indicating if this is the initial 'look' command.
  */
 export async function sendPlayCommand(command, isInitialization = false) {
+    let result = null; // Declare result outside the try block
     const gameId = state.selectedGameId;
     const roomId = state.currentPlayRoomId;
 
@@ -44,10 +45,13 @@ export async function sendPlayCommand(command, isInitialization = false) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ command: command, current_room_id: roomId })
         });
-        const result = await api.handleApiResponse(response);
+        result = await api.handleApiResponse(response); // Assign to the outer 'result'
 
-        // Check for win condition FIRST
-        if (result.game_won) {
+        // Check for loss condition FIRST
+        if (result.game_loss) {
+            ui.updateScoreDisplay(result.current_score); // Update score one last time
+            await ui.showLossOverlay(result.loss_reason, result.loss_image_path);
+        } else if (result.game_won) { // Check for win condition if not lost
             ui.updateScoreDisplay(result.current_score); // Update score one last time
             await ui.showWinOverlay(result.win_image_path);
         } else {
@@ -101,7 +105,7 @@ export async function sendPlayCommand(command, isInitialization = false) {
         // playInput.placeholder = "Voer commando in...";
     } finally {
         // Re-enable input only if not in a win state
-        if (!state.getGameById(gameId)?.game_won) { // Check win state from result if possible, or re-fetch state
+        if (result && !result.game_won && !result.game_loss) { // Check if result exists before accessing properties
              playInput.disabled = false;
              playInput.focus();
         }

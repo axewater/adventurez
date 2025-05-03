@@ -77,6 +77,8 @@ class Game(db.Model):
     # NEW: Description for the game, shown at the start
     description = db.Column(Text, nullable=True, default='Klik op het plaatje om het spel te starten!')
     win_image_path = db.Column(Text, nullable=True)
+    # NEW: Path for game loss image
+    loss_image_path = db.Column(Text, nullable=True)
     # NEW: Versioning
     version = db.Column(String(20), nullable=False, default='1.0.0') # Adventure version
     builder_version = db.Column(String(20), nullable=True) # Version of the builder used
@@ -102,6 +104,7 @@ class Game(db.Model):
             'start_image_path': self.start_image_path,
             'description': self.description,
             'win_image_path': self.win_image_path,
+            'loss_image_path': self.loss_image_path, # NEW: Include loss image path
             'version': self.version,
             'builder_version': self.builder_version,
         }

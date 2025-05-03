@@ -1,36 +1,45 @@
 <div class="modal-content">
-    <button id="game-settings-modal-close" class="modal-close-btn" title="Sluiten">&times;</button>
-    <h3>Spel Instellingen</h3>
+    <button id="game-settings-modal-close" class="modal-close-btn" title="Close">&times;</button>
+    <h3>Game Settings</h3>
     <form id="game-settings-form">
-        <label for="game-settings-name-input">Spel Naam:</label>
+        <label for="game-settings-name-input">Game Name:</label>
         <input type="text" id="game-settings-name-input" required>
 
-        <label for="game-settings-description-textarea">Omschrijving (getoond bij start):</label>
-        <textarea id="game-settings-description-textarea" rows="4" placeholder="Voer hier de omschrijving van het spel in..."></textarea>
+        <label for="game-settings-description-textarea">Description (shown at start):</label>
+        <textarea id="game-settings-description-textarea" rows="4" placeholder="Enter the game description here..."></textarea>
 
         <div class="game-image-control-wrapper">
-            <label for="game-start-image-select">Start Plaatje:</label>
+            <label for="game-start-image-select">Start Image:</label>
             <select id="game-start-image-select">
-                <option value="">-- Standaard Plaatje --</option>
+                <option value="">-- Default Image --</option>
                 <!-- Image options will be populated here -->
             </select>
-            <img id="game-start-image-thumbnail" src="#" alt="Gekozen start plaatje" title="Klik om te vergroten">
+            <img id="game-start-image-thumbnail" src="#" alt="Selected start image" title="Click to enlarge">
         </div>
 
         <div class="game-image-control-wrapper">
-            <label for="game-win-image-select">Win Plaatje:</label>
+            <label for="game-win-image-select">Win Image:</label>
             <select id="game-win-image-select">
-                <option value="">-- Standaard Plaatje --</option>
+                <option value="">-- Default Image --</option>
                 <!-- Image options will be populated here -->
             </select>
-            <img id="game-win-image-thumbnail" src="#" alt="Gekozen win plaatje" title="Klik om te vergroten">
+            <img id="game-win-image-thumbnail" src="#" alt="Selected win image" title="Click to enlarge">
+        </div>
+
+        <div class="game-image-control-wrapper">
+            <label for="game-loss-image-select">Loss Image:</label>
+            <select id="game-loss-image-select">
+                <option value="">-- Default Image --</option>
+                <!-- Image options will be populated here -->
+            </select>
+            <img id="game-loss-image-thumbnail" src="#" alt="Selected loss image" title="Click to enlarge">
         </div>
 
         <div class="game-version-display" style="margin-top: 15px; font-size: 0.9em; color: #555;">
-            <label>Versies:</label>
-            <span>Adventure: <strong id="game-settings-version">Laden...</strong></span> |
-            <span>Builder: <strong id="game-settings-builder-version">Laden...</strong></span>
+            <label>Versions:</label>
+            <span>Adventure: <strong id="game-settings-version">Loading...</strong></span> |
+            <span>Builder: <strong id="game-settings-builder-version">Loading...</strong></span>
         </div>
-        <button type="submit" id="game-settings-submit">Opslaan</button>
+        <button type="submit" id="game-settings-submit">Save</button>
     </form>
 </div>
