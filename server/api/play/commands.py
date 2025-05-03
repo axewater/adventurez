@@ -258,17 +258,19 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
                  item_name_lower = argument.lower()
                  target_entity, _ = _find_target_in_room(user_id, game_id, current_room_id, item_name_lower)
 
-                 take_trigger = f"ON_TAKE({item_name_lower})" # Check if script handles it
+                 # --- Execute ON_TAKE script BEFORE adding item to inventory ---
+                 take_trigger = f"ON_TAKE({target_entity.name})" # Use the actual entity name for the trigger
                  script_result_on_take: Dict[str, Any] = find_and_execute_scripts(user_id, game_id, take_trigger, current_room_id_for_condition=current_room_id)
-                 item_already_in_inventory = target_entity and target_entity.id in current_inventory_ids
-
                  if script_result_on_take["messages"]:
-                     response_message += script_result_on_take["messages"]
+                     response_message += script_result_on_take["messages"] + "\n"
                      points_awarded += script_result_on_take["points_awarded"]
                      if script_result_on_take["game_won"]: # Check win state after ON_TAKE script
                          game_won = True
                          win_image_path = script_result_on_take["win_image_path"]
-                 elif item_already_in_inventory: 
+
+                 item_already_in_inventory = target_entity and target_entity.id in current_inventory_ids
+
+                 if item_already_in_inventory: 
                      response_message += f"Je hebt de {argument} al."
                  elif not target_entity: 
                      response_message += f"Je ziet hier geen '{argument}'."

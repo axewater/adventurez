@@ -259,7 +259,11 @@ def find_and_execute_scripts(user_id: uuid.UUID, game_id: uuid.UUID, trigger_typ
     state.player_inventory.setdefault(user_id, {}).setdefault(game_id, set())
     current_game_vars = state.game_states.setdefault(user_id, {}).setdefault(game_id, {})
 
-    scripts = Script.query.filter_by(game_id=game_id, trigger=trigger_type).all()
+    # --- Case-insensitive trigger matching ---
+    # Use func.lower on both the column and the input trigger for comparison
+    from sqlalchemy import func
+    scripts = Script.query.filter(Script.game_id == game_id, func.lower(Script.trigger) == func.lower(trigger_type)).all()
+
     script_messages: List[str] = []
     # Use the passed current_room_id_for_condition for condition evaluation
     total_points_awarded = 0
