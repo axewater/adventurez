@@ -91,6 +91,7 @@ def handle_talk_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id:
     response_message = ""
     in_conversation = False
     node_type = None
+    entity_image_path = None # Initialize image path
     # Talk command itself doesn't award points, conversation actions do
     points_awarded = 0
     game_won = False
@@ -113,6 +114,7 @@ def handle_talk_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id:
             else:
                 response_message = conv_result.get("message", "Gesprek gestart.")
                 in_conversation = conv_result.get("in_conversation", False)
+                entity_image_path = target_npc.image_path # Get NPC image path
                 node_type = conv_result.get("node_type")
 
     return {
@@ -120,6 +122,7 @@ def handle_talk_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id:
         "in_conversation": in_conversation,
         "node_type": node_type,
         "points_awarded": points_awarded,
+        "entity_image_path": entity_image_path, # Add image path to result
         "game_won": game_won,
         "win_image_path": win_image_path
     }

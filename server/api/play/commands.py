@@ -108,6 +108,7 @@ def process_command(user_id: uuid.UUID, game_id: uuid.UUID, current_room_id: uui
             response_message += result["message"]
             in_conversation = result["in_conversation"]
             node_type = result["node_type"]
+            entity_image_path = result.get("entity_image_path") # Get entity image path from talk result
             # Talk command itself doesn't award points directly
 
         elif verb in ["help", "h", "?", "info"]:
