@@ -11,6 +11,7 @@ const scriptEditorContent = document.getElementById('script-editor-content');
 const scriptListUl = document.getElementById('script-list-ul');
 const addScriptBtn = document.getElementById('add-script-btn');
 const scriptDetailsPanel = document.getElementById('script-details-panel');
+const scriptSearchInput = document.getElementById('script-search-input'); // NEW: Search input
 const scriptDetailsPlaceholder = document.getElementById('script-details-placeholder');
 const scriptDetailsForm = document.getElementById('script-details-form');
 const scriptTriggerInput = document.getElementById('script-trigger-input');
@@ -74,12 +75,25 @@ async function fetchScriptsForGame(gameId) {
  */
 function renderScriptList() {
     if (!scriptListUl) return;
+
+    // NEW: Get search term
+    const searchTerm = scriptSearchInput?.value.toLowerCase() || '';
+
     scriptListUl.innerHTML = ''; // Clear list
-    if (state.currentScripts.length === 0) {
+
+    // NEW: Filter scripts based on search term
+    const filteredScripts = state.currentScripts.filter(script => {
+        if (!searchTerm) return true; // Show all if search is empty
+        const triggerMatch = script.trigger?.toLowerCase().includes(searchTerm);
+        const conditionMatch = script.condition?.toLowerCase().includes(searchTerm);
+        const actionMatch = script.action?.toLowerCase().includes(searchTerm);
+        return triggerMatch || conditionMatch || actionMatch;
+    });
+
+    if (filteredScripts.length === 0) {
         scriptListUl.innerHTML = '<li>No scripts created yet.</li>';
     } else {
-        // Sort scripts by trigger for consistency
-        const sortedScripts = [...state.currentScripts].sort((a, b) => a.trigger.localeCompare(b.trigger));
+        const sortedScripts = [...filteredScripts].sort((a, b) => a.trigger.localeCompare(b.trigger));
         sortedScripts.forEach(script => {
             const li = document.createElement('li');
             // Display trigger or a placeholder if trigger is very long/complex
@@ -497,5 +511,12 @@ export function initializeScriptEditor() {
     // NEW: Add event listener for helper icons using event delegation
     if (scriptDetailsPanel) {
         scriptDetailsPanel.addEventListener('click', handleHelperIconClick);
+    }
+
+    // NEW: Add event listener for search input
+    if (scriptSearchInput) {
+        scriptSearchInput.addEventListener('input', renderScriptList);
+    } else {
+        console.warn("Script search input not found.");
     }
 }
