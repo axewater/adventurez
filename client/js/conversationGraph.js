@@ -1,12 +1,14 @@
 /* global d3 */ // Inform linters about global variables
 
 import * as state from './state.js';
-import * as uiUtils from './uiUtils.js';
-// Import interaction handlers if needed later
-// import { createDragHandlers, createTickHandler, createZoomHandler } from './d3GraphHandlers.js';
+import { transformConversationToGraphData } from './conversationGraphData.js';
+import { updateConversationGraph, ticked, zoomed } from './conversationGraphRenderer.js';
+import { handleNodeClick as handleNodeClickInteraction } from './conversationGraphInteractions.js';
 
 // --- DOM Element Caching ---
 const graphContainer = document.getElementById('conversation-graph-container');
+// CSS class for selected node (defined in convo.css)
+const SELECTED_NODE_CLASS = 'conv-node-selected';
 
 // --- D3 Simulation State ---
 let simulation;
@@ -22,111 +24,6 @@ let zoomBehavior; // Store the zoom behavior instance
 const NODE_WIDTH = 120;
 const NODE_HEIGHT = 50;
 const NODE_RADIUS = 30; // For potential circular nodes
-
-/**
- * Transforms the conversation structure into D3 nodes and links.
- * @param {object} conversationStructure - The 'structure' object from the conversation.
- * @returns {object} - An object containing { nodes: Array<object>, links: Array<object> }.
- */
-function transformConversationToGraphData(conversationStructure) {
-    const graphNodes = [];
-    const graphLinks = [];
-    const nodeMap = new Map(); // To quickly find node objects by ID
-
-    if (!conversationStructure || !conversationStructure.nodes) {
-        console.warn("Conversation structure is missing or invalid.");
-        return { nodes: [], links: [] };
-    }
-
-    const convNodes = conversationStructure.nodes;
-    const startNodeId = conversationStructure.start_node;
-
-    // 1. Create Nodes
-    for (const nodeId in convNodes) {
-        if (convNodes.hasOwnProperty(nodeId)) {
-            const nodeData = convNodes[nodeId];
-            const nodeType = nodeData.type || 'options'; // Default to options node
-            let nodeText = nodeData.npc_text || `Node: ${nodeId}`; // Default text
-            if (nodeType === 'question') {
-                nodeText = `[Q] ${nodeData.question_text || nodeText}`;
-            } else if (nodeType === 'options') {
-                // Limit text length for display
-                nodeText = nodeText.length > 50 ? nodeText.substring(0, 47) + '...' : nodeText;
-            }
-
-            const graphNode = {
-                id: nodeId,
-                type: nodeType,
-                text: nodeText,
-                isStart: nodeId === startNodeId,
-                data: nodeData // Store original data if needed
-                // x, y, fx, fy will be added by D3 or loaded if saved
-            };
-            graphNodes.push(graphNode);
-            nodeMap.set(nodeId, graphNode);
-        }
-    }
-
-    // 2. Create Links
-    for (const nodeId in convNodes) {
-        if (convNodes.hasOwnProperty(nodeId)) {
-            const nodeData = convNodes[nodeId];
-            const sourceNode = nodeMap.get(nodeId);
-            if (!sourceNode) continue;
-
-            const nodeType = nodeData.type || 'options';
-
-            if (nodeType === 'options' && nodeData.options) {
-                nodeData.options.forEach((option, index) => {
-                    const targetNodeId = option.next_node;
-                    if (targetNodeId && nodeMap.has(targetNodeId)) {
-                        const targetNode = nodeMap.get(targetNodeId);
-                        graphLinks.push({
-                            id: `${nodeId}-opt${index}-${targetNodeId}`, // Unique link ID
-                            source: sourceNode,
-                            target: targetNode,
-                            label: option.text.length > 20 ? option.text.substring(0, 17) + '...' : option.text // Player choice text as label
-                        });
-                    }
-                });
-            } else if (nodeType === 'question') {
-                // Link for correct answer
-                const correctTargetId = nodeData.next_node_correct;
-                if (correctTargetId && nodeMap.has(correctTargetId)) {
-                    graphLinks.push({
-                        id: `${nodeId}-correct-${correctTargetId}`,
-                        source: sourceNode,
-                        target: nodeMap.get(correctTargetId),
-                        label: "Correct"
-                    });
-                }
-                // Link for incorrect answer
-                const incorrectTargetId = nodeData.next_node_incorrect;
-                if (incorrectTargetId && nodeMap.has(incorrectTargetId)) {
-                     graphLinks.push({
-                        id: `${nodeId}-incorrect-${incorrectTargetId}`,
-                        source: sourceNode,
-                        target: nodeMap.get(incorrectTargetId),
-                        label: "Incorrect"
-                    });
-                }
-            }
-            // Handle other node types or direct 'next_node' links if they exist
-            if (nodeData.next_node && nodeMap.has(nodeData.next_node)) {
-                 graphLinks.push({
-                    id: `${nodeId}-next-${nodeData.next_node}`,
-                    source: sourceNode,
-                    target: nodeMap.get(nodeData.next_node),
-                    label: "Next" // Generic label
-                });
-            }
-        }
-    }
-
-    console.log("Transformed Graph Data:", { nodes: graphNodes, links: graphLinks });
-    return { nodes: graphNodes, links: graphLinks };
-}
-
 
 /**
  * Initializes or re-initializes the D3 conversation graph view.
@@ -213,7 +110,13 @@ export function initializeConversationGraph() {
             .force("charge", d3.forceManyBody().strength(-500))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("collision", d3.forceCollide().radius(NODE_WIDTH / 2 + 30))
-            .on("tick", ticked);
+            .on("tick", () => {
+                // Call the imported ticked function, passing necessary selections
+                ticked({ linkGroup, nodeGroup, textGroup });
+            });
+
+        // --- Node Click Handler ---
+        const handleNodeClick = (event, d) => handleNodeClickInteraction(event, d, nodeGroup);
 
         // --- Drag Behavior (Optional for now) ---
         // const drag = d3.drag()...
@@ -221,145 +124,16 @@ export function initializeConversationGraph() {
         // --- Zoom/Pan Behavior ---
         zoomBehavior = d3.zoom()
             .scaleExtent([0.1, 4])
-            .on("zoom", zoomed);
+            .on("zoom", (event) => zoomed(event, zoomLayer)); // Pass zoomLayer to the handler
         svg.call(zoomBehavior);
 
         // --- Initial Render ---
         graphInitialized = true;
-        updateConversationGraph();
+        // Call the imported update function
+        updateConversationGraph({ svg, linkGroup, nodeGroup, textGroup, simulation, nodes, links, handleNodeClick, graphInitialized });
         console.log("D3 conversation graph view initialization complete.");
 
     }, 0); // Delay execution
-}
-
-/**
- * Updates the graph visualization based on the current nodes and links arrays.
- */
-function updateConversationGraph() {
-    if (!graphInitialized || !svg || !simulation || !nodeGroup || !linkGroup || !textGroup) {
-        console.warn("updateConversationGraph called before graph elements are fully initialized or after destruction.");
-        return;
-    }
-    console.log(`updateConversationGraph called. Nodes: ${nodes.length}, Links: ${links.length}`);
-
-    // --- Update Links ---
-    const linkSelection = linkGroup.selectAll("path.conv-link")
-        .data(links, d => d.id); // Use generated link ID
-
-    linkSelection.exit().remove();
-
-    const linkEnter = linkSelection.enter().append("path")
-        .attr("class", "conv-link")
-        .attr("stroke", "#999")
-        .attr("stroke-width", 1.5)
-        .attr("marker-end", "url(#conv-arrow)");
-
-    // Add link labels (optional, can get cluttered)
-    const linkLabelSelection = linkGroup.selectAll("text.conv-link-label")
-        .data(links, d => d.id);
-
-    linkLabelSelection.exit().remove();
-
-    const linkLabelEnter = linkLabelSelection.enter().append("text")
-        .attr("class", "conv-link-label")
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
-        .style("fill", "#555")
-        .style("font-size", "9px")
-        .text(d => d.label || ""); // Display link label (e.g., player choice)
-
-    // --- Update Nodes ---
-    const nodeSelection = nodeGroup.selectAll("rect.conv-node") // Use rect for now
-        .data(nodes, d => d.id);
-
-    nodeSelection.exit().remove();
-
-    const nodeEnter = nodeSelection.enter().append("rect")
-        .attr("class", d => `conv-node type-${d.type}`) // Add type class
-        .attr("width", NODE_WIDTH)
-        .attr("height", NODE_HEIGHT)
-        .attr("rx", 5).attr("ry", 5) // Rounded corners
-        .attr("fill", d => d.isStart ? "#ffc107" : (d.type === 'question' ? "#87CEEB" : "#bbb")) // Color by type/start
-        .attr("stroke", "#555")
-        .attr("stroke-width", 1.5)
-        .style("cursor", "pointer")
-        // .call(drag) // Add drag later if needed
-        .on("click", handleNodeClick); // Add click handler
-
-    nodeSelection.merge(nodeEnter); // Apply updates to existing nodes if needed
-
-    // --- Update Node Labels ---
-    const textSelection = textGroup.selectAll("text.conv-node-label")
-        .data(nodes, d => d.id);
-
-    textSelection.exit().remove();
-
-    textSelection.enter().append("text")
-        .attr("class", "conv-node-label")
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
-        .style("fill", "#111")
-        .style("font-size", "10px")
-        .style("pointer-events", "none") // Don't block clicks on node
-        .text(d => d.text); // Display node text
-
-    // --- Restart Simulation ---
-    simulation.nodes(nodes);
-    simulation.force("link").links(links);
-    simulation.alpha(0.3).restart();
-}
-
-/**
- * Tick function to update positions.
- */
-function ticked() {
-    // Update link positions
-    linkGroup.selectAll("path.conv-link")
-        .attr("d", d => {
-            // Basic straight line for now, adjust for node shape later
-            const dx = d.target.x - d.source.x;
-            const dy = d.target.y - d.source.y;
-            const dr = 0; // Change for curved paths if needed
-            return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
-        });
-
-    // Update link label positions
-    linkGroup.selectAll("text.conv-link-label")
-        .attr("x", d => (d.source.x + d.target.x) / 2)
-        .attr("y", d => (d.source.y + d.target.y) / 2);
-
-    // Update node positions (adjust for rect anchor point)
-    nodeGroup.selectAll("rect.conv-node")
-        .attr("x", d => d.x - NODE_WIDTH / 2)
-        .attr("y", d => d.y - NODE_HEIGHT / 2);
-
-    // Update node label positions
-    textGroup.selectAll("text.conv-node-label")
-        .attr("x", d => d.x)
-        .attr("y", d => d.y);
-}
-
-/**
- * Zoom handler function.
- */
-function zoomed(event) {
-    if (zoomLayer) {
-        zoomLayer.attr("transform", event.transform);
-    }
-}
-
-/**
- * Handles clicking on a node.
- * @param {Event} event - The click event.
- * @param {object} d - The data object for the clicked node.
- */
-function handleNodeClick(event, d) {
-    event.stopPropagation(); // Prevent triggering SVG click
-    console.log("Clicked conversation node:", d);
-    // Highlight the selected node (add CSS class)
-    nodeGroup.selectAll("rect.conv-node").classed("selected", n => n.id === d.id);
-    // TODO: Potentially show node details in a side panel or focus the JSON editor?
-    // For now, just log and highlight.
 }
 
 /**
