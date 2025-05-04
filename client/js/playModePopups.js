@@ -32,12 +32,14 @@ export function showConversationPopup(imageFilename, npcName, npcDialogue, nodeT
         return;
     }
 
-    conversationActive = true;
-
-    // 1. Set NPC Image
-    const imageUrl = `/uploads/images/entiteiten/${imageFilename}`;
-    conversationNpcImage.src = imageFilename ? imageUrl : '/uploads/images/entiteiten/_default.png'; // Add a default?
-    conversationNpcImage.alt = `Image for ${npcName}`;
+    // Only set the image and name the first time the popup is shown for a conversation
+    if (!conversationActive) {
+        const imageUrl = `/uploads/images/entiteiten/${imageFilename}`;
+        conversationNpcImage.src = imageFilename ? imageUrl : '/uploads/images/entiteiten/_default.png'; // Use default if no image
+        conversationNpcImage.alt = `Image for ${npcName}`;
+        // Also only set the NPC name the first time
+        if (conversationNpcName) conversationNpcName.textContent = npcName;
+    }
 
     // 2. Set NPC Name (Optional)
     if (conversationNpcName) conversationNpcName.textContent = npcName;
@@ -83,6 +85,7 @@ export function showConversationPopup(imageFilename, npcName, npcDialogue, nodeT
         }
     }
 
+    conversationActive = true; // Mark as active *after* potential first-time setup
     conversationPopup.classList.add('visible'); // Make the popup visible
     console.log(`Showing conversation popup for ${npcName}`);
 }
