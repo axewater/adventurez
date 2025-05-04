@@ -2,6 +2,7 @@
 // Main entry point for the Text Adventure Builder client-side application
 
 import { initializeGameManager } from './gameManager.js';
+import { initializeGameSettingsListeners } from './gameSettings.js'; // Import settings listeners
 import { initializeRoomDetails } from './roomDetails.js';
 import { initializeEntityDetails } from './entityDetails.js';
 import { initializeScriptEditor } from './scriptEditor.js';
@@ -52,6 +53,7 @@ async function initializeApp() {
 
     // Initialize manager modules which handle fetching initial data and setting up listeners
     initializeGameManager(); // Fetches games, sets up game list and actions
+    initializeGameSettingsListeners(); // Listeners are now initialized within initializeGameManager
     initializeRoomDetails(); // Sets up listeners for room detail form, connections etc.
     initializeEntityDetails(); // Sets up listeners for entity detail form
     initializeScriptEditor(); // Sets up listeners for script editor form
