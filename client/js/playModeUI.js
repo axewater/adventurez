@@ -12,10 +12,10 @@ const playStartImage = document.getElementById('play-start-image');
 const playStartDescription = document.getElementById('play-start-description');
 const playWinOverlay = document.getElementById('play-win-overlay');
 const playWinImage = document.getElementById('play-win-image');
-const playLossOverlay = document.getElementById('play-loss-overlay'); // NEW: Loss overlay
-const playLossImage = document.getElementById('play-loss-image'); // NEW: Loss image
-const playLossDescription = document.getElementById('play-loss-description'); // NEW: Loss description
-const playWinDescription = document.getElementById('play-win-description'); // Added for completeness
+const playLossOverlay = document.getElementById('play-loss-overlay');
+const playLossImage = document.getElementById('play-loss-image');
+const playLossDescription = document.getElementById('play-loss-description');
+const playWinDescription = document.getElementById('play-win-description');
 const playRoomImage = document.getElementById('play-room-image');
 const playerScoreDisplay = document.getElementById('player-score-display');
 const toggleFullscreenBtn = document.getElementById('toggle-fullscreen-btn');
@@ -56,7 +56,7 @@ export async function showWinOverlay(winImagePath) {
     console.log("Game won! Showing win overlay.");
     if (playContentWrapper) playContentWrapper.style.display = 'none';
     if (playStartOverlay) playStartOverlay.style.display = 'none';
-    if (playLossOverlay) playLossOverlay.style.display = 'none'; // NEW: Hide loss overlay
+    if (playLossOverlay) playLossOverlay.style.display = 'none';
 
     if (playWinOverlay && playWinImage) {
         const defaultWinImage = '/uploads/avonturen/standaard_spel_win.png'; // Assuming a default win image exists
@@ -81,7 +81,7 @@ export async function showLossOverlay(reason, lossImagePath) {
     console.log("Game lost! Showing loss overlay.");
     if (playContentWrapper) playContentWrapper.style.display = 'none';
     if (playStartOverlay) playStartOverlay.style.display = 'none';
-    if (playWinOverlay) playWinOverlay.style.display = 'none'; // Hide win overlay
+    if (playWinOverlay) playWinOverlay.style.display = 'none';
 
     if (playLossOverlay && playLossImage && playLossDescription) {
         const defaultLossImage = '/uploads/avonturen/standaard_verloren.jpg';
@@ -115,8 +115,8 @@ export function showPlayContentArea() {
             playInput.focus();
         }
     }
-    if (playStartOverlay) playStartOverlay.style.display = 'none'; // Hide start overlay
-    if (playLossOverlay) playLossOverlay.style.display = 'none'; // Hide loss overlay
+    if (playStartOverlay) playStartOverlay.style.display = 'none';
+    if (playLossOverlay) playLossOverlay.style.display = 'none';
 }
 
 /**
@@ -126,8 +126,8 @@ export function showPlayContentArea() {
 export function showStartOverlay(gameData) {
     if (playTabPlaceholder) playTabPlaceholder.style.display = 'none';
     if (playContentWrapper) playContentWrapper.style.display = 'none';
-    if (playLossOverlay) playLossOverlay.style.display = 'none'; // NEW: Hide loss overlay
-    if (playWinOverlay) playWinOverlay.style.display = 'none'; // Ensure win overlay is hidden
+    if (playLossOverlay) playLossOverlay.style.display = 'none';
+    if (playWinOverlay) playWinOverlay.style.display = 'none';
 
     if (playStartOverlay && playStartImage && playStartDescription) {
         const startImagePath = gameData.start_image_path;
@@ -155,7 +155,7 @@ export function resetPlayModeUI(message = "Selecteer een spel om te beginnen met
     }
     if (playStartOverlay) playStartOverlay.style.display = 'none';
     if (playWinOverlay) playWinOverlay.style.display = 'none';
-    if (playLossOverlay) playLossOverlay.style.display = 'none'; // NEW: Hide loss overlay
+    if (playLossOverlay) playLossOverlay.style.display = 'none';
     if (playContentWrapper) playContentWrapper.style.display = 'none';
 
     if (playControlsDiv) playControlsDiv.style.display = 'none';
@@ -166,13 +166,32 @@ export function resetPlayModeUI(message = "Selecteer een spel om te beginnen met
 }
 
 /**
+ * Enables the main command input field.
+ */
+export function enableMainInput() {
+    if (playInput) {
+        playInput.disabled = false;
+        playInput.focus();
+    }
+}
+
+/**
+ * Disables the main command input field.
+ */
+export function disableMainInput() {
+    if (playInput) {
+        playInput.disabled = true;
+    }
+}
+
+/**
  * Resets the game state via API and then resets the UI.
  * Typically called after winning or manually resetting.
  */
 export async function resetGameAndUI() {
     console.log("Resetting game and UI after win or reset request.");
-    if (playWinOverlay) playWinOverlay.style.display = 'none'; // Hide win overlay
-    if (playLossOverlay) playLossOverlay.style.display = 'none'; // NEW: Hide loss overlay
+    if (playWinOverlay) playWinOverlay.style.display = 'none';
+    if (playLossOverlay) playLossOverlay.style.display = 'none';
 
     // Re-initialize the play mode, which shows the start overlay or placeholder
     await initializePlayMode(); // Call the main initializer from playMode.js
@@ -208,7 +227,7 @@ export function setupPlayModeUIListeners(startGamePlayCallback) {
         console.warn("Play win overlay element not found.");
     }
 
-    if (playLossOverlay) { // NEW: Add listener for loss overlay click
+    if (playLossOverlay) {
         playLossOverlay.addEventListener('click', resetGameAndUI);
     } else {
         console.warn("Play loss overlay element not found.");

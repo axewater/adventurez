@@ -1,3 +1,15 @@
-<button id="entity-image-popup-close" class="popup-close-btn" title="Sluiten">&times;</button>
-<img id="entity-image-popup-img" src="" alt="Entity Image">
-<p id="entity-image-popup-description"></p>
+<!-- Renamed and repurposed for conversations -->
+<div id="conversation-popup-content">
+    <button id="conversation-popup-close" class="popup-close-btn" title="Sluiten (Esc)">&times;</button>
+    <div class="conversation-header">
+        <img id="conversation-npc-image" src="" alt="NPC Image">
+        <h4 id="conversation-npc-name">NPC Name</h4>
+    </div>
+    <div id="conversation-npc-text" class="conversation-text">
+        <!-- NPC dialogue will appear here -->
+    </div>
+    <ul id="conversation-options" class="conversation-options-list">
+        <!-- Player options will be dynamically added here -->
+    </ul>
+    <input type="text" id="conversation-question-input" class="conversation-input" placeholder="Typ je antwoord..." style="display: none;">
+</div>

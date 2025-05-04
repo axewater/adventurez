@@ -1,13 +1,11 @@
-
 /* Play Mode Specific */
 /* Styles specific to the play mode tab pane */
 #play-tab {
-    /* display: flex; <-- REMOVED: This was overriding the default .tab-pane display: none */
     flex-direction: column;
     height: 100%; /* Ensure it fills the available space */
 }
 
-/* NEW: Wrapper for the actual play content */
+/* Wrapper for the actual play content */
 #play-content-wrapper {
     display: none; /* Hidden initially */
     flex-direction: column;
@@ -21,18 +19,18 @@
     background-color: #f8f8f8;
     padding: 10px;
     white-space: pre-wrap; /* Preserve formatting */
-    overflow-y: auto; /* NEW: Add scrollbar when needed */
-    max-height: 150px; /* NEW: Limit the maximum height */
+    overflow-y: auto; /* Add scrollbar when needed */
+    max-height: 150px; /* Limit the maximum height */
     flex-shrink: 0; /* Prevent shrinking */
 }
 
-/* NEW: Styling for room title in play mode */
+/* Styling for room title in play mode */
 #play-output .room-title {
     font-size: 1.2em; /* Make it larger */
     font-weight: bold; /* Ensure it's bold */
 }
 
-/* NEW: Ensure 'strong' tags within play output are bold */
+/* Ensure 'strong' tags within play output are bold */
 /* (Usually default, but good to be explicit) */
 #play-output strong {
     font-weight: bold;
@@ -56,7 +54,7 @@
     padding: 8px 10px; /* Adjust padding */
 }
 
-/* NEW: Play Start Overlay Styles */
+/* Play Start Overlay Styles */
 #play-start-overlay {
     display: none;
     cursor: pointer;
@@ -77,7 +75,7 @@
     cursor: pointer; /* Explicitly set cursor for the image */
 }
 
-/* NEW: Play Win Overlay Styles (similar to start overlay) */
+/* Play Win Overlay Styles (similar to start overlay) */
 #play-win-overlay {
     display: none;
     cursor: pointer;
@@ -97,8 +95,6 @@
     margin-bottom: 15px;
     cursor: pointer; /* Explicitly set cursor for the image */
 }
-
-
 
 /* Play Mode Buttons (Save, Load, Reset) */
 #play-controls button {
@@ -136,7 +132,7 @@
     background-color: #c82333;
 }
 
-/* NEW: Fullscreen Button Style (can be adjusted) */
+/* Fullscreen Button Style (can be adjusted) */
 #toggle-fullscreen-btn {
     background-color: #6c757d; /* Secondary grey */
 }
@@ -144,7 +140,7 @@
     background-color: #5a6268;
 }
 
-/* NEW: Score Display Styles (Moved from style2.css and adjusted) */
+/* Score Display Styles (Moved from style2.css and adjusted) */
 #player-score-display {
     background-color: #28a745; /* Green background */
     color: white; /* White text */
@@ -161,4 +157,77 @@ button:disabled {
     background-color: #cccccc;
     color: #666666;
     cursor: not-allowed;
+}
+
+/* Conversation Popup Styles */
+#entity-image-popup {
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+}
+
+#conversation-popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between elements */
+    padding: 15px;
+}
+
+.conversation-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+#conversation-npc-image {
+    max-width: 80px; /* Adjust size as needed */
+    max-height: 80px;
+    object-fit: contain;
+    border-radius: 5px; /* Optional rounded corners */
+}
+
+#conversation-npc-name {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+#conversation-npc-text {
+    background-color: #f9f9f9; /* Slightly different background for NPC text */
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-wrap; /* Preserve formatting */
+    max-height: 200px; /* Limit height and allow scroll if needed */
+    overflow-y: auto;
+}
+
+.conversation-options-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between options */
+}
+
+.conversation-options-list li {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.conversation-options-list li:hover {
+    background-color: #e9e9e9;
+    border-color: #ccc;
+}
+
+.conversation-input { /* Style for the question input */
+    width: calc(100% - 22px); /* Account for padding/border */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px; /* Space above input */
 }

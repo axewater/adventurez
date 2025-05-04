@@ -5,6 +5,7 @@ import * as api from './api.js';
 import * as state from './state.js';
 import * as ui from './playModeUI.js';
 import * as popups from './playModePopups.js';
+import * as conversationPopup from './playModePopups.js'; // Use a more specific name
 import { showFlashMessage } from './uiUtils.js';
 
 // --- DOM Elements ---
@@ -18,7 +19,7 @@ let historyIndex = -1;
 let currentInputBuffer = ""; // Stores input typed before navigating history
 
 // --- Conversation State ---
-let isInConversation = false;
+// let isInConversation = false; // Now managed by conversationPopup state
 let currentConversationNodeType = "options";
 
 /**
@@ -56,37 +57,44 @@ export async function sendPlayCommand(command, isInitialization = false) {
             await ui.showWinOverlay(result.win_image_path);
         } else {
             // Normal command processing
-            isInConversation = result.in_conversation || false;
+            const wasInConversation = conversationPopup.isConversationActive();
+            const nowInConversation = result.in_conversation || false;
             currentConversationNodeType = result.node_type || "options";
 
-            ui.updateRoomImage(result.image_path);
-
-            if (result.entity_image_path) {
-                popups.showEntityImagePopup(result.entity_image_path, result.message);
+            if (nowInConversation) {
+                // Started or continuing conversation
+                conversationPopup.showConversationPopup(
+                    result.entity_image_path, // NPC image
+                    result.npc_name || 'NPC', // NPC name (needs backend update)
+                    result.message, // Includes NPC text and options/prompt
+                    currentConversationNodeType,
+                    result.options || [] // Pass options if available (needs backend update)
+                );
+                ui.disableMainInput(); // Disable main input
+            } else if (wasInConversation && !nowInConversation) {
+                // Conversation just ended
+                conversationPopup.hideConversationPopup();
+                ui.enableMainInput(); // Re-enable main input
+                // Display the final message in the main output
+                playOutputDiv.innerHTML += `\n<div style="white-space: pre-wrap;">${result.message}</div>\n`;
             } else {
-                popups.hideEntityImagePopup(); // Ensure popup is hidden if no image path
+                // Not in conversation, normal command
+                ui.updateRoomImage(result.image_path); // Update room image only if not in convo
+
+                // Add command echo and response to output
+                if (!isInitialization) {
+                    playOutputDiv.innerHTML += `\n<span style="color: #007bff;">&gt; ${command}</span>\n`;
+                }
+                playOutputDiv.innerHTML += `\n<div style="white-space: pre-wrap;">${result.message}</div>\n`;
+
+                // Update input placeholder for normal commands
+                playInput.placeholder = "Voer commando in...";
             }
 
+            // Update score and show points flash message (always)
             ui.updateScoreDisplay(result.current_score);
-
-            // Show points awarded as flash message
             if (result.points_awarded && result.points_awarded > 0) {
                 showFlashMessage(`+${result.points_awarded} Punten`, 4000);
-            }
-
-            // Add command echo and response to output
-            if (!isInitialization) {
-                playOutputDiv.innerHTML += `\n<span style="color: #007bff;">&gt; ${command}</span>\n`;
-            }
-            playOutputDiv.innerHTML += `\n<div style="white-space: pre-wrap;">${result.message}</div>\n`;
-
-            // Update input placeholder based on conversation state
-            if (isInConversation) {
-                playInput.placeholder = (currentConversationNodeType === "question")
-                    ? "Geef je antwoord..."
-                    : "Voer keuze (nummer) in...";
-            } else {
-                playInput.placeholder = "Voer commando in...";
             }
 
             // Update current room ID in state
@@ -101,7 +109,7 @@ export async function sendPlayCommand(command, isInitialization = false) {
         playOutputDiv.innerHTML += `\n<span style="color: red;">Fout bij het verwerken van het commando.</span>\n`;
         playOutputDiv.scrollTop = playOutputDiv.scrollHeight;
         // Optionally reset conversation state on error?
-        // isInConversation = false;
+        conversationPopup.hideConversationPopup(); // Hide popup on error
         // playInput.placeholder = "Voer commando in...";
     } finally {
         // Re-enable input only if not in a win state
@@ -119,7 +127,7 @@ export function resetCommandHistory() {
     commandHistory = [];
     historyIndex = -1;
     currentInputBuffer = "";
-    isInConversation = false;
+    // isInConversation = false; // Handled by conversationPopup state
     currentConversationNodeType = "options";
 }
 
@@ -129,7 +137,7 @@ export function resetCommandHistory() {
 export function setupCommandInputListeners() {
     if (playInput) {
         playInput.addEventListener('keydown', async (event) => {
-            if (playInput.disabled) return; // Ignore input if disabled
+            if (playInput.disabled || conversationPopup.isConversationActive()) return; // Ignore if disabled OR conversation popup is active
 
             if (event.key === 'Enter') {
                 event.preventDefault();
