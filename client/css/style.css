@@ -578,20 +578,53 @@ body.playmode-fullscreen #play-room-image {
 /* --- NEW: Game Settings Modal Image Thumbnails --- */
 .game-image-control-wrapper {
     display: flex;
-    align-items: center; /* Vertically align label, select, and image */
-    gap: 10px; /* Space between elements */
-    margin-top: 15px; /* Same margin as other labels */
+    flex-direction: column; /* Stack label, select, and image vertically */
+    margin-bottom: 15px; /* Space below each image section */
 }
 
-#game-start-image-thumbnail,
-#game-win-image-thumbnail {
+.game-image-control-wrapper label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.game-image-control-wrapper select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+.game-image-preview { /* Style for all image previews in the modal */
     max-width: 150px; /* Limit thumbnail width */
     max-height: 150px; /* Limit thumbnail height */
     border: 1px solid #ccc; /* Subtle border */
     border-radius: 3px;
     cursor: pointer; /* Indicate it's clickable */
-    display: inline-block; /* Ensure it displays */
+    display: block; /* Make it block to appear below */
     object-fit: contain; /* Scale image while preserving aspect ratio within bounds */
+    margin-top: 8px; /* Space between dropdown and image */
+    transition: border-color 0.2s ease, transform 0.2s ease; /* Hover transition */
+}
+
+.game-image-preview:hover {
+    border-color: var(--primary-color); /* Highlight border on hover */
+    transform: scale(1.03); /* Slightly enlarge on hover */
+}
+
+/* Style for the top save button */
+.modal-save-btn-top {
+    position: absolute;
+    top: 15px; /* Adjust as needed */
+    right: 60px; /* Space from the close button */
+    padding: 8px 15px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
 }
 
 /* --- NEW: Dark Theme --- */
@@ -610,4 +643,20 @@ body.theme-dark {
     --modal-bg-color: #2d333b;
     --link-color: #58a6ff;
     color-scheme: dark; /* Hint for browser UI like scrollbars */
+}
+
+/* --- Secondary Action Button Style (e.g., Cancel) --- */
+.secondary-action-btn {
+    background-color: var(--secondary-color); /* Use theme secondary color */
+    color: white;
+    margin-left: auto; /* Push to the right if needed */
+}
+
+.secondary-action-btn:hover {
+    filter: brightness(110%);
+}
+
+/* Ensure form actions in modal align buttons correctly */
+.modal-content .form-actions {
+    justify-content: flex-start; /* Align buttons to the start */
 }

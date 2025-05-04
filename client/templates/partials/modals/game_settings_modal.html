@@ -1,45 +1,49 @@
 <div class="modal-content">
     <button id="game-settings-modal-close" class="modal-close-btn" title="Close">&times;</button>
     <h3>Game Settings</h3>
+    <button type="submit" form="game-settings-form" id="game-settings-submit-top" class="modal-save-btn-top">Save</button>
     <form id="game-settings-form">
-        <label for="game-settings-name-input">Game Name:</label>
-        <input type="text" id="game-settings-name-input" required>
-
-        <label for="game-settings-description-textarea">Description (shown at start):</label>
-        <textarea id="game-settings-description-textarea" rows="4" placeholder="Enter the game description here..."></textarea>
-
+        <div class="form-group">
+            <label for="game-settings-name-input">Game Name:</label>
+            <input type="text" id="game-settings-name-input" required>
+        </div>
+        <div class="form-group">
+            <label for="game-settings-description-textarea">Description (shown at start):</label>
+            <p>
+            <textarea id="game-settings-description-textarea" rows="6" placeholder="Enter the game description here..."></textarea>
+        </div>
         <div class="game-image-control-wrapper">
             <label for="game-start-image-select">Start Image:</label>
             <select id="game-start-image-select">
                 <option value="">-- Default Image --</option>
                 <!-- Image options will be populated here -->
             </select>
-            <img id="game-start-image-thumbnail" src="#" alt="Selected start image" title="Click to enlarge">
+            <img id="game-start-image-thumbnail" class="game-image-preview" src="#" alt="Selected start image" title="Click to enlarge">
         </div>
-
         <div class="game-image-control-wrapper">
             <label for="game-win-image-select">Win Image:</label>
             <select id="game-win-image-select">
                 <option value="">-- Default Image --</option>
                 <!-- Image options will be populated here -->
             </select>
-            <img id="game-win-image-thumbnail" src="#" alt="Selected win image" title="Click to enlarge">
+            <img id="game-win-image-thumbnail" class="game-image-preview" src="#" alt="Selected win image" title="Click to enlarge">
         </div>
-
         <div class="game-image-control-wrapper">
             <label for="game-loss-image-select">Loss Image:</label>
             <select id="game-loss-image-select">
                 <option value="">-- Default Image --</option>
                 <!-- Image options will be populated here -->
             </select>
-            <img id="game-loss-image-thumbnail" src="#" alt="Selected loss image" title="Click to enlarge">
+            <img id="game-loss-image-thumbnail" class="game-image-preview" src="#" alt="Selected loss image" title="Click to enlarge">
         </div>
-
         <div class="game-version-display" style="margin-top: 15px; font-size: 0.9em; color: #555;">
             <label>Versions:</label>
             <span>Adventure: <strong id="game-settings-version">Loading...</strong></span> |
             <span>Builder: <strong id="game-settings-builder-version">Loading...</strong></span>
         </div>
-        <button type="submit" id="game-settings-submit">Save</button>
+        <div class="form-actions">
+            <button type="submit" id="game-settings-submit-bottom">Save</button>
+            <button type="button" id="game-settings-cancel-btn" class="secondary-action-btn">Cancel</button>
+        </div>
     </form>
 </div>

@@ -47,7 +47,9 @@ const gameWinImageThumbnail = document.getElementById('game-win-image-thumbnail'
 const gameLossImageSelect = document.getElementById('game-loss-image-select'); // NEW: Loss image select
 const gameLossImageThumbnail = document.getElementById('game-loss-image-thumbnail'); // NEW: Loss image thumbnail
 const gameSettingsModalTitle = document.querySelector('#game-settings-modal .modal-content h3'); // Get the title element
-const gameSettingsSubmitBtn = document.getElementById('game-settings-submit');
+const gameSettingsSubmitTopBtn = document.getElementById('game-settings-submit-top'); // NEW: Top save button
+const gameSettingsSubmitBottomBtn = document.getElementById('game-settings-submit-bottom'); // Original save button (renamed ID)
+const gameSettingsCancelBtn = document.getElementById('game-settings-cancel-btn'); // NEW: Cancel button
 const gameSettingsVersionSpan = document.getElementById('game-settings-version'); // NEW: Version span
 const gameSettingsBuilderVersionSpan = document.getElementById('game-settings-builder-version'); // NEW: Builder version span
 
@@ -404,13 +406,13 @@ async function performGameDeletion() {
  * @param {string|null} [gameId=null] - The ID of the game to edit (required for 'edit' mode).
  */
 async function openGameSettingsModal(mode = 'edit', gameId = null) {
-    if (!gameSettingsModal || !gameSettingsModalTitle || !gameSettingsSubmitBtn) return;
+    if (!gameSettingsModal || !gameSettingsModalTitle || !gameSettingsSubmitBottomBtn || !gameSettingsSubmitTopBtn) return;
     const targetGameId = (mode === 'edit') ? (gameId || state.selectedGameId) : null;
     gameSettingsForm.dataset.mode = mode; // Store mode in the form's dataset
 
     if (mode === 'create') {
-        gameSettingsModalTitle.textContent = "Nieuw Spel Aanmaken";
-        gameSettingsSubmitBtn.textContent = "Maak Spel Aan";
+        gameSettingsModalTitle.textContent = "Create New Game";
+        gameSettingsSubmitBottomBtn.textContent = "Create Game";
         gameSettingsForm.reset(); // Clear form fields
         gameSettingsNameInput.value = '';
         gameSettingsDescriptionTextarea.value = '';
@@ -429,8 +431,9 @@ async function openGameSettingsModal(mode = 'edit', gameId = null) {
             console.error("Cannot open settings: Current game data not found.");
             return;
         }
-        gameSettingsModalTitle.textContent = "Spel Instellingen";
-        gameSettingsSubmitBtn.textContent = "Opslaan";
+        gameSettingsModalTitle.textContent = "Game Settings";
+        // Use the bottom button's text content as an example, top button has no text initially
+        gameSettingsSubmitBottomBtn.textContent = "Save";
         gameSettingsNameInput.value = currentGame.name;
         gameSettingsDescriptionTextarea.value = currentGame.description || '';
         await populateGameImageDropdown(gameStartImageSelect, 'start', currentGame.start_image_path);
@@ -461,7 +464,7 @@ function closeGameSettingsModal() {
  */
 async function populateGameImageDropdown(selectElement, imageType, selectedImagePath) {
     if (!selectElement) return;
-    selectElement.innerHTML = '<option value="">-- Standaard Plaatje --</option>'; // Reset with default
+    selectElement.innerHTML = '<option value="">-- Default Image --</option>'; // Reset with default
     selectElement.disabled = true;
 
     try {
@@ -502,7 +505,10 @@ function updateGameImageThumbnail(thumbnailElement, imageType, imagePath) {
 
 /** Handles saving game settings from the modal. */
 async function handleSaveGameSettings(event) {
-    event.preventDefault();
+    console.log("[handleSaveGameSettings] Function started."); // Step 2: Confirm function execution
+    event.preventDefault(); // Prevent default form submission
+    console.log("[handleSaveGameSettings] Default form submission prevented."); // Step 2a: Confirm default prevention
+
     const mode = gameSettingsForm.dataset.mode || 'edit'; // Get mode from form dataset
     const targetGameId = (mode === 'edit') ? state.selectedGameId : null; // Use selectedGameId for edit
 
@@ -516,8 +522,9 @@ async function handleSaveGameSettings(event) {
         builder_version: document.body.dataset.appVersion || 'N/A' // NEW: Set current builder version
     };
 
+    console.log("[handleSaveGameSettings] Collected game data:", gameData); // Step 3: Verify data collection
     if (!gameData.name) {
-        uiUtils.showFlashMessage("Spelnaam mag niet leeg zijn.", 5000);
+        uiUtils.showFlashMessage("Game name cannot be empty.", 5000);
         return;
     }
 
@@ -526,7 +533,7 @@ async function handleSaveGameSettings(event) {
         let savedGame;
 
         if (mode === 'create') {
-            console.log("Creating new game with data:", gameData);
+            console.log("[handleSaveGameSettings] Attempting to CREATE new game..."); // Step 4: Trace save attempt (create)
             response = await fetch('/api/games', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -543,10 +550,10 @@ async function handleSaveGameSettings(event) {
             renderSpellenGrid(); // Update grid view
             state.setUnsavedChanges(false); // New game starts saved
             uiUtils.updateSaveStatusIndicator(); // Update UI
-            uiUtils.showFlashMessage("Nieuw spel aangemaakt!");
+            uiUtils.showFlashMessage("New game created!");
         } else { // mode === 'edit'
             if (!targetGameId) return;
-            console.log(`Updating game ${targetGameId} with data:`, gameData);
+            console.log(`[handleSaveGameSettings] Attempting to UPDATE game ${targetGameId}...`); // Step 4: Trace save attempt (edit)
             response = await fetch(`/api/games/${targetGameId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -558,11 +565,11 @@ async function handleSaveGameSettings(event) {
             renderSpellenGrid(); // Update grid view
             uiUtils.updateTopBarStatus(); // Ensure status reflects potential name change and context
             selectGame(savedGame.id, savedGame.name); // Re-select to update status etc.
-            uiUtils.showFlashMessage("Spel instellingen opgeslagen!");
+            uiUtils.showFlashMessage("Game settings saved!");
         }
         closeGameSettingsModal();
     } catch (error) {
-        console.error("Failed to save game settings:", error);
+        console.error("[handleSaveGameSettings] Failed to save game settings:", error); // Log any caught errors
         // Alert handled by handleApiResponse
     }
 }
@@ -579,14 +586,14 @@ async function openSubmitToStoreModal(gameId) {
     const game = state.getGameById(gameId);
     if (!game) {
         console.error("Cannot open submit modal: Game data not found for ID", gameId);
-        uiUtils.showFlashMessage("Kon spel details niet vinden.", 5000);
+        uiUtils.showFlashMessage("Could not find game details.", 5000);
         return;
     }
 
     // Populate modal
     submitStoreGameIdInput.value = gameId;
     submitStoreGameNameSpan.textContent = game.name;
-    submitStoreGameDescriptionSpan.textContent = game.description || '(Geen omschrijving)';
+    submitStoreGameDescriptionSpan.textContent = game.description || '(No description)';
     submitStoreTagsInput.value = ''; // Clear previous tags
     submitStoreStatusSpan.textContent = ''; // Clear status
     submitStoreSubmitBtn.disabled = false; // Ensure button is enabled
@@ -620,7 +627,7 @@ async function handleSubmitToStore(event) {
         });
         const result = await api.handleApiResponse(response); // Handles errors and success (201)
         submitStoreStatusSpan.textContent = `Success! ${result.message || 'Game submitted.'}`;
-        uiUtils.showFlashMessage(`Spel "${result.name || 'Unknown'}" succesvol ingediend bij de store!`);
+        uiUtils.showFlashMessage(`Game "${result.name || 'Unknown'}" successfully submitted to the store!`);
         // Optionally close modal after a delay on success
         setTimeout(closeSubmitToStoreModal, 2000);
     } catch (error) {
@@ -698,7 +705,7 @@ async function handleImportGame(event) {
     if (!file) return;
 
     console.log("Selected file for import:", file);
-    uiUtils.showFlashMessage(`Bezig met importeren van "${file.name}"...`, 5000);
+    uiUtils.showFlashMessage(`Importing "${file.name}"...`, 5000);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -709,7 +716,7 @@ async function handleImportGame(event) {
             body: formData,
         });
         const result = await api.handleApiResponse(response); // Handles errors and success (201)
-        uiUtils.showFlashMessage(`Spel "${result.name}" succesvol geïmporteerd!`);
+        uiUtils.showFlashMessage(`Game "${result.name}" successfully imported!`);
         await fetchGames(); // Refresh game list and grid
     } catch (error) {
         // Error message is already shown by handleApiResponse
@@ -727,11 +734,11 @@ async function handleImportGame(event) {
  * @param {string} gameName - The name of the game.
  */
 async function handleCompressGameImages(gameId, gameName) {
-    if (!confirm(`Weet je zeker dat je alle afbeeldingen voor het spel "${gameName}" wilt comprimeren?\n\nDit zal:\n- Afbeeldingen verkleinen tot max 800x800px.\n- Alles converteren naar JPG (80% kwaliteit).\n- Originele bestanden (zoals PNG) verwijderen na conversie.\n\nDeze actie kan even duren en kan niet ongedaan worden gemaakt.`)) {
+    if (!confirm(`Are you sure you want to compress all images for the game "${gameName}"?\n\nThis will:\n- Resize images to a maximum of 800x800px.\n- Convert everything to JPG (80% quality).\n- Remove the original files (like PNGs) after conversion.\n\nThis action cannot be undone.`)) {
         return;
     }
 
-    uiUtils.showFlashMessage(`Bezig met comprimeren van afbeeldingen voor "${gameName}"... Dit kan even duren.`, 10000); // Longer message duration
+    uiUtils.showFlashMessage(`Compressing images for "${gameName}"... This may take a while.`, 10000); // Longer message duration
 
     try {
         const response = await fetch(`/api/admin/games/${gameId}/compress`, {
@@ -740,7 +747,7 @@ async function handleCompressGameImages(gameId, gameName) {
             // No body needed for this request
         });
         const result = await api.handleApiResponse(response); // Handles errors and success (200)
-        uiUtils.showFlashMessage(result.message || `Afbeeldingen voor "${gameName}" gecomprimeerd.`, 8000); // Show result message
+        uiUtils.showFlashMessage(result.message || `Images for "${gameName}" compressed.`, 8000); // Show result message
         // Optionally refresh game data if image paths might have changed display (e.g., thumbnails)
         // await fetchGames(); // Could refresh the grid if needed
     } catch (error) {
@@ -764,6 +771,9 @@ export function initializeGameManager() {
     if (gameSettingsForm) {
         gameSettingsForm.addEventListener('submit', handleSaveGameSettings);
     }
+    // The top save button is type="submit" with form="game-settings-form",
+    // so it will trigger the form's submit event directly. No separate listener needed.
+
     if (gameStartImageSelect) {
         gameStartImageSelect.addEventListener('change', () => updateGameImageThumbnail(gameStartImageThumbnail, 'start', gameStartImageSelect.value));
     }
@@ -776,6 +786,11 @@ export function initializeGameManager() {
     if (gameStartImageThumbnail) gameStartImageThumbnail.addEventListener('click', () => uiUtils.showImagePopup(gameStartImageThumbnail.src));
     if (gameWinImageThumbnail) gameWinImageThumbnail.addEventListener('click', () => uiUtils.showImagePopup(gameWinImageThumbnail.src));
     if (gameLossImageThumbnail) gameLossImageThumbnail.addEventListener('click', () => uiUtils.showImagePopup(gameLossImageThumbnail.src)); // NEW: Add listener for loss image thumbnail popup
+
+    // NEW: Add listener for the cancel button
+    if (gameSettingsCancelBtn) {
+        gameSettingsCancelBtn.addEventListener('click', closeGameSettingsModal);
+    }
 
     // NEW: Add listeners for delete confirmation modal
     if (deleteConfirmCloseBtn) deleteConfirmCloseBtn.addEventListener('click', closeDeleteConfirmationModal);
