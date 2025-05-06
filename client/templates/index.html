@@ -55,15 +55,16 @@
                  <div id="play-tab" class="tab-pane">
                     {% include 'partials/tabs/play_tab.html' %}
                 </div>
-                <div id="help-tab" class="tab-pane">
-                    {% include 'partials/tabs/help_tab.html' %}
-                </div>
                  <div id="scores-tab" class="tab-pane">
                     {% include 'partials/tabs/scores_tab.html' %}
                 </div>
                 <div id="admin-tab" class="tab-pane">
                     {% include 'partials/tabs/admin_tab.html' %}
                 </div>
+                <div id="help-tab" class="tab-pane">
+                    {% include 'partials/tabs/help_tab.html' %}
+                </div>
+
             {% else %}
                 {# Non-Admin Panes - Play is no longer default active #}
                 <div id="play-tab" class="tab-pane">

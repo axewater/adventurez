@@ -86,7 +86,7 @@
 }
 
 .tab-pane.active {
-    display: flex; /* Use flexbox for active tab */
+    display: block; /* Use flexbox for active tab */
     flex-direction: column; /* Stack children vertically */
     flex-grow: 1; /* Allow active pane to fill space */
 }
