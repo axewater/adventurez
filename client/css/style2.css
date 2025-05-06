@@ -393,3 +393,4 @@ body[data-user-role="admin"] .spel-action-btn.admin-only {
 .modal-content.danger-modal .form-actions {
     justify-content: flex-end; /* Align buttons to the right */
 }
+

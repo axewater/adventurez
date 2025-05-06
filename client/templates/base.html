@@ -28,14 +28,36 @@
         <h1>Text Adventure Builder</h1>
         <div id="status-area">
             {% if current_user.is_authenticated %}
-                <span class="user-info">
-                    Logged in as:
-                    <a href="#" id="user-prefs-link" title="Gebruikersvoorkeuren">{{ current_user.name }}</a>
-                    ({{ current_user.role.value }})</span>
-                <a href="{{ url_for('auth.logout') }}" class="logout-button">Logout</a>
+                <div class="user-profile-dropdown">
+                    <div class="user-profile-trigger">
+                        <i class="user-icon">👤</i>
+                        <span class="username">{{ current_user.name }}</span>
+                        <i class="dropdown-arrow">▼</i>
+                    </div>
+                    <div class="user-dropdown-menu">
+                        <div class="user-dropdown-header">
+                            <span class="user-role">{{ current_user.role.value }}</span>
+                        </div>
+                        <ul class="user-dropdown-items">
+                            <li>
+                                <a href="#" id="user-prefs-link" title="Gebruikersvoorkeuren">
+                                    <i class="menu-icon">⚙️</i> Preferences
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('auth.logout') }}" class="logout-link">
+                                    <i class="menu-icon">🚪</i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             {% endif %}
             <div id="game-status">
-                <span>No game loaded</span>
+                <div class="game-status-chip">
+                    <i class="game-status-icon">🎮</i>
+                    <span>No game loaded</span>
+                </div>
                 <span id="save-status-indicator" class="status-saved">Saved</span>
             </div>
         </div>

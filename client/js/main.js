@@ -51,6 +51,9 @@ async function initializeApp() {
     // NEW: Setup conversation view switcher
     setupConversationViewSwitching(initializeConversationGraph);
 
+    // Initialize user profile dropdown
+    setupUserProfileDropdown();
+
     // Initialize manager modules which handle fetching initial data and setting up listeners
     initializeGameManager(); // Fetches games, sets up game list and actions
     initializeGameSettingsListeners(); // Listeners are now initialized within initializeGameManager
@@ -68,6 +71,25 @@ async function initializeApp() {
     // or by gameManager.loadGameData if the graph view is already active when data loads.
 
     console.log("Initialization Complete.");
+}
+
+// --- User Profile Dropdown ---
+function setupUserProfileDropdown() {
+    const profileTrigger = document.querySelector('.user-profile-trigger');
+    const profileDropdown = document.querySelector('.user-profile-dropdown');
+    
+    if (profileTrigger && profileDropdown) {
+        // Toggle dropdown when clicking on the trigger
+        profileTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            profileDropdown.classList.remove('active');
+        });
+    }
 }
 
 // --- DOMContentLoaded Listener ---
