@@ -37,8 +37,15 @@
             <img id="game-loss-image-thumbnail" class="game-image-preview" src="#" alt="Selected loss image" title="Click to enlarge">
         </div>
         <div class="game-version-display" style="margin-top: 15px; font-size: 0.9em; color: #555;">
-            <label>Versions:</label>
-            <span>Adventure: <strong id="game-settings-version">Loading...</strong></span> |
+            <label for="game-settings-version-input">Game Version:</label>
+            <input type="text" id="game-settings-version-input" placeholder="1.0.0" style="width: 80px; padding: 3px 5px; margin-right: 10px;">
+            <span style="margin-left: 10px;">Builder Version: <strong id="game-settings-builder-version">Loading...</strong></span>
+            <small style="display: block; margin-top: 5px; color: #777;">
+                Game version tracks your own versioning. Builder version shows compatibility.
+            </small>
+        </div>
+        <div class="game-version-display" style="display: none; margin-top: 15px; font-size: 0.9em; color: #555;">
+            <span>Old display - Adventure: <strong id="game-settings-version">Loading...</strong></span> |
             <span>Builder: <strong id="game-settings-builder-version">Loading...</strong></span>
         </div>
         <div class="form-actions">

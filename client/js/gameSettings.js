@@ -20,6 +20,7 @@ const gameWinImageThumbnail = document.getElementById('game-win-image-thumbnail'
 const gameLossImageSelect = document.getElementById('game-loss-image-select');
 const gameLossImageThumbnail = document.getElementById('game-loss-image-thumbnail');
 const gameSettingsModalTitle = document.querySelector('#game-settings-modal .modal-content h3');
+const gameSettingsVersionInput = document.getElementById('game-settings-version-input');
 const gameSettingsSubmitTopBtn = document.getElementById('game-settings-submit-top');
 const gameSettingsSubmitBottomBtn = document.getElementById('game-settings-submit-bottom');
 const gameSettingsCancelBtn = document.getElementById('game-settings-cancel-btn');
@@ -51,6 +52,7 @@ export async function openGameSettingsModal(mode = 'edit', gameId = null) {
         updateGameImageThumbnail(gameStartImageThumbnail, 'start', null);
         updateGameImageThumbnail(gameWinImageThumbnail, 'win', null);
         updateGameImageThumbnail(gameLossImageThumbnail, 'loss', null);
+        gameSettingsVersionInput.value = '1.0.0'; // Set default version for new games
         gameSettingsVersionSpan.textContent = '1.0.0'; // Set default version
         gameSettingsBuilderVersionSpan.textContent = document.body.dataset.appVersion || 'N/A'; // Set current builder version
     } else { // mode === 'edit'
@@ -75,6 +77,7 @@ export async function openGameSettingsModal(mode = 'edit', gameId = null) {
         updateGameImageThumbnail(gameStartImageThumbnail, 'start', currentGame.start_image_path);
         updateGameImageThumbnail(gameWinImageThumbnail, 'win', currentGame.win_image_path);
         updateGameImageThumbnail(gameLossImageThumbnail, 'loss', currentGame.loss_image_path);
+        gameSettingsVersionInput.value = currentGame.version || '1.0.0'; // Set current version or default
         gameSettingsVersionSpan.textContent = currentGame.version || 'N/A';
         gameSettingsBuilderVersionSpan.textContent = document.body.dataset.appVersion || 'N/A';
     }
@@ -154,6 +157,7 @@ async function handleSaveGameSettings(event) {
         description: gameSettingsDescriptionTextarea.value.trim() || '',
         win_image_path: gameWinImageSelect.value || null,   // Use null if default selected
         loss_image_path: gameLossImageSelect.value || null, // Get loss image path
+        version: gameSettingsVersionInput.value.trim() || '1.0.0', // Get version from input or use default
         // Version is handled server-side on create/update if needed, or set here if required
         // builder_version: document.body.dataset.appVersion || 'N/A' // Set current builder version
     };

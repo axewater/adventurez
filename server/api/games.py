@@ -75,13 +75,14 @@ def create_game():
     start_image_path = data.get('start_image_path') # Can be null
     win_image_path = data.get('win_image_path') # Can be null
     loss_image_path = data.get('loss_image_path') # NEW: Get loss image path
+    version = data.get('version', '1.0.0') # Get version from request or use default
 
     new_game = Game(name=name,
                     description=description,
                     start_image_path=start_image_path,
                     win_image_path=win_image_path,
                     loss_image_path=loss_image_path, # NEW: Set loss image path
-                    version='1.0.0', # Initial adventure version
+                    version=version, # Set the version
                     builder_version=current_app.config['APP_VERSION']) # Set current builder version
     try:
         db.session.add(new_game)
@@ -116,7 +117,7 @@ def get_game_details(game_id):
 @games_bp.route('/<uuid:game_id>', methods=['PUT'])
 @admin_required # Only admins can update game details
 def update_game(game_id):
-    """Updates the details (name, start/win images, description) of a specific game."""
+    """Updates the details (name, start/win/loss images, description, version) of a specific game."""
     data = request.get_json()
     if not data:
         return jsonify({"error": "Request body is required"}), 400
@@ -147,6 +148,8 @@ def update_game(game_id):
         game.loss_image_path = data.get('loss_image_path', game.loss_image_path) # NEW: Update loss image path
         # Update description if provided (allow setting to null or empty)
         game.description = data.get('description', game.description)
+        # Update game version if provided
+        game.version = data.get('version', game.version)
         # Update the builder version used to save these settings
         game.builder_version = current_app.config['APP_VERSION']
         db.session.commit()
@@ -329,7 +332,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
 
             # Read and parse JSON data
             with zip_ref.open('game_data.json') as json_file:
-                try:
+                try: 
                     data = json.load(json_file)
                 except json.JSONDecodeError:
                     return jsonify({"error": "Invalid JSON data in 'game_data.json'"}), 400
