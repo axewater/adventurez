@@ -1,0 +1,113 @@
+
+/* --- User Profile Dropdown --- */
+.user-profile-dropdown {
+    position: relative;
+    margin-right: 20px;
+}
+
+.user-profile-trigger {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.user-profile-trigger:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+.username {
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.dropdown-arrow {
+    font-size: 0.7em;
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+}
+
+.user-profile-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background-color: var(--panel-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s;
+}
+
+.user-profile-dropdown.active .user-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(5px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+
+.user-dropdown-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.user-role {
+    font-size: 0.85em;
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+.user-dropdown-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dropdown-items li a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.user-dropdown-items li a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-icon {
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+/* --- Game Status Chip --- */
+.game-status-chip {
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 6px 12px;
+    border-radius: 16px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-status-icon {
+    margin-right: 8px;
+}
