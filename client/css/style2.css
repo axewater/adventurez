@@ -314,19 +314,17 @@ body {
 
 .spel-card {
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 2px solid #000000;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Voorkomt dat inhoud uitsteekt */
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Hover effect transitie */
+    overflow: hidden;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
 .spel-card-thumbnail {
     width: 100%;
-    /* NIEUW: Maak thumbnail vierkant */
-
     object-fit: cover; /* Zorgt dat afbeelding de ruimte vult zonder vervorming */
     align-self: center; /* Centreer de afbeelding als de kaart breder is */
     border-bottom: 1px solid #eee;
@@ -382,7 +380,8 @@ body[data-user-role="admin"] .spel-action-btn.admin-only {
 /* NIEUW: Hover effect voor de hele kaart */
 .spel-card:hover {
     transform: translateY(-5px); /* Til kaart iets op */
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Duidelijkere schaduw */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border: 2px solid #01a6f9;
 }
 
 /* --- NEW: Delete Confirmation Modal Specific Styles --- */
