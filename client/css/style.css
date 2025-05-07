@@ -635,6 +635,23 @@ body.theme-dark {
     margin: 0;
     font-size: 1.5em;
     font-weight: 500;
+    display: flex; /* Align logo and text */
+    align-items: center; /* Vertically center items */
+}
+
+#topbar-logo {
+    max-width: 75px;
+    max-height: 40px; /* Adjusted to fit topbar height well */
+    margin-right: 10px; /* Space between logo and title */
+    object-fit: contain; /* Scale nicely */
+}
+
+#topbar h1 .app-version-display {
+    font-size: 0.65em; /* Smaller than the main title */
+    margin-left: 10px; /* Space between title and version */
+    opacity: 0.75;     /* Slightly less prominent */
+    font-weight: normal; /* Ensure it's not bold if h1 styles cascade */
+    vertical-align: middle; /* Align with the middle of the H1 text */
 }
 
 #status-area {

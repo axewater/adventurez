@@ -27,7 +27,10 @@
 </head>
 <body data-user-role="{{ current_user.role.value if current_user.is_authenticated else 'guest' }}" data-app-version="{{ app_version }}">
     <header id="topbar">
-        <h1>Text Adventure Builder</h1>
+        <h1>
+            <img src="{{ url_for('serve_static', filename='uploads/images/ui/logomini.png') }}" alt="Logo" id="topbar-logo">
+            Text Adventure Builder<span class="app-version-display">{{ app_version }}</span>
+        </h1>
         <div id="status-area">
             <div id="game-status">
                 <div class="game-status-chip">
