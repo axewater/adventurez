@@ -32,13 +32,15 @@
             Text Adventure Builder<span class="app-version-display">{{ app_version }}</span>
         </h1>
         <div id="status-area">
+            <span id="save-status-indicator" class="status-saved">Saved</span>
             <div id="game-status">
                 <div class="game-status-chip">
                     <i class="game-status-icon">🎮</i>
                     <span>No game loaded</span>
                 </div>
-                <span id="save-status-indicator" class="status-saved">Saved</span>
             </div>
+            
+
             {% if current_user.is_authenticated %}
                 <div class="user-profile-dropdown">
                     <div class="user-profile-trigger">
