@@ -326,8 +326,7 @@ body {
 .spel-card-thumbnail {
     width: 100%;
     /* NIEUW: Maak thumbnail vierkant */
-    height: 200px; /* Vaste hoogte */
-    width: 200px; /* Vaste breedte */
+
     object-fit: cover; /* Zorgt dat afbeelding de ruimte vult zonder vervorming */
     align-self: center; /* Centreer de afbeelding als de kaart breder is */
     border-bottom: 1px solid #eee;
@@ -348,26 +347,26 @@ body {
     display: flex;
     justify-content: flex-end; /* Knoppen rechts uitlijnen */
     padding: 5px 10px;
-    background-color: #f8f9fa; /* Lichte achtergrond voor actiebalk */
+    background-color: #f8f9fa;
     border-top: 1px solid #eee;
 }
 
 .spel-action-btn {
     background: none;
     border: none;
-    font-size: 0.9em; /* Grotere iconen */
+    font-size: 1.2em;
     cursor: pointer;
     color: #555;
-    transition: transform 0.1s ease-out, color 0.2s ease; /* Hover effect transitie */
+    transition: transform 0.1s ease-out, color 0.2s ease;
 }
 
 .spel-action-btn:hover {
-    color: #007bff; /* Blauw bij hover */
-    transform: scale(1.1); /* Maak knop iets groter bij hover */
+    color: #007bff;
+    transform: scale(1.1);
 }
 
 .spel-action-btn.danger:hover {
-    color: #dc3545; /* Rood bij hover voor delete */
+    color: #dc3545;
 }
 
 .spel-action-btn.admin-only {

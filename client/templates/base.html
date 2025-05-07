@@ -27,6 +27,13 @@
     <header id="topbar">
         <h1>Text Adventure Builder</h1>
         <div id="status-area">
+            <div id="game-status">
+                <div class="game-status-chip">
+                    <i class="game-status-icon">🎮</i>
+                    <span>No game loaded</span>
+                </div>
+                <span id="save-status-indicator" class="status-saved">Saved</span>
+            </div>
             {% if current_user.is_authenticated %}
                 <div class="user-profile-dropdown">
                     <div class="user-profile-trigger">
@@ -53,13 +60,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div id="game-status">
-                <div class="game-status-chip">
-                    <i class="game-status-icon">🎮</i>
-                    <span>No game loaded</span>
-                </div>
-                <span id="save-status-indicator" class="status-saved">Saved</span>
-            </div>
+            
         </div>
     </header>
 
