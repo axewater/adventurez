@@ -5,6 +5,7 @@ from flask import current_app
 
 # Define image subdirectories relative to the main uploads folder
 IMAGE_SUBDIRS = {
+    'game_loss': 'avonturen',
     'game_start': 'avonturen',
     'game_win': 'avonturen',
     'room': 'images/kamers',
@@ -23,7 +24,7 @@ def get_absolute_image_path(relative_path: str, image_type: str) -> Path | None:
 
     Args:
         relative_path: The filename stored in the database (e.g., 'my_image.png').
-        image_type: The type of image ('game_start', 'game_win', 'room', 'entity').
+        image_type: The type of image ('game_start', 'game_win', 'game_loss', 'room', 'entity').
 
     Returns:
         A Path object representing the absolute path, or None if inputs are invalid.

@@ -12,7 +12,7 @@ from pathlib import Path
 from werkzeug.datastructures import FileStorage
 from typing import Tuple
 from app import db
-from config import Config
+from image_utils import get_absolute_image_path, delete_file
 from flask import current_app
 from models import Game, Room, Entity, Connection, Script, Conversation, User, UserRole, SavedGame
 
@@ -49,8 +49,7 @@ def list_games():
 
         return jsonify(serialized_games), 200
     except Exception as e:
-        # Log the exception e
-        print(f"Error fetching games: {e}")
+        current_app.logger.error(f"Error fetching games: {e}")
         return jsonify({"error": "Failed to retrieve games"}), 500
 
 
@@ -74,14 +73,14 @@ def create_game():
     description = data.get('description', 'Click the picture to start the game!') # Use default if not provided
     start_image_path = data.get('start_image_path') # Can be null
     win_image_path = data.get('win_image_path') # Can be null
-    loss_image_path = data.get('loss_image_path') # NEW: Get loss image path
+    loss_image_path = data.get('loss_image_path') # Get loss image path
     version = data.get('version', '1.0.0') # Get version from request or use default
 
     new_game = Game(name=name,
                     description=description,
                     start_image_path=start_image_path,
                     win_image_path=win_image_path,
-                    loss_image_path=loss_image_path, # NEW: Set loss image path
+                    loss_image_path=loss_image_path, # Set loss image path
                     version=version, # Set the version
                     builder_version=current_app.config['APP_VERSION']) # Set current builder version
     try:
@@ -90,12 +89,11 @@ def create_game():
         return jsonify(serialize_game(new_game)), 201 # Created
     except IntegrityError as e:
         db.session.rollback()
-        # This might happen due to race conditions, though less likely with the check above
-        print(f"Integrity error creating game: {e}")
+        current_app.logger.error(f"Integrity error creating game: {e}")
         return jsonify({"error": "Failed to create game due to a database conflict"}), 500
     except Exception as e:
         db.session.rollback()
-        print(f"Error creating game: {e}")
+        current_app.logger.error(f"Error creating game: {e}")
         return jsonify({"error": "Failed to create game"}), 500
 
 
@@ -110,7 +108,7 @@ def get_game_details(game_id):
         else:
             return jsonify({"error": "Game not found"}), 404
     except Exception as e:
-        print(f"Error fetching game {game_id}: {e}")
+        current_app.logger.error(f"Error fetching game {game_id}: {e}")
         return jsonify({"error": "Failed to retrieve game details"}), 500
 
 
@@ -145,7 +143,7 @@ def update_game(game_id):
         # Update image paths if provided (allow setting to null)
         game.start_image_path = data.get('start_image_path', game.start_image_path)
         game.win_image_path = data.get('win_image_path', game.win_image_path)
-        game.loss_image_path = data.get('loss_image_path', game.loss_image_path) # NEW: Update loss image path
+        game.loss_image_path = data.get('loss_image_path', game.loss_image_path) # Update loss image path
         # Update description if provided (allow setting to null or empty)
         game.description = data.get('description', game.description)
         # Update game version if provided
@@ -156,12 +154,12 @@ def update_game(game_id):
         return jsonify(serialize_game(game)), 200
     except IntegrityError as e:
         db.session.rollback()
-        print(f"Integrity error updating game {game_id}: {e}")
+        current_app.logger.error(f"Integrity error updating game {game_id}: {e}")
         # This could happen if the unique constraint check fails under race conditions
         return jsonify({"error": "Failed to update game due to a database conflict"}), 500
     except Exception as e:
         db.session.rollback()
-        print(f"Error updating game {game_id}: {e}")
+        current_app.logger.error(f"Error updating game {game_id}: {e}")
         return jsonify({"error": "Failed to update game"}), 500
 
 
@@ -169,18 +167,50 @@ def update_game(game_id):
 @admin_required # Only admins can delete games
 def delete_game(game_id):
     """Deletes a specific game and all its associated data (rooms, entities, etc.)."""
-    try:
-        game = db.session.get(Game, game_id)
-        if not game:
-            return jsonify({"error": "Game not found"}), 404
+    game = db.session.get(Game, game_id)
+    if not game:
+        return jsonify({"error": "Game not found"}), 404
 
+    current_app.logger.info(f"Starting deletion process for game '{game.name}' (ID: {game_id}).")
+
+    # Collect image paths to delete
+    paths_to_delete = []
+    if game.start_image_path:
+        paths_to_delete.append((game.start_image_path, 'game_start'))
+    if game.win_image_path:
+        paths_to_delete.append((game.win_image_path, 'game_win'))
+    if game.loss_image_path:
+        paths_to_delete.append((game.loss_image_path, 'game_loss'))
+
+    for room in game.rooms:
+        if room.image_path:
+            paths_to_delete.append((room.image_path, 'room'))
+
+    for entity in game.entities:
+        if entity.image_path:
+            paths_to_delete.append((entity.image_path, 'entity'))
+
+    # Attempt to delete each file
+    for relative_path, image_type in paths_to_delete:
+        if not relative_path:
+            continue
+        abs_path = get_absolute_image_path(relative_path, image_type)
+        if abs_path:
+            current_app.logger.info(f"Attempting to delete image file: {abs_path}")
+            delete_file(abs_path) # delete_file already logs success/failure
+        else:
+            current_app.logger.warning(f"Could not resolve absolute path for {image_type} image: {relative_path}")
+
+    # Now delete the game from the database (cascading deletes will handle related records)
+    try:
         db.session.delete(game)
         db.session.commit()
+        current_app.logger.info(f"Successfully deleted game '{game.name}' (ID: {game_id}) from database.")
         # Return No Content, standard for successful DELETE
         return '', 204
     except Exception as e:
         db.session.rollback()
-        print(f"Error deleting game {game_id}: {e}")
+        current_app.logger.error(f"Error deleting game '{game.name}' (ID: {game_id}) from database: {e}")
         return jsonify({"error": "Failed to delete game"}), 500
 
 
@@ -201,7 +231,7 @@ def get_all_game_connections(game_id):
 
         return jsonify([connection.to_dict() for connection in connections]), 200
     except Exception as e:
-        print(f"Error fetching all connections for game {game_id}: {e}")
+        current_app.logger.error(f"Error fetching all connections for game {game_id}: {e}")
         return jsonify({"error": "Failed to retrieve connections for the game"}), 500
 
 
@@ -248,7 +278,7 @@ def export_game(game_id):
             image_paths_to_include.add(('avonturen', game.start_image_path))
         if game.win_image_path:
             image_paths_to_include.add(('avonturen', game.win_image_path))
-        if game.loss_image_path: # NEW: Include loss image
+        if game.loss_image_path: # Include loss image
             image_paths_to_include.add(('avonturen', game.loss_image_path))
         for room in rooms:
             if room.image_path:
@@ -303,7 +333,7 @@ def export_game(game_id):
         return jsonify({"error": "Failed to create export archive."}), 500
     except Exception as e:
         db.session.rollback() # Rollback in case of error during data fetching
-        print(f"Error exporting game {game_id}: {e}")
+        current_app.logger.error(f"Error exporting game {game_id}: {e}")
         return jsonify({"error": "Failed to export game data"}), 500
 
 @games_bp.route('/<uuid:game_id>/submission-details', methods=['GET'])
@@ -425,7 +455,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
             description=game_info.get('description'),
             start_image_path=game_info.get('start_image_path'),
             win_image_path=game_info.get('win_image_path'),
-            loss_image_path=game_info.get('loss_image_path'), # NEW: Import loss image path
+            loss_image_path=game_info.get('loss_image_path'), # Import loss image path
             version=game_info.get('version', '1.0.0'), # Get version from import or default
             builder_version=game_info.get('builder_version', current_app.config['APP_VERSION']) # Get builder version or use current
             # created_at, updated_at, id are handled by defaults/DB
@@ -433,7 +463,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
         db.session.add(new_game)
         db.session.flush() # Get the new game ID
         new_game_id = new_game.id
-        print(f"Importing game '{game_name}' with new ID: {new_game_id}")
+        current_app.logger.info(f"Importing game '{game_name}' with new ID: {new_game_id}")
 
         # 2. Create UUID Mappings
         # We need mappings for rooms, entities, and conversations as they can be referenced by others
@@ -508,7 +538,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
             if new_conn.from_room_id and new_conn.to_room_id:
                 db.session.add(new_conn)
             else:
-                print(f"Warning: Skipping connection due to missing room mapping: {conn_data}")
+                current_app.logger.warning(f"Skipping connection due to missing room mapping: {conn_data}")
 
         # 7. Extract and Save Images
         # Iterate through all files in the zip EXCEPT game_data.json
@@ -543,7 +573,7 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
 
         # 9. Commit Transaction
         db.session.commit()
-        print(f"Game '{game_name}' imported successfully.")
+        current_app.logger.info(f"Game '{game_name}' imported successfully.")
         return serialize_game(new_game), 201 # Return the newly created game info
 
     except zipfile.BadZipFile:
@@ -552,14 +582,14 @@ def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict,
         return jsonify({"error": f"Error saving extracted file: {fnf_error}"}), 500
     except IntegrityError as e:
         db.session.rollback()
-        print(f"Database integrity error during import: {e}")
+        current_app.logger.error(f"Database integrity error during import: {e}")
         # Check if it's the unique constraint on game name again (race condition?)
         if "uq_games_name" in str(e.orig):
              return jsonify({"error": f"A game with the name '{game_name}' already exists (conflict during save)."}), 409
         return jsonify({"error": "Database error during import. Check data integrity."}), 500
     except Exception as e:
         db.session.rollback()
-        print(f"Unexpected error during game import: {e}")
+        current_app.logger.error(f"Unexpected error during game import: {e}", exc_info=True)
         # Log the full traceback here in a real application
         # import traceback
         # traceback.print_exc()
@@ -635,7 +665,7 @@ def import_game_from_zip_path(zip_file_path: str) -> Game:
                 description=game_info.get('description'),
                 start_image_path=game_info.get('start_image_path'),
                 win_image_path=game_info.get('win_image_path'),
-                loss_image_path=game_info.get('loss_image_path'), # NEW: Import loss image path
+                loss_image_path=game_info.get('loss_image_path'), # Import loss image path
                 version=game_info.get('version', '1.0.0'), # Get version from import or default
                 builder_version=game_info.get('builder_version', current_app.config['APP_VERSION']) # Get builder version or use current
             )

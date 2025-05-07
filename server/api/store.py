@@ -106,8 +106,6 @@ def submit_game_to_store(game_id):
             "scripts": [script.to_dict() for script in scripts],
             "conversations": [conversation.to_dict() for conversation in conversations]
         }
-        if 'version' not in export_data['game_info']:
-             export_data['game_info']['version'] = game.version or '1.0.0'
 
         json_data_bytes = json.dumps(export_data, indent=2).encode('utf-8')
 

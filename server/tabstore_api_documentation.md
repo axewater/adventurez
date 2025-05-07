@@ -21,9 +21,9 @@ Ongeldige of ontbrekende API-sleutels resulteren in een `401 Unauthorized` of `4
 *   **Headers:**
     *   `X-API-Key`: Vereist.
 *   **Formulier Data:**
-    *   `adventure_file`: (Bestand) Vereist. Het ZIP-bestand van het avontuur. Dit ZIP-bestand *moet* een `game_data.json` bevatten met daarin minimaal `game_info.version` (versie van het avontuur zelf) en `game_info.builder_version` (versie van de TextAdventureBuilder waarmee het compatibel is).
+    *   `adventure_file`: (Bestand) Vereist. Het ZIP-bestand van het avontuur. Dit ZIP-bestand *moet* een `game_data.json` bevatten met daarin minimaal `game_info.version` (versie van het avontuur zelf) en `game_info.builder_version` (versie van de TextAdventureBuilder waarmee het compatibel is). De `game_info.name` uit dit bestand wordt gebruikt als de naam van het avontuur. Een `game_info.description` kan ook worden meegegeven en zal gebruikt worden indien het `description` formulierveld leeg is.
     *   `name`: (String) Vereist. De naam van het avontuur.
-    *   `description`: (String) Vereist. Een beschrijving van het avontuur.
+    *   `description`: (String) Optioneel. Een beschrijving van het avontuur. Indien leeg, wordt de beschrijving uit `game_data.json` gebruikt, indien aanwezig.
     *   `tags`: (String) Vereist. Een komma-gescheiden lijst van tag ID's (bijv. "1,5,8"). Gebruik het `/api/tags` endpoint om beschikbare tags en hun ID's op te halen.
 *   **Succes Antwoord (201 Created):**
     ```json
@@ -33,18 +33,12 @@ Ongeldige of ontbrekende API-sleutels resulteren in een `401 Unauthorized` of `4
     }
     ```
 *   **Fout Antwoorden:**
-    *   `400 Bad Request`: Ontbrekende velden, ongeldig bestandsformaat, bestandsgrootte overschreden, ongeldige tags, ontbrekende `game_data.json` in ZIP.
-        ```json
-        {"error": "Missing 'adventure_file' in request."}
-        ```
+    *   `400 Bad Request`: Ongeldig bestandsformaat, bestandsgrootte overschreden, ongeldige tags, ontbrekende `game_data.json` in ZIP.
         ```json
         {"error": "Only ZIP files are allowed."}
         ```
         ```json
         {"error": "File size (XMB) exceeds the maximum allowed size (YMB)."}
-        ```
-        ```json
-        {"error": "Missing required metadata: name, description, tags."}
         ```
         ```json
         {"error": "Invalid format for 'tags'. Expected comma-separated IDs (e.g., '1,5,8')."}
@@ -58,6 +52,15 @@ Ongeldige of ontbrekende API-sleutels resulteren in een `401 Unauthorized` of `4
         ```json
         {"error": "Could not process ZIP file or game_data.json: <details>"}
         ```
+        ```json
+        {"error": "Adventure 'name' not found in 'game_data.json'."}
+        ```
+        ```json
+        {"error": "Adventure name '<name>' is already in use by another author."} (HTTP 403)
+        ```
+        ```json
+        {"error": "New version (<new_version>) must be higher than the current active version (<current_version>)."}
+        ```
     *   `500 Internal Server Error`: Databasefout of onverwachte serverfout.
         ```json
         {"error": "Database error during submission."}
@@ -67,7 +70,6 @@ Ongeldige of ontbrekende API-sleutels resulteren in een `401 Unauthorized` of `4
     curl -X POST "http://localhost:15000/api/submit" \
          -H "X-API-Key: uw_api_sleutel_hier" \
          -F "adventure_file=@/pad/naar/uw/avontuur.zip" \
-         -F "name=Mijn Geweldige Avontuur" \
          -F "description=Een episch verhaal vol mysterie." \
          -F "tags=1,3"
     ```
@@ -118,7 +120,7 @@ Ongeldige of ontbrekende API-sleutels resulteren in een `401 Unauthorized` of `4
     *   Indien titel niet beschikbaar:
         ```json
         {
-            "status": "Not Available",
+            "status": "Not Available", // Kan ook zijn "This title is in use by another author." of "This title is already in use or pending."
             "message": "This title is already in use."
         }
         ```
