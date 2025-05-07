@@ -610,3 +610,22 @@ function closeGameSelectDropdownOnClickOutside(event) {
         gameStatusChip.parentElement.classList.remove('active');
     }
 }
+
+/**
+ * Converts a file size in bytes to a human-readable string (KB, MB, GB).
+ * @param {number} bytes - The file size in bytes.
+ * @param {number} [decimals=2] - The number of decimal places to display.
+ * @returns {string} - The human-readable file size.
+ */
+export function humanizeFileSize(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return 'N/A';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}

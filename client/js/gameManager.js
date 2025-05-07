@@ -67,6 +67,7 @@ const submitStoreGameDescriptionSpan = document.getElementById('submit-store-gam
 const submitStoreTagsContainer = document.getElementById('submit-store-tags-container'); // Changed from input to container
 const submitStoreSubmitBtn = document.getElementById('submit-store-submit-btn');
 const submitStoreStatusSpan = document.getElementById('submit-store-status');
+const submissionSpinnerContainer = document.getElementById('submission-spinner-container'); // Spinner
 
 // --- Game List Management ---
 
@@ -401,38 +402,43 @@ async function performGameDeletion() {
  */
 async function openSubmitToStoreModal(gameId) {
     if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameNameSpan || !submitStoreGameVersionSpan || !submitStoreGameSizeSpan || !submitStoreGameImage || !submitStoreGameDescriptionSpan || !submitStoreTagsContainer || !submitStoreStatusSpan) return;
-
-    const game = state.getGameById(gameId);
-    if (!game) {
-        console.error("Cannot open submit modal: Game data not found for ID", gameId);
-        uiUtils.showFlashMessage("Could not find game details.", 5000);
-        return;
-    }
-
-    // Populate modal
-    submitStoreGameIdInput.value = gameId;
-    submitStoreGameNameSpan.textContent = game.name;
-    submitStoreGameVersionSpan.textContent = game.version || 'N/A';
-    submitStoreGameDescriptionSpan.textContent = game.description || '(No description)';
-
-    // Set game image
-    const defaultImagePath = '/uploads/avonturen/standaard_spel_start.png';
-    submitStoreGameImage.src = game.start_image_path ? `/uploads/avonturen/${game.start_image_path}` : defaultImagePath;
-    submitStoreGameImage.alt = `Start image for ${game.name}`;
-
-    submitStoreGameSizeSpan.textContent = '...'; // Placeholder, actual size calculation is complex
     
-    // Clear previous tags and show loading message
+    // Clear previous tags and show loading message for modal content
     submitStoreTagsContainer.innerHTML = '<p><em>Loading tags...</em></p>';
     submitStoreStatusSpan.textContent = ''; // Clear status
-    submitStoreSubmitBtn.disabled = false; // Ensure button is enabled
+    submitStoreSubmitBtn.disabled = true; // Disable submit until details load
+    submitStoreGameNameSpan.textContent = 'Loading...';
+    submitStoreGameVersionSpan.textContent = 'Loading...';
+    submitStoreGameDescriptionSpan.textContent = 'Loading...';
+    submitStoreGameSizeSpan.textContent = 'Calculating...';
+    submitStoreGameImage.src = '/uploads/avonturen/standaard_spel_start.png'; // Default image
 
     submitStoreModal.classList.add('visible');
 
-    // Fetch and display tags
     try {
-        const response = await fetch('/api/store/available-tags');
-        const tags = await api.handleApiResponse(response);
+        // Fetch detailed game data including ZIP size
+        const response = await fetch(`/api/games/${gameId}/submission-details`);
+        const gameDetails = await api.handleApiResponse(response);
+
+        if (!gameDetails) {
+            throw new Error("Failed to fetch game submission details.");
+        }
+
+        // Populate modal with fetched details
+        submitStoreGameIdInput.value = gameId;
+        submitStoreGameNameSpan.textContent = gameDetails.name;
+        submitStoreGameVersionSpan.textContent = gameDetails.version || 'N/A';
+        submitStoreGameDescriptionSpan.textContent = gameDetails.description || '(No description)';
+        submitStoreGameSizeSpan.textContent = uiUtils.humanizeFileSize(gameDetails.zip_size_bytes);
+
+        // Set game image
+        const defaultImagePath = '/uploads/avonturen/standaard_spel_start.png';
+        submitStoreGameImage.src = gameDetails.start_image_path ? `/uploads/avonturen/${gameDetails.start_image_path}` : defaultImagePath;
+        submitStoreGameImage.alt = `Start image for ${gameDetails.name}`;
+
+        // Fetch and display tags
+        const tagsResponse = await fetch('/api/store/available-tags');
+        const tags = await api.handleApiResponse(tagsResponse);
 
         submitStoreTagsContainer.innerHTML = ''; // Clear loading message
         if (tags && tags.length > 0) {
@@ -455,9 +461,17 @@ async function openSubmitToStoreModal(gameId) {
         } else {
             submitStoreTagsContainer.innerHTML = '<p><em>No tags available from store or failed to load.</em></p>';
         }
+        submitStoreSubmitBtn.disabled = false; // Enable submit button now that details are loaded
+
     } catch (error) {
-        console.error("Failed to fetch store tags:", error);
+        console.error("Failed to open submit to store modal or fetch details:", error);
+        uiUtils.showFlashMessage(`Error: ${error.message}`, 5000);
+        submitStoreGameNameSpan.textContent = 'Error loading details.';
+        submitStoreGameVersionSpan.textContent = '-';
+        submitStoreGameDescriptionSpan.textContent = '-';
+        submitStoreGameSizeSpan.textContent = '-';
         submitStoreTagsContainer.innerHTML = `<p><em>Error loading tags: ${error.message}</em></p>`;
+        return;
     }
 }
 
@@ -471,7 +485,7 @@ function closeSubmitToStoreModal() {
 /** Handles the submission of the game to the store API. */
 async function handleSubmitToStore(event) {
     event.preventDefault();
-    if (!submitStoreGameIdInput || !submitStoreTagsContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn) return;
+    if (!submitStoreGameIdInput || !submitStoreTagsContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn || !submissionSpinnerContainer) return;
 
     const gameId = submitStoreGameIdInput.value;
     
@@ -479,9 +493,14 @@ async function handleSubmitToStore(event) {
     const selectedTags = Array.from(submitStoreTagsContainer.querySelectorAll('input[name="store_tags"]:checked'))
         .map(checkbox => checkbox.value);
     const tagsString = selectedTags.join(',');
+    if (selectedTags.length === 0) {
+        uiUtils.showFlashMessage("Please select at least one tag for your adventure.", 4000);
+        return;
+    }
 
     submitStoreStatusSpan.textContent = 'Submitting...';
     submitStoreSubmitBtn.disabled = true;
+    submissionSpinnerContainer.style.display = 'flex'; // Show spinner
 
     try {
         const response = await fetch(`/api/store/submit/${gameId}`, {
@@ -499,6 +518,8 @@ async function handleSubmitToStore(event) {
         submitStoreStatusSpan.textContent = `Error: ${error.message}`;
         submitStoreSubmitBtn.disabled = false; // Re-enable button on error
         // Error flash message shown by handleApiResponse
+    } finally {
+        submissionSpinnerContainer.style.display = 'none'; // Hide spinner
     }
 }
 

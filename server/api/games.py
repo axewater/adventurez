@@ -306,6 +306,67 @@ def export_game(game_id):
         print(f"Error exporting game {game_id}: {e}")
         return jsonify({"error": "Failed to export game data"}), 500
 
+@games_bp.route('/<uuid:game_id>/submission-details', methods=['GET'])
+@admin_required
+def get_game_submission_details(game_id):
+    """
+    Retrieves game details needed for the store submission modal, including calculated ZIP size.
+    """
+    game = db.session.get(Game, game_id)
+    if not game:
+        return jsonify({"error": "Game not found"}), 404
+
+    upload_base_dir = Path(current_app.root_path).parent / 'client' / 'uploads'
+
+    try:
+        # Fetch data needed for ZIP creation (similar to export_game)
+        rooms = Room.query.filter_by(game_id=game_id).order_by(Room.sort_index).all()
+        entities = Entity.query.filter_by(game_id=game_id).all()
+        connections = db.session.query(Connection)\
+            .join(Room, Connection.from_room_id == Room.id)\
+            .filter(Room.game_id == game_id)\
+            .all()
+        scripts = Script.query.filter_by(game_id=game_id).all()
+        conversations = Conversation.query.filter_by(game_id=game_id).all()
+
+        export_data = {
+            "game_info": game.to_dict(), # Uses existing to_dict
+            "rooms": [room.to_dict() for room in rooms],
+            "entities": [entity.to_dict() for entity in entities],
+            "connections": [connection.to_dict() for connection in connections],
+            "scripts": [script.to_dict() for script in scripts],
+            "conversations": [conversation.to_dict() for conversation in conversations]
+        }
+        json_data_bytes = json.dumps(export_data, indent=2).encode('utf-8')
+
+        image_paths_to_include = set()
+        if game.start_image_path: image_paths_to_include.add(('avonturen', game.start_image_path))
+        if game.win_image_path: image_paths_to_include.add(('avonturen', game.win_image_path))
+        if game.loss_image_path: image_paths_to_include.add(('avonturen', game.loss_image_path))
+        for room in rooms:
+            if room.image_path: image_paths_to_include.add(('images/kamers', room.image_path))
+        for entity in entities:
+            if entity.image_path: image_paths_to_include.add(('images/entiteiten', entity.image_path))
+
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            zip_file.writestr('game_data.json', json_data_bytes)
+            for subdir, filename in image_paths_to_include:
+                source_path = upload_base_dir / subdir / filename
+                zip_path = Path(subdir) / filename
+                if source_path.is_file():
+                    zip_file.write(source_path, arcname=str(zip_path))
+
+        zip_size_bytes = zip_buffer.getbuffer().nbytes
+        zip_buffer.close()
+
+        return jsonify({
+            **game.to_dict(), # Includes name, version, description, image paths
+            "zip_size_bytes": zip_size_bytes
+        }), 200
+    except Exception as e:
+        current_app.logger.error(f"Error getting submission details for game {game_id}: {e}", exc_info=True)
+        return jsonify({"error": f"Internal error preparing submission details: {e}"}), 500
 
 def _import_game_logic(file_stream, filename_for_error_reporting) -> Tuple[dict, int]:
     """

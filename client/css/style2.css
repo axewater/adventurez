@@ -251,47 +251,10 @@ body {
     white-space: nowrap;
 }
 
-#submit-store-status {
-    margin-left: 15px;
-    font-style: italic;
-    color: #555;
-}
-
-#game-actions #submit-to-store-btn {
-    background-color: #28a745; /* Green */
-    color: white;
-}
-
-#game-actions #submit-to-store-btn:hover:not(:disabled) {
-    background-color: #218838;
-}
-
-#game-actions #submit-to-store-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-/* --- Submit to Store Modal Card Design --- */
-.modal-content #submit-store-form { /* Target form inside modal for specificity */
-    margin-top: 15px; /* Add space after the header */
-}
-
-.submit-store-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* Align items to the top */
-    gap: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--border-color, #eee);
-    margin-bottom: 15px;
-}
-
-.submit-store-game-details {
-    flex-grow: 1;
-}
-
 .submit-store-game-details .form-group.read-only {
-    margin-bottom: 8px; /* Tighter spacing for details */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically align label and value */
+    gap: 5px; /* Space between label and value */
 }
 
 .submit-store-game-details .form-group.read-only label {
@@ -329,6 +292,12 @@ body {
 
 .form-group-spacer {
     height: 15px; /* Space between description and tags */
+}
+
+/* Submit to Store Button Hover */
+#submit-store-submit-btn:hover:not(:disabled) {
+    background-color: #1e7e34; /* Darker green */
+    border-color: #1c7430;
 }
 
 /* --- NIEUW: Spellen Grid Tab Styles --- */
@@ -500,4 +469,32 @@ body[data-user-role="admin"] .spel-action-btn.admin-only {
 }
 .tag-checkbox-label input[type="checkbox"] {
     margin-right: 8px;
+}
+
+/* --- NEW: Spinner for Submit to Store Modal --- */
+.submission-spinner-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Ensure it's above other modal content but below modal itself */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
