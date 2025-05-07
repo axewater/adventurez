@@ -61,7 +61,7 @@ const submitStoreForm = document.getElementById('submit-store-form');
 const submitStoreGameIdInput = document.getElementById('submit-store-game-id');
 const submitStoreGameNameSpan = document.getElementById('submit-store-game-name');
 const submitStoreGameDescriptionSpan = document.getElementById('submit-store-game-description');
-const submitStoreTagsInput = document.getElementById('submit-store-tags');
+const submitStoreTagsContainer = document.getElementById('submit-store-tags-container'); // Changed from input to container
 const submitStoreSubmitBtn = document.getElementById('submit-store-submit-btn');
 const submitStoreStatusSpan = document.getElementById('submit-store-status');
 
@@ -387,7 +387,7 @@ async function performGameDeletion() {
  * @param {string} gameId - The ID of the game to submit.
  */
 async function openSubmitToStoreModal(gameId) {
-    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameNameSpan || !submitStoreGameDescriptionSpan || !submitStoreTagsInput || !submitStoreStatusSpan) return;
+    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameNameSpan || !submitStoreGameDescriptionSpan || !submitStoreTagsContainer || !submitStoreStatusSpan) return;
 
     const game = state.getGameById(gameId);
     if (!game) {
@@ -400,11 +400,44 @@ async function openSubmitToStoreModal(gameId) {
     submitStoreGameIdInput.value = gameId;
     submitStoreGameNameSpan.textContent = game.name;
     submitStoreGameDescriptionSpan.textContent = game.description || '(No description)';
-    submitStoreTagsInput.value = ''; // Clear previous tags
+    
+    // Clear previous tags and show loading message
+    submitStoreTagsContainer.innerHTML = '<p><em>Loading tags...</em></p>';
     submitStoreStatusSpan.textContent = ''; // Clear status
     submitStoreSubmitBtn.disabled = false; // Ensure button is enabled
 
     submitStoreModal.classList.add('visible');
+
+    // Fetch and display tags
+    try {
+        const response = await fetch('/api/store/available-tags');
+        const tags = await api.handleApiResponse(response);
+
+        submitStoreTagsContainer.innerHTML = ''; // Clear loading message
+        if (tags && tags.length > 0) {
+            tags.forEach(tag => {
+                const checkboxId = `tag-checkbox-${tag.id}`;
+                const label = document.createElement('label');
+                label.htmlFor = checkboxId;
+                label.className = 'tag-checkbox-label';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = checkboxId;
+                checkbox.value = tag.id;
+                checkbox.name = 'store_tags';
+
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(` ${tag.name}`));
+                submitStoreTagsContainer.appendChild(label);
+            });
+        } else {
+            submitStoreTagsContainer.innerHTML = '<p><em>No tags available from store or failed to load.</em></p>';
+        }
+    } catch (error) {
+        console.error("Failed to fetch store tags:", error);
+        submitStoreTagsContainer.innerHTML = `<p><em>Error loading tags: ${error.message}</em></p>`;
+    }
 }
 
 /** Closes the Submit to Store modal. */
@@ -417,10 +450,14 @@ function closeSubmitToStoreModal() {
 /** Handles the submission of the game to the store API. */
 async function handleSubmitToStore(event) {
     event.preventDefault();
-    if (!submitStoreGameIdInput || !submitStoreTagsInput || !submitStoreStatusSpan || !submitStoreSubmitBtn) return;
+    if (!submitStoreGameIdInput || !submitStoreTagsContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn) return;
 
     const gameId = submitStoreGameIdInput.value;
-    const tags = submitStoreTagsInput.value.trim();
+    
+    // Collect selected tag IDs
+    const selectedTags = Array.from(submitStoreTagsContainer.querySelectorAll('input[name="store_tags"]:checked'))
+        .map(checkbox => checkbox.value);
+    const tagsString = selectedTags.join(',');
 
     submitStoreStatusSpan.textContent = 'Submitting...';
     submitStoreSubmitBtn.disabled = true;
@@ -429,7 +466,7 @@ async function handleSubmitToStore(event) {
         const response = await fetch(`/api/store/submit/${gameId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tags: tags })
+            body: JSON.stringify({ tags: tagsString })
         });
         const result = await api.handleApiResponse(response); // Handles errors and success (201)
         submitStoreStatusSpan.textContent = `Success! ${result.message || 'Game submitted.'}`;

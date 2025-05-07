@@ -20,6 +20,38 @@ def get_store_api_key():
     setting = db.session.get(SystemSetting, 'adventure_store_api_key')
     return setting.value if setting else None
 
+# --- API Endpoint: Get Available Tags ---
+@store_bp.route('/available-tags', methods=['GET'])
+@admin_required
+def get_available_tags():
+    """
+    Acts as a proxy to fetch available tags from the Adventure Store API.
+    This keeps the store API key secure on the server.
+    """
+    api_key = get_store_api_key()
+    if not api_key:
+        return jsonify({"error": "Adventure Store API Key is not configured in Admin Settings."}), 400
+
+    store_tags_url = "https://adventurezstore.pleasewaitloading.com/api/tags" # The external store's tags endpoint
+    headers = {
+        'X-API-Key': api_key
+    }
+
+    try:
+        current_app.logger.info(f"Fetching tags from store API: {store_tags_url}")
+        response = requests.get(store_tags_url, headers=headers, timeout=15)
+        response.raise_for_status() # Raise HTTPError for bad responses
+
+        tags_data = response.json()
+        current_app.logger.info(f"Successfully fetched {len(tags_data)} tags from store API.")
+        return jsonify(tags_data), 200
+    except requests.exceptions.RequestException as e:
+        current_app.logger.error(f"Error fetching tags from store API: {e}", exc_info=True)
+        return jsonify({"error": f"Could not fetch tags from the store: {e}"}), 502 # Bad Gateway
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error fetching tags: {e}", exc_info=True)
+        return jsonify({"error": f"An unexpected error occurred: {e}"}), 500
+
 # --- API Endpoint: Submit Game ---
 @store_bp.route('/submit/<uuid:game_id>', methods=['POST'])
 @admin_required

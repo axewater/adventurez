@@ -15,9 +15,11 @@
         </div>
 
         <div class="form-group">
-            <label for="submit-store-tags">Tags (Numeric IDs, comma-separated):</label>
-            <input type="text" id="submit-store-tags" name="tags" required placeholder="e.g., 1,5,8">
-            <small>Enter the numeric IDs for the tags, separated by commas. These IDs must correspond to existing tags in the store.</small>
+            <label for="submit-store-tags-container">Category Tags:</label>
+            <div id="submit-store-tags-container" class="tags-checkbox-container">
+                <!-- Tag checkboxes will be dynamically inserted here -->
+            </div>
+            <small>Select the relevant tags for your adventure. Tags are fetched from the store.</small>
         </div>
 
         <div class="form-actions">

@@ -31,7 +31,7 @@ def serialize_game(game):
 
 # --- API Endpoints ---
 
-@games_bp.route('', methods=['GET'])
+@games_bp.route('/', methods=['GET'])
 @login_required # All logged-in users can list games
 def list_games():
     """Lists all available games."""

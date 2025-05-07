@@ -392,3 +392,21 @@ body[data-user-role="admin"] .spel-action-btn.admin-only {
     justify-content: flex-end; /* Align buttons to the right */
 }
 
+/* Styles for the tag checkbox container in the submit modal */
+.tags-checkbox-container {
+    max-height: 150px; /* Limit height */
+    overflow-y: auto; /* Add scrollbar if content overflows */
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.tag-checkbox-label {
+    display: block; /* Each tag on a new line */
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.tag-checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+}
