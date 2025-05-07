@@ -6,7 +6,7 @@ import requests # For making HTTP requests OUT to the store API
 from flask import Blueprint, jsonify, current_app
 from flask_login import login_required
 from pathlib import Path
-from app import db
+from app import db # Assuming db is initialized in app.py or similar
 from models import Game, Room, Entity, Connection, Script, Conversation, SystemSetting
 from decorators import admin_required
 from api.games import export_game # Reuse the export logic if possible, or duplicate needed parts
@@ -19,6 +19,38 @@ def get_store_api_key():
     """Retrieves the Adventure Store API key from system settings."""
     setting = db.session.get(SystemSetting, 'adventure_store_api_key')
     return setting.value if setting else None
+
+# --- API Endpoint: Get Available Tags from Store ---
+@store_bp.route('/available-tags', methods=['GET'])
+@admin_required # Ensure only admins can access this
+def get_available_tags():
+    """
+    Acts as a proxy to fetch available tags from the external Adventure Store API.
+    This keeps the store API key secure on the server.
+    """
+    api_key = get_store_api_key()
+    if not api_key:
+        current_app.logger.error("Store API: Attempted to fetch tags, but API key is not configured.")
+        return jsonify({"error": "Adventure Store API Key is not configured in Admin Settings."}), 500
+
+    store_tags_url = "https://adventurezstore.pleasewaitloading.com/api/tags"
+    headers = {'X-API-Key': api_key}
+
+    try:
+        current_app.logger.info(f"Store API: Fetching tags from {store_tags_url}")
+        response = requests.get(store_tags_url, headers=headers, timeout=10)
+        response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+
+        tags_data = response.json()
+        current_app.logger.info(f"Store API: Successfully fetched {len(tags_data)} tags.")
+        return jsonify(tags_data), 200
+
+    except requests.exceptions.RequestException as e:
+        current_app.logger.error(f"Store API: Error fetching tags from {store_tags_url}: {e}", exc_info=True)
+        return jsonify({"error": f"Could not connect to the store to fetch tags: {e}"}), 503 # Service Unavailable
+    except Exception as e:
+        current_app.logger.error(f"Store API: Unexpected error fetching tags: {e}", exc_info=True)
+        return jsonify({"error": f"An unexpected error occurred while fetching tags: {e}"}), 500
 
 # --- API Endpoint: Submit Game ---
 @store_bp.route('/submit/<uuid:game_id>', methods=['POST'])

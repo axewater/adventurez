@@ -251,6 +251,16 @@ body {
     white-space: nowrap;
 }
 
+/* Submit to Store Modal: Scrollable Description */
+.scrollable-description {
+    max-height: 100px; /* Or your preferred height */
+    overflow-y: auto;
+    white-space: pre-wrap; /* Respect newlines and wrap text */
+    background-color: #f9f9f9; /* Slight visual distinction */
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+}
 #submit-store-status {
     margin-left: 15px;
     font-style: italic;
@@ -266,16 +276,45 @@ body {
     background-color: #218838;
 }
 
+/* Submit to Store Modal: Submit Button Hover */
+#submit-store-submit-btn:hover:not(:disabled) {
+    filter: brightness(90%);
+}
+
 #game-actions #submit-to-store-btn:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
 
-/* --- NIEUW: Spellen Grid Tab Styles --- */
+/* --- NEW: Submit to Store Modal - Tags Checkbox Group --- */
+.checkbox-group {
+    max-height: 150px; /* Limit height and make scrollable */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px; /* Space below the group */
+}
+
+.tag-checkbox-item {
+    display: block; /* Each checkbox on a new line */
+    margin-bottom: 5px;
+}
+.tag-checkbox-item label {
+    margin-left: 5px;
+}
+
+/* Centered content for image in modal */
+.form-group.centered-content {
+    display: flex;
+    justify-content: center;
+}
+
+/* --- NEW: Spellen Grid Tab Styles --- */
 #spellen-grid-container {
     padding: 20px;
-    height: 100%; /* Zorg dat container de hoogte vult */
-    overflow-y: auto; /* Scrollen indien nodig */
+    height: 100%; /* Ensure container fills the height */
+    overflow-y: auto; /* Add scrolling if content exceeds height */
     box-sizing: border-box;
 }
 
@@ -286,27 +325,24 @@ body {
 }
 
 .tab-actions {
-    margin-bottom: 15px; /* Ruimte onder de knoppen */
+    margin-bottom: 15px; /* Space under the buttons */
 }
 
-.tab-action-btn { /* Basisstijl, kan verder aangepast worden */ }
-
-/* NIEUW: Stijl voor icon buttons in tab actions */
 .tab-action-btn.icon-btn {
-    font-size: 1.5em; /* Maak icoon groter */
-    padding: 5px 10px; /* Pas padding aan voor icoon */
-    line-height: 1; /* Zorg voor betere verticale uitlijning */
-    background-color: #e0e0e0; /* Lichte achtergrond */
+    font-size: 1.5em; /* Increase icon size */
+    padding: 5px 10px; /* Adjust padding for icon */
+    line-height: 1; /* Improve vertical alignment */
+    background-color: #e0e0e0; /* Light background */
 }
 
 .spellen-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 20px; /* Ruimte tussen kaarten */
+    gap: 20px; /* Space between cards */
 }
 
 #spellen-grid-placeholder {
-    grid-column: 1 / -1; /* Span over alle kolommen */
+    grid-column: 1 / -1; /* Span across all columns */
     text-align: center;
     color: #888;
     padding: 40px;
@@ -325,14 +361,14 @@ body {
 
 .spel-card-thumbnail {
     width: 100%;
-    object-fit: cover; /* Zorgt dat afbeelding de ruimte vult zonder vervorming */
-    align-self: center; /* Centreer de afbeelding als de kaart breder is */
+    object-fit: cover; /* Fill the space without distortion */
+    align-self: center; /* Center the image if the card is wider */
     border-bottom: 1px solid #eee;
 }
 
 .spel-card-info {
     padding: 10px 15px;
-    flex-grow: 1; /* Zorgt dat info-sectie groeit */
+    flex-grow: 1; /* Allow info section to grow */
 }
 
 .spel-card-title {
@@ -343,7 +379,7 @@ body {
 
 .spel-card-actions {
     display: flex;
-    justify-content: flex-end; /* Knoppen rechts uitlijnen */
+    justify-content: flex-end; /* Align buttons to the right */
     padding: 5px 10px;
     background-color: #f8f9fa;
     border-top: 1px solid #eee;
@@ -368,18 +404,17 @@ body {
 }
 
 .spel-action-btn.admin-only {
-    /* Standaard verborgen, wordt getoond via JS/CSS op basis van rol */
-    display: none;
+    display: none; /* Hide admin-only buttons by default */
 }
 
-/* Toon admin knoppen als body data-user-role="admin" heeft */
+/* Show admin buttons when body has data-user-role="admin" */
 body[data-user-role="admin"] .spel-action-btn.admin-only {
     display: inline-block;
 }
 
-/* NIEUW: Hover effect voor de hele kaart */
+/* Hover effect for the entire card */
 .spel-card:hover {
-    transform: translateY(-5px); /* Til kaart iets op */
+    transform: translateY(-5px); /* Lift the card slightly */
     box-shadow: 0 8px 15px rgba(0,0,0,0.1);
     border: 2px solid #01a6f9;
 }
@@ -391,4 +426,3 @@ body[data-user-role="admin"] .spel-action-btn.admin-only {
 .modal-content.danger-modal .form-actions {
     justify-content: flex-end; /* Align buttons to the right */
 }
-

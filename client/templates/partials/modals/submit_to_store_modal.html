@@ -4,24 +4,36 @@
     <form id="submit-store-form">
         <input type="hidden" id="submit-store-game-id">
 
+        <div class="form-group centered-content">
+            <img id="submit-store-game-image" src="#" alt="Game Start Image" style="max-width: 200px; max-height: 150px; object-fit: contain; margin-bottom: 10px; border: 1px solid #ccc; display: none;">
+        </div>
+
         <div class="form-group read-only">
             <label>Game Name:</label>
             <span id="submit-store-game-name">Loading...</span>
         </div>
 
         <div class="form-group read-only">
+            <label>Estimated Size:</label>
+            <span id="submit-store-game-size">Calculating...</span>
+        </div>
+
+        <div class="form-group read-only">
             <label>Description:</label>
-            <span id="submit-store-game-description">Loading...</span>
+            <div id="submit-store-game-description" class="scrollable-description">Loading...</div>
         </div>
 
         <div class="form-group">
-            <label for="submit-store-tags">Tags (Numeric IDs, comma-separated):</label>
-            <input type="text" id="submit-store-tags" name="tags" required placeholder="e.g., 1,5,8">
-            <small>Enter the numeric IDs for the tags, separated by commas. These IDs must correspond to existing tags in the store.</small>
+            <label>Available Tags:</label>
+            <div id="submit-store-tags-checkbox-container" class="checkbox-group">
+                <p id="tags-loading-message">Loading tags...</p>
+            </div>
+            <small>Select the categories that best describe your adventure.</small>
         </div>
 
         <div class="form-actions">
-            <button type="submit" id="submit-store-submit-btn">Submit to Store</button>
+            <button type="submit" id="submit-store-submit-btn" class="primary-action-btn">Submit to Store</button>
+            <span id="submit-store-spinner" style="display: none; margin-left: 10px;">🔄 Uploading...</span>
             <span id="submit-store-status" class="status-indicator"></span>
         </div>
     </form>

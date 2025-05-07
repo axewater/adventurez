@@ -59,11 +59,14 @@ const submitStoreModal = document.getElementById('submit-to-store-modal');
 const submitStoreModalCloseBtn = document.getElementById('submit-store-modal-close');
 const submitStoreForm = document.getElementById('submit-store-form');
 const submitStoreGameIdInput = document.getElementById('submit-store-game-id');
+const submitStoreGameImage = document.getElementById('submit-store-game-image'); // New
 const submitStoreGameNameSpan = document.getElementById('submit-store-game-name');
-const submitStoreGameDescriptionSpan = document.getElementById('submit-store-game-description');
-const submitStoreTagsInput = document.getElementById('submit-store-tags');
+const submitStoreGameSizeSpan = document.getElementById('submit-store-game-size'); // New
+const submitStoreGameDescriptionDiv = document.getElementById('submit-store-game-description'); // Changed to Div
+const submitStoreTagsCheckboxContainer = document.getElementById('submit-store-tags-checkbox-container'); // New container for checkboxes
 const submitStoreSubmitBtn = document.getElementById('submit-store-submit-btn');
 const submitStoreStatusSpan = document.getElementById('submit-store-status');
+const submitStoreSpinner = document.getElementById('submit-store-spinner'); // New spinner
 
 // --- Game List Management ---
 
@@ -387,7 +390,7 @@ async function performGameDeletion() {
  * @param {string} gameId - The ID of the game to submit.
  */
 async function openSubmitToStoreModal(gameId) {
-    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameNameSpan || !submitStoreGameDescriptionSpan || !submitStoreTagsInput || !submitStoreStatusSpan) return;
+    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameImage || !submitStoreGameNameSpan || !submitStoreGameSizeSpan || !submitStoreGameDescriptionDiv || !submitStoreTagsCheckboxContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn || !submitStoreSpinner) return;
 
     const game = state.getGameById(gameId);
     if (!game) {
@@ -399,12 +402,70 @@ async function openSubmitToStoreModal(gameId) {
     // Populate modal
     submitStoreGameIdInput.value = gameId;
     submitStoreGameNameSpan.textContent = game.name;
-    submitStoreGameDescriptionSpan.textContent = game.description || '(No description)';
-    submitStoreTagsInput.value = ''; // Clear previous tags
+    submitStoreGameDescriptionDiv.textContent = game.description || '(No description)';
+    submitStoreGameDescriptionDiv.scrollTop = 0; // Scroll to top
+
+    // Set game image
+    if (game.start_image_path) {
+        submitStoreGameImage.src = `/uploads/avonturen/${game.start_image_path}`;
+        submitStoreGameImage.style.display = 'block';
+    } else {
+        submitStoreGameImage.src = '#';
+        submitStoreGameImage.style.display = 'none';
+    }
+
+    // Fetch and display game size
+    submitStoreGameSizeSpan.textContent = 'Calculating...';
+    try {
+        const sizeResponse = await fetch(`/api/games/${gameId}/estimate-size`);
+        const sizeData = await api.handleApiResponse(sizeResponse);
+        submitStoreGameSizeSpan.textContent = sizeData.size_readable || 'Could not estimate';
+    } catch (error) {
+        console.error("Failed to fetch game size:", error);
+        submitStoreGameSizeSpan.textContent = 'Error estimating size';
+    }
+
+    // Clear previous tags and show loading message
+    submitStoreTagsCheckboxContainer.innerHTML = '<p id="tags-loading-message">Loading tags...</p>';
     submitStoreStatusSpan.textContent = ''; // Clear status
     submitStoreSubmitBtn.disabled = false; // Ensure button is enabled
+    submitStoreSpinner.style.display = 'none'; // Ensure spinner is hidden
 
     submitStoreModal.classList.add('visible');
+
+    // Fetch available tags from our new backend endpoint
+    try {
+        const response = await fetch('/api/store/available-tags');
+        const tags = await api.handleApiResponse(response);
+
+        submitStoreTagsCheckboxContainer.innerHTML = ''; // Clear loading message
+
+        if (tags && tags.length > 0) {
+            tags.forEach(tag => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.classList.add('tag-checkbox-item');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `tag-${tag.id}`;
+                checkbox.value = tag.id;
+                checkbox.name = 'store_tags';
+
+                const label = document.createElement('label');
+                label.htmlFor = `tag-${tag.id}`;
+                label.textContent = tag.name;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+                submitStoreTagsCheckboxContainer.appendChild(checkboxDiv);
+            });
+        } else {
+            submitStoreTagsCheckboxContainer.innerHTML = '<p>No tags available from store.</p>';
+        }
+    } catch (error) {
+        console.error("Failed to fetch store tags:", error);
+        submitStoreTagsCheckboxContainer.innerHTML = `<p class="error-message">Error loading tags: ${error.message}</p>`;
+    }
 }
 
 /** Closes the Submit to Store modal. */
@@ -417,13 +478,24 @@ function closeSubmitToStoreModal() {
 /** Handles the submission of the game to the store API. */
 async function handleSubmitToStore(event) {
     event.preventDefault();
-    if (!submitStoreGameIdInput || !submitStoreTagsInput || !submitStoreStatusSpan || !submitStoreSubmitBtn) return;
+    if (!submitStoreGameIdInput || !submitStoreTagsCheckboxContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn || !submitStoreSpinner) return;
 
     const gameId = submitStoreGameIdInput.value;
-    const tags = submitStoreTagsInput.value.trim();
+    
+    // Collect selected tag IDs
+    const selectedCheckboxes = submitStoreTagsCheckboxContainer.querySelectorAll('input[name="store_tags"]:checked');
+    const selectedTagIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+    const tags = selectedTagIds.join(',');
+
+    if (!tags) { // Basic validation: ensure at least one tag is selected or handle as needed
+        submitStoreStatusSpan.textContent = 'Please select at least one tag.';
+        // uiUtils.showFlashMessage("Please select at least one tag.", 4000); // Alternative feedback
+        return;
+    }
 
     submitStoreStatusSpan.textContent = 'Submitting...';
     submitStoreSubmitBtn.disabled = true;
+    submitStoreSpinner.style.display = 'inline-block';
 
     try {
         const response = await fetch(`/api/store/submit/${gameId}`, {
@@ -439,8 +511,10 @@ async function handleSubmitToStore(event) {
     } catch (error) {
         console.error("Failed to submit game to store:", error);
         submitStoreStatusSpan.textContent = `Error: ${error.message}`;
-        submitStoreSubmitBtn.disabled = false; // Re-enable button on error
         // Error flash message shown by handleApiResponse
+    } finally {
+        submitStoreSubmitBtn.disabled = false; // Re-enable button on error
+        submitStoreSpinner.style.display = 'none';
     }
 }
 
