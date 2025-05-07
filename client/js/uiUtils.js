@@ -13,6 +13,8 @@ const gameStatus = document.getElementById('game-status')?.querySelector('span')
 const renameGameBtn = document.getElementById('rename-game-btn'); // Keep rename button for now, might remove later if settings modal handles it
 const gameSettingsBtn = document.getElementById('game-settings-btn');
 const deleteGameBtn = document.getElementById('delete-game-btn');
+const gameStatusChip = document.querySelector('#game-status .game-status-chip'); // For the new dropdown
+const gameSelectDropdown = document.getElementById('game-select-dropdown'); // The new dropdown menu
 const importExportToggleBtn = document.getElementById('import-export-toggle-btn');
 const submitToStoreBtn = document.getElementById('submit-to-store-btn');
 const testGameBtn = document.getElementById('test-game-btn');
@@ -534,5 +536,75 @@ export function switchToTab(tabDataAttribute) {
         }
     } else {
         console.error(`Could not find tab button with data-tab="${tabDataAttribute}"`);
+    }
+}
+
+// --- NEW: Game Status Dropdown ---
+
+/**
+ * Sets up the game selection dropdown in the top bar.
+ */
+export function setupGameStatusDropdown() {
+    if (!gameStatusChip || !gameSelectDropdown) {
+        console.warn("Game status chip or dropdown element not found.");
+        return;
+    }
+
+    gameStatusChip.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent immediate closing by document click listener
+        const isActive = gameStatusChip.parentElement.classList.toggle('active');
+        if (isActive) {
+            populateGameSelectDropdown();
+            // Add a one-time click listener to the document to close the dropdown
+            document.addEventListener('click', closeGameSelectDropdownOnClickOutside, { capture: true, once: true });
+        }
+    });
+}
+
+/**
+ * Populates the game selection dropdown with available games.
+ */
+function populateGameSelectDropdown() {
+    if (!gameSelectDropdown) return;
+
+    gameSelectDropdown.innerHTML = ''; // Clear previous items
+
+    if (state.games && state.games.length > 0) {
+        state.games.forEach(game => {
+            const item = document.createElement('div');
+            item.classList.add('dropdown-item');
+            item.textContent = game.name;
+            item.dataset.gameId = game.id;
+            item.addEventListener('click', async () => {
+                console.log(`Dropdown: Selected game ${game.name} (ID: ${game.id})`);
+                // The gameManager.selectGame function already handles loading data
+                // and updating UI. We just need to ensure it's called.
+                // It also updates the top bar status.
+                // We need to ensure gameManager is accessible here or use an event.
+                // For now, directly call a simplified version of what selectGame does.
+                
+                const gameManager = await import('./gameManager.js');
+                await gameManager.selectGame(game.id, game.name);
+                
+                // Switch to play tab
+                switchToTab('play');
+                gameStatusChip.parentElement.classList.remove('active'); // Close dropdown
+            });
+            gameSelectDropdown.appendChild(item);
+        });
+    } else {
+        const placeholder = document.createElement('div');
+        placeholder.classList.add('dropdown-placeholder');
+        placeholder.textContent = 'No games available.';
+        gameSelectDropdown.appendChild(placeholder);
+    }
+}
+
+/**
+ * Closes the game select dropdown if a click occurs outside of it.
+ */
+function closeGameSelectDropdownOnClickOutside(event) {
+    if (gameSelectDropdown && !gameStatusChip.parentElement.contains(event.target)) {
+        gameStatusChip.parentElement.classList.remove('active');
     }
 }

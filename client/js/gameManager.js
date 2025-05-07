@@ -211,7 +211,7 @@ export function renderSpellenGrid() {
  * @param {string} gameId - The UUID of the selected game.
  * @param {string} gameName - The name of the selected game.
  */
-export function selectGame(gameId, gameName) {
+export async function selectGame(gameId, gameName) {
     console.log(`Selected game: ${gameName} (ID: ${gameId})`);
     if (state.selectedGameId === gameId) return; // Avoid reloading if same game clicked
 
@@ -221,7 +221,7 @@ export function selectGame(gameId, gameName) {
     uiUtils.updateTopBarStatus(); // Use the new function
     // Re-render list to highlight selection
     renderGameList();
-    loadGameData(gameId);
+    await loadGameData(gameId); // Ensure game data is loaded before proceeding
 }
 
 /**

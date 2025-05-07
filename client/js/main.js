@@ -54,6 +54,10 @@ async function initializeApp() {
     // Initialize user profile dropdown
     setupUserProfileDropdown();
 
+    // NEW: Initialize game status dropdown
+    const { setupGameStatusDropdown } = await import('./uiUtils.js');
+    setupGameStatusDropdown();
+
     // Initialize manager modules which handle fetching initial data and setting up listeners
     initializeGameManager(); // Fetches games, sets up game list and actions
     initializeGameSettingsListeners(); // Listeners are now initialized within initializeGameManager
@@ -61,7 +65,7 @@ async function initializeApp() {
     initializeEntityDetails(); // Sets up listeners for entity detail form
     initializeScriptEditor(); // Sets up listeners for script editor form
     initializeConversationEditor(); // Sets up listeners for conversation editor form
-    initializePlayModeUI(); // Sets up listeners for play mode input
+    initializePlayModeUI();
     initializeFileManager(); // NEW: Initialize file manager listeners
     initializeUserPreferences(); // NEW: Initialize user preferences modal listeners
     // initializeAdminPanel(); // Don't initialize immediately, wait for tab switch
