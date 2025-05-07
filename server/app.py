@@ -39,7 +39,10 @@ def create_app(config_name='default'):
     from models import User, AnonymousUser, metadata as models_metadata
     migrate.init_app(app, db, metadata=models_metadata)
     from flask_login import login_required
-    cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
+    # Expose Content-Disposition for client-side download naming
+    cors.init_app(app, 
+                  resources={r"/api/*": {"origins": "*"}}, 
+                  expose_headers=['Content-Disposition'])
     login_manager.anonymous_user = AnonymousUser
 
     # Context processor to inject 'now' function into templates

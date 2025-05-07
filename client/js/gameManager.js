@@ -69,6 +69,13 @@ const submitStoreSubmitBtn = document.getElementById('submit-store-submit-btn');
 const submitStoreStatusSpan = document.getElementById('submit-store-status');
 const submissionSpinnerContainer = document.getElementById('submission-spinner-container'); // Spinner
 
+// --- NEW: Compression Confirmation Modal Elements ---
+const compressionConfirmModal = document.getElementById('compression-confirmation-modal');
+const compressionConfirmCloseBtn = document.getElementById('compression-confirm-modal-close');
+const compressionConfirmGameNameSpan = document.getElementById('compression-confirm-game-name');
+const compressionConfirmOkBtn = document.getElementById('compression-confirm-ok-btn');
+const compressionConfirmCancelBtn = document.getElementById('compression-confirm-cancel-btn');
+
 // --- Game List Management ---
 
 /**
@@ -572,16 +579,65 @@ async function handleExportGame() {
         uiUtils.showFlashMessage("Please select a game to export.", 4000);
         return;
     }
-    handleDirectExportGame(selectedGameId); // Use the direct export function
+    await handleDirectExportGame(selectedGameId); // Use the direct export function
 }
 
 /**
  * Triggers the download for exporting a specific game.
  * @param {string} gameId - The ID of the game to export.
  */
-function handleDirectExportGame(gameId) {
-    // Trigger download by navigating to the export URL
-    window.location.href = `/api/games/${gameId}/export`;
+async function handleDirectExportGame(gameId) {
+    const game = state.getGameById(gameId);
+    const gameName = game ? game.name : 'game';
+    const exportFileName = `${gameName.replace(/[^a-z0-9_]/gi, '_').toLowerCase()}_export.zip`;
+
+    uiUtils.showGlobalSpinner(`Preparing ${gameName} for export...`);
+
+    try {
+        const response = await fetch(`/api/games/${gameId}/export`);
+
+        if (!response.ok) {
+            // Try to get error message from server response
+            let errorMsg = `Failed to export game. Status: ${response.status}`;
+            try {
+                const errorData = await response.json();
+                errorMsg = errorData.error || errorMsg;
+            } catch (e) {
+                // If response is not JSON, use the status text
+                errorMsg = response.statusText || errorMsg;
+            }
+            throw new Error(errorMsg);
+        }
+
+        // Extract filename from Content-Disposition header if available
+        const disposition = response.headers.get('Content-Disposition');
+        let filename = exportFileName; // Default filename
+        if (disposition && disposition.indexOf('attachment') !== -1) {
+            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const matches = filenameRegex.exec(disposition);
+            if (matches != null && matches[1]) {
+                filename = matches[1].replace(/['"]/g, '');
+            }
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filename; // Use extracted or default filename
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        uiUtils.showFlashMessage(`Game "${gameName}" exported successfully as ${filename}.`);
+
+    } catch (error) {
+        console.error("Error exporting game:", error);
+        uiUtils.showFlashMessage(`Export failed: ${error.message}`, 5000);
+    } finally {
+        uiUtils.hideGlobalSpinner();
+    }
 }
 
 /** Handles the file selection for game import. */
@@ -590,7 +646,7 @@ async function handleImportGame(event) {
     if (!file) return;
 
     console.log("Selected file for import:", file);
-    uiUtils.showFlashMessage(`Importing "${file.name}"...`, 5000);
+    uiUtils.showGlobalSpinner(`Importing "${file.name}"...`);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -606,6 +662,8 @@ async function handleImportGame(event) {
     } catch (error) {
         // Error message is already shown by handleApiResponse
         console.error("Import failed:", error);
+    } finally {
+        uiUtils.hideGlobalSpinner();
     }
     // Reset the input field to allow importing the same file again if needed
     event.target.value = null;
@@ -619,11 +677,53 @@ async function handleImportGame(event) {
  * @param {string} gameName - The name of the game.
  */
 async function handleCompressGameImages(gameId, gameName) {
-    if (!confirm(`Are you sure you want to compress all images for the game "${gameName}"?\n\nThis will:\n- Resize images to a maximum of 800x800px.\n- Convert everything to JPG (80% quality).\n- Remove the original files (like PNGs) after conversion.\n\nThis action cannot be undone.`)) {
+    showCompressionConfirmationModal(gameId, gameName);
+}
+
+/**
+ * Shows the image compression confirmation modal.
+ * @param {string} gameId - The ID of the game to compress.
+ * @param {string} gameName - The name of the game.
+ */
+function showCompressionConfirmationModal(gameId, gameName) {
+    if (!compressionConfirmModal || !compressionConfirmGameNameSpan || !compressionConfirmOkBtn) return;
+
+    compressionConfirmGameNameSpan.textContent = gameName;
+    compressionConfirmOkBtn.dataset.gameId = gameId;
+    compressionConfirmOkBtn.dataset.gameName = gameName;
+
+    compressionConfirmModal.classList.add('visible');
+}
+
+/** Closes the image compression confirmation modal. */
+function closeCompressionConfirmationModal() {
+    if (compressionConfirmModal) {
+        compressionConfirmModal.classList.remove('visible');
+        if (compressionConfirmOkBtn) {
+            compressionConfirmOkBtn.removeAttribute('data-game-id');
+            compressionConfirmOkBtn.removeAttribute('data-game-name');
+        }
+    }
+}
+
+/**
+ * Performs the actual image compression after user confirmation.
+ */
+async function performActualImageCompression() {
+    if (!compressionConfirmOkBtn) return;
+
+    const gameId = compressionConfirmOkBtn.dataset.gameId;
+    const gameName = compressionConfirmOkBtn.dataset.gameName;
+
+    if (!gameId || !gameName) {
+        console.error("Compression failed: Game ID or Name missing from confirmation button.");
+        uiUtils.showFlashMessage("Error: Could not determine which game to compress.", 5000);
+        closeCompressionConfirmationModal();
         return;
     }
 
-    uiUtils.showFlashMessage(`Compressing images for "${gameName}"... This may take a while.`, 10000); // Longer message duration
+    closeCompressionConfirmationModal(); // Close modal first
+    uiUtils.showGlobalSpinner(`Compressing images for "${gameName}"... This may take a while.`);
 
     try {
         const response = await fetch(`/api/admin/games/${gameId}/compress`, {
@@ -638,6 +738,8 @@ async function handleCompressGameImages(gameId, gameName) {
     } catch (error) {
         console.error(`Failed to compress images for game ${gameId}:`, error);
         // Error flash message shown by handleApiResponse
+    } finally {
+        uiUtils.hideGlobalSpinner();
     }
 }
 
@@ -659,4 +761,9 @@ export function initializeGameManager() {
     // NEW: Add listeners for submit to store modal
     if (submitStoreModalCloseBtn) submitStoreModalCloseBtn.addEventListener('click', closeSubmitToStoreModal);
     if (submitStoreForm) submitStoreForm.addEventListener('submit', handleSubmitToStore);
+
+    // NEW: Add listeners for compression confirmation modal
+    if (compressionConfirmCloseBtn) compressionConfirmCloseBtn.addEventListener('click', closeCompressionConfirmationModal);
+    if (compressionConfirmCancelBtn) compressionConfirmCancelBtn.addEventListener('click', closeCompressionConfirmationModal);
+    if (compressionConfirmOkBtn) compressionConfirmOkBtn.addEventListener('click', performActualImageCompression);
 }

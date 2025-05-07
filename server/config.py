@@ -15,7 +15,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'you-should-really-change-this')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Ensure the instance folder exists (used by Flask instance_relative_config)
-    APP_VERSION = "1.1.1" # Define the application version
+    APP_VERSION = "1.1.2" # Define the application version
     INSTANCE_FOLDER_PATH = instance_path
     # Define the absolute path to the uploads folder
     UPLOADS_FOLDER = os.path.abspath(os.path.join(basedir, '..', 'client', 'uploads'))

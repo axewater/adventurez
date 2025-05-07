@@ -1,0 +1,20 @@
+<div class="modal-content danger-modal">
+    <button id="compression-confirm-modal-close" class="modal-close-btn" title="Close">&times;</button>
+    <h3><i class="fas fa-exclamation-triangle"></i> Confirm Image Compression</h3>
+    <p>Are you sure you want to compress all images for the game: <strong id="compression-confirm-game-name"></strong>?</p>
+    
+    <div class="compression-warning">
+        <p><strong>This action will:</strong></p>
+        <ul>
+            <li>Resize images to a maximum of 800x800 pixels.</li>
+            <li>Convert all images to JPG format (80% quality).</li>
+            <li>Remove the original files (e.g., PNGs) after successful conversion.</li>
+        </ul>
+        <p><strong>This action cannot be undone.</strong> It is recommended to back up your game or images first if you wish to preserve the originals.</p>
+    </div>
+
+    <div class="form-actions">
+        <button id="compression-confirm-ok-btn" class="danger">Compress</button>
+        <button id="compression-confirm-cancel-btn" class="secondary-action-btn">Cancel</button>
+    </div>
+</div>

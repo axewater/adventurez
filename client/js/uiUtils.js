@@ -629,3 +629,25 @@ export function humanizeFileSize(bytes, decimals = 2) {
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+// --- NEW: Global Spinner Functions ---
+const globalSpinnerOverlay = document.getElementById('global-spinner-overlay');
+const globalSpinnerMessage = document.getElementById('global-spinner-message');
+
+/**
+ * Shows the global full-page spinner.
+ * @param {string} [message="Loading..."] - Optional message to display below the spinner.
+ */
+export function showGlobalSpinner(message = "Loading...") {
+    if (globalSpinnerOverlay && globalSpinnerMessage) {
+        globalSpinnerMessage.textContent = message;
+        globalSpinnerOverlay.style.display = 'flex';
+    }
+}
+
+/** Hides the global full-page spinner. */
+export function hideGlobalSpinner() {
+    if (globalSpinnerOverlay) {
+        globalSpinnerOverlay.style.display = 'none';
+    }
+}

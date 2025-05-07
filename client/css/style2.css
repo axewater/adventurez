@@ -315,17 +315,17 @@ body {
 }
 
 .tab-actions {
-    margin-bottom: 15px; /* Ruimte onder de knoppen */
+    margin-bottom: 15px;
 }
 
-.tab-action-btn { /* Basisstijl, kan verder aangepast worden */ }
 
-/* NIEUW: Stijl voor icon buttons in tab actions */
+
 .tab-action-btn.icon-btn {
-    font-size: 1.5em; /* Maak icoon groter */
-    padding: 5px 10px; /* Pas padding aan voor icoon */
-    line-height: 1; /* Zorg voor betere verticale uitlijning */
-    background-color: #e0e0e0; /* Lichte achtergrond */
+    font-size: 1.5em;
+    padding: 5px 10px;
+    line-height: 1;
+    background-color: #e0e0e0;
+    border-radius: 5px;
 }
 
 .spellen-grid {

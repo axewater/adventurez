@@ -109,6 +109,17 @@
         {% include 'partials/modals/delete_confirmation_modal.html' %}
     </div>
 
+    <!-- NEW: Modal for Image Compression Confirmation -->
+    <div id="compression-confirmation-modal" class="modal-container">
+        {% include 'partials/modals/compression_confirmation_modal.html' %}
+    </div>
+
+    <!-- NEW: Global Spinner Overlay -->
+    <div id="global-spinner-overlay" class="global-spinner-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p id="global-spinner-message">Loading...</p>
+    </div>
+
     <!-- Placeholder for page-specific scripts -->
     {% block scripts %}
     <!-- Page-specific scripts will go here -->
