@@ -60,6 +60,9 @@ const submitStoreModalCloseBtn = document.getElementById('submit-store-modal-clo
 const submitStoreForm = document.getElementById('submit-store-form');
 const submitStoreGameIdInput = document.getElementById('submit-store-game-id');
 const submitStoreGameNameSpan = document.getElementById('submit-store-game-name');
+const submitStoreGameVersionSpan = document.getElementById('submit-store-game-version'); // New
+const submitStoreGameSizeSpan = document.getElementById('submit-store-game-size'); // New
+const submitStoreGameImage = document.getElementById('submit-store-game-image'); // New
 const submitStoreGameDescriptionSpan = document.getElementById('submit-store-game-description');
 const submitStoreTagsContainer = document.getElementById('submit-store-tags-container'); // Changed from input to container
 const submitStoreSubmitBtn = document.getElementById('submit-store-submit-btn');
@@ -387,7 +390,7 @@ async function performGameDeletion() {
  * @param {string} gameId - The ID of the game to submit.
  */
 async function openSubmitToStoreModal(gameId) {
-    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameNameSpan || !submitStoreGameDescriptionSpan || !submitStoreTagsContainer || !submitStoreStatusSpan) return;
+    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameNameSpan || !submitStoreGameVersionSpan || !submitStoreGameSizeSpan || !submitStoreGameImage || !submitStoreGameDescriptionSpan || !submitStoreTagsContainer || !submitStoreStatusSpan) return;
 
     const game = state.getGameById(gameId);
     if (!game) {
@@ -399,7 +402,15 @@ async function openSubmitToStoreModal(gameId) {
     // Populate modal
     submitStoreGameIdInput.value = gameId;
     submitStoreGameNameSpan.textContent = game.name;
+    submitStoreGameVersionSpan.textContent = game.version || 'N/A';
     submitStoreGameDescriptionSpan.textContent = game.description || '(No description)';
+
+    // Set game image
+    const defaultImagePath = '/uploads/avonturen/standaard_spel_start.png';
+    submitStoreGameImage.src = game.start_image_path ? `/uploads/avonturen/${game.start_image_path}` : defaultImagePath;
+    submitStoreGameImage.alt = `Start image for ${game.name}`;
+
+    submitStoreGameSizeSpan.textContent = '...'; // Placeholder, actual size calculation is complex
     
     // Clear previous tags and show loading message
     submitStoreTagsContainer.innerHTML = '<p><em>Loading tags...</em></p>';
@@ -470,7 +481,7 @@ async function handleSubmitToStore(event) {
         });
         const result = await api.handleApiResponse(response); // Handles errors and success (201)
         submitStoreStatusSpan.textContent = `Success! ${result.message || 'Game submitted.'}`;
-        uiUtils.showFlashMessage(`Game "${result.name || 'Unknown'}" successfully submitted to the store!`);
+        uiUtils.showFlashMessage(`Game "${result.local_game_name || result.name || 'Unknown'}" successfully submitted to the store!`);
         // Optionally close modal after a delay on success
         setTimeout(closeSubmitToStoreModal, 2000);
     } catch (error) {
