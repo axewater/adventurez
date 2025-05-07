@@ -194,8 +194,10 @@ export function updateTopBarStatus() {
                     statusText = `Playing: ${currentGame.name}`;
                     break;
                 case 'scores':
-                case 'spellen':
                     statusText = 'HighScores:';
+                    break;
+                case 'spellen':
+                    statusText = `Editing: ${currentGame.name}`;
                     break;
                 case null: // Should not happen if a game is selected, but handle defensively
                 case 'rooms':
