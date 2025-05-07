@@ -47,7 +47,22 @@ def submit_game_to_store(game_id):
     if not all(tag.isdigit() for tag in tags.split(',') if tag):
          return jsonify({"error": "Invalid format for 'tags'. Expected comma-separated numeric IDs (e.g., '1,5,8')."}), 400
 
-    # --- Prepare Game Data for Export (Similar to export_game) ---
+    # --- Log submission details for debugging ---
+    current_app.logger.info("=" * 80)
+    current_app.logger.info(f"STORE SUBMISSION REQUEST - Game: {game.name} (ID: {game_id})")
+    current_app.logger.info(f"Request data:")
+    current_app.logger.info(f"  - Tags: {tags}")
+    current_app.logger.info(f"  - API Key: {'*' * 8}{api_key[-4:] if api_key and len(api_key) > 4 else 'Not set'}")
+    current_app.logger.info(f"Game metadata:")
+    current_app.logger.info(f"  - Name: {game.name}")
+    current_app.logger.info(f"  - Description: {game.description[:50]}{'...' if game.description and len(game.description) > 50 else ''}")
+    current_app.logger.info(f"  - Version: {game.version}")
+    current_app.logger.info(f"  - Builder Version: {game.builder_version}")
+    current_app.logger.info(f"  - Start Image: {game.start_image_path}")
+    current_app.logger.info(f"  - Win Image: {game.win_image_path}")
+    current_app.logger.info(f"  - Loss Image: {game.loss_image_path}")
+    current_app.logger.info("-" * 80)
+
     try:
         # Fetch all related data
         rooms = Room.query.filter_by(game_id=game_id).order_by(Room.sort_index).all()
@@ -119,6 +134,14 @@ def submit_game_to_store(game_id):
     }
 
     try:
+        # Log the complete request details before sending
+        current_app.logger.info("STORE API REQUEST DETAILS:")
+        current_app.logger.info(f"URL: {store_api_url}")
+        current_app.logger.info(f"Headers: {json.dumps({k: ('*' * 8 + v[-4:] if k == 'X-API-Key' and len(v) > 4 else v) for k, v in headers.items()})}")
+        current_app.logger.info(f"Payload: {json.dumps(payload)}")
+        current_app.logger.info(f"Files: {{'adventure_file': (filename, <ZIP buffer>, 'application/zip')}}")
+        current_app.logger.info("-" * 80)
+
         current_app.logger.info(f"Submitting game '{game.name}' to store API at {store_api_url}")
         response = requests.post(store_api_url, headers=headers, data=payload, files=files, timeout=60) # Added timeout
         response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
@@ -129,6 +152,8 @@ def submit_game_to_store(game_id):
             current_app.logger.info(f"Store API Response (Game ID: {game_id}): {response.status_code} - {response_data}")
             # Return the success response from the store API directly to the frontend
             return jsonify(response_data), response.status_code # Should be 201
+        elif response.status_code == 204:  # No Content
+            return jsonify({"success": True, "message": "Game submitted successfully"}), 200
         else:
             # Handle unexpected content type (e.g., HTML error page)
             current_app.logger.error(f"Store API returned non-JSON response (Status: {response.status_code}): {response.text[:500]}")
@@ -163,4 +188,5 @@ def submit_game_to_store(game_id):
         current_app.logger.error(f"Unexpected error during store API submission (Game ID: {game_id}): {e}", exc_info=True)
         return jsonify({"error": f"An unexpected error occurred: {e}"}), 500
     finally:
+        current_app.logger.info("=" * 80 + "\n")
         zip_buffer.close() # Ensure the buffer is closed
