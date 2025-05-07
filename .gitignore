@@ -40,3 +40,8 @@ build/
 .pytest_cache/
 htmlcov/
 .coverage
+
+
+*.jpg
+*.png
+*.jpeg
