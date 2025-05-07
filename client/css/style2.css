@@ -383,11 +383,42 @@ body {
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
-.spel-card-thumbnail {
+.spel-card-thumbnail-container {
+    position: relative; /* Noodzakelijk voor absolute positionering van de overlay */
     width: 100%;
-    object-fit: cover; /* Zorgt dat afbeelding de ruimte vult zonder vervorming */
-    align-self: center; /* Centreer de afbeelding als de kaart breder is */
-    border-bottom: 1px solid #eee;
+    /* height: 150px; /* Of een andere vaste hoogte, of laat het door de afbeelding bepalen */
+    overflow: hidden; /* Zorgt dat de overlay netjes binnen de container blijft */
+    cursor: pointer; /* Maak de hele container klikbaar */
+}
+
+.spel-card-thumbnail {
+    display: block; /* Verwijder eventuele extra ruimte onder de afbeelding */
+    width: 100%;
+    /* height: 100%; */ /* Als je een vaste hoogte voor de container hebt */
+    object-fit: cover;
+    transition: transform 0.3s ease; /* Optioneel: lichte zoom op hover */
+}
+
+.spel-card-thumbnail-container:hover .spel-card-thumbnail {
+    transform: scale(1.05); /* Lichte zoom op hover */
+}
+
+.play-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent; /* Maakt de driehoek */
+    border-bottom: 20px solid transparent; /* Maakt de driehoek */
+    border-left: 30px solid rgba(0, 128, 0, 0.8); /* Groene pijl, semi-transparant */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.spel-card-thumbnail-container:hover .play-icon-overlay {
+    opacity: 1; /* Fade in op hover */
 }
 
 .spel-card-info {

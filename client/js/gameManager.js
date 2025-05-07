@@ -163,6 +163,7 @@ export function renderSpellenGrid() {
             const cardClone = template.content.cloneNode(true);
             const cardElement = cardClone.querySelector('.spel-card');
             const thumbnail = cardElement.querySelector('.spel-card-thumbnail');
+            const thumbnailContainer = cardElement.querySelector('.spel-card-thumbnail-container');
             const title = cardElement.querySelector('.spel-card-title');
             // const description = cardElement.querySelector('.spel-card-description'); // Uncomment if using description
 
@@ -173,10 +174,19 @@ export function renderSpellenGrid() {
             thumbnail.alt = `Thumbnail for ${game.name}`;
             // description.textContent = game.description || 'Geen beschrijving.'; // Uncomment if using description
 
+            // NIEUW: Event listener voor de thumbnail container (om het spel te starten)
+            if (thumbnailContainer) {
+                thumbnailContainer.addEventListener('click', () => {
+                    selectGame(game.id, game.name);
+                    uiUtils.switchToTab('play');
+                });
+            }
+
             // Add event listeners to buttons
             const playBtn = cardElement.querySelector('.spel-action-btn.play');
             const settingsBtn = cardElement.querySelector('.spel-action-btn.settings');
             const exportBtn = cardElement.querySelector('.spel-action-btn.export');
+            // De 'play' knop in de .spel-card-actions kan eventueel weg als de thumbnail de primaire actie wordt.
             const submitStoreBtn = cardElement.querySelector('.spel-action-btn.submit-store'); // NEW: Get submit button
             const deleteBtn = cardElement.querySelector('.spel-action-btn.delete');
             const compressBtn = cardElement.querySelector('.spel-action-btn.compress'); // NEW: Get compress button
