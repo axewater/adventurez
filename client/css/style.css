@@ -351,16 +351,15 @@
 }
 
 .modal-content {
-    background-color: var(--modal-bg-color); /* Use theme variable */
-    margin: auto; /* Auto margins also help center */
+    background-color: var(--modal-bg-color);
+    margin: auto;
     padding: 20px 30px;
     border: 1px solid #888;
-    width: 80%; /* Could be more specific */
-    max-width: 500px; /* Maximum width */
+    width: 80%; 
+    max-width: 500px;
     border-radius: 5px;
-    position: relative; /* For positioning the close button AND the submit button */
-    /* Add padding to prevent content overlap with absolutely positioned elements */
-    padding-top: 60px; /* Increase top padding to make space for the button */
+    position: relative;
+    padding-top: 60px; 
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
