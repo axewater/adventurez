@@ -1,27 +1,35 @@
 <div class="modal-content">
     <button id="submit-store-modal-close" class="modal-close-btn" title="Sluiten">&times;</button>
-    <h3>Submit Adventure to Store</h3>
+    <h3 class="modal-title">Submit Adventure to Store</h3>
     <form id="submit-store-form">
         <input type="hidden" id="submit-store-game-id">
 
-        <div class="form-group centered-content">
-            <img id="submit-store-game-image" src="#" alt="Game Start Image" style="max-width: 200px; max-height: 150px; object-fit: contain; margin-bottom: 10px; border: 1px solid #ccc; display: none;">
-        </div>
-
-        <div class="form-group read-only">
-            <label>Game Name:</label>
-            <span id="submit-store-game-name">Loading...</span>
-        </div>
-
-        <div class="form-group read-only">
-            <label>Estimated Size:</label>
-            <span id="submit-store-game-size">Calculating...</span>
+        <div class="submit-modal-top-section">
+            <div class="submit-modal-game-details">
+                <div class="form-group read-only">
+                    <label>Game Name:</label>
+                    <span id="submit-store-game-name">Loading...</span>
+                </div>
+                <div class="form-group read-only">
+                    <label>Version:</label>
+                    <span id="submit-store-game-version">Loading...</span>
+                </div>
+                <div class="form-group read-only">
+                    <label>Estimated Size:</label>
+                    <span id="submit-store-game-size">Calculating...</span>
+                </div>
+            </div>
+            <div class="submit-modal-image-container">
+                <img id="submit-store-game-image" src="#" alt="Game Start Image" style="display: none;">
+            </div>
         </div>
 
         <div class="form-group read-only">
             <label>Description:</label>
             <div id="submit-store-game-description" class="scrollable-description">Loading...</div>
         </div>
+
+        <div style="margin-bottom: 15px;"></div>
 
         <div class="form-group">
             <label>Available Tags:</label>

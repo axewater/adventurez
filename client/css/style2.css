@@ -310,6 +310,46 @@ body {
     justify-content: center;
 }
 
+/* --- Submit to Store Modal Enhancements --- */
+.modal-content .modal-title { /* General modal title styling if needed */
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.submit-modal-top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Space between details and image */
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color, #eee); /* Card-like separator */
+}
+
+.submit-modal-game-details {
+    flex: 1; /* Takes available space */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between detail items */
+}
+
+.submit-modal-image-container {
+    flex-basis: 150px; /* Fixed width for the image container */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#submit-store-game-image {
+    max-width: 100%; /* Image takes full width of its container */
+    max-height: 120px; /* Limit height */
+    object-fit: contain;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 4px;
+}
+
 /* --- NEW: Spellen Grid Tab Styles --- */
 #spellen-grid-container {
     padding: 20px;

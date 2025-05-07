@@ -33,12 +33,18 @@ def export_game(game_id):
     if not game:
         return jsonify({"error": "Game not found"}), 404
 
+    # Fetch connections related to the game's rooms
+    connections = db.session.query(Connection)\
+        .join(Room, Connection.from_room_id == Room.id)\
+        .filter(Room.game_id == game_id)\
+        .all()
+
     # Export game data
     game_data = {
         "game": game.to_dict(),
         "rooms": [room.to_dict() for room in game.rooms],
         "entities": [entity.to_dict() for entity in game.entities],
-        "connections": [connection.to_dict() for connection in game.connections],
+        "connections": [connection.to_dict() for connection in connections],
         "scripts": [script.to_dict() for script in game.scripts],
         "conversations": [conversation.to_dict() for conversation in game.conversations]
     }
@@ -70,7 +76,7 @@ def export_game(game_id):
         zip_buffer,
         mimetype='application/zip',
         as_attachment=True,
-        attachment_filename=f'{game.name}.zip'
+        download_name=f'{game.name}.zip'
     )
 
 @games_bp.route('/import', methods=['POST'])

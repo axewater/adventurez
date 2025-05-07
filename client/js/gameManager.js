@@ -61,6 +61,7 @@ const submitStoreForm = document.getElementById('submit-store-form');
 const submitStoreGameIdInput = document.getElementById('submit-store-game-id');
 const submitStoreGameImage = document.getElementById('submit-store-game-image'); // New
 const submitStoreGameNameSpan = document.getElementById('submit-store-game-name');
+const submitStoreGameVersionSpan = document.getElementById('submit-store-game-version'); // New for version
 const submitStoreGameSizeSpan = document.getElementById('submit-store-game-size'); // New
 const submitStoreGameDescriptionDiv = document.getElementById('submit-store-game-description'); // Changed to Div
 const submitStoreTagsCheckboxContainer = document.getElementById('submit-store-tags-checkbox-container'); // New container for checkboxes
@@ -390,7 +391,7 @@ async function performGameDeletion() {
  * @param {string} gameId - The ID of the game to submit.
  */
 async function openSubmitToStoreModal(gameId) {
-    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameImage || !submitStoreGameNameSpan || !submitStoreGameSizeSpan || !submitStoreGameDescriptionDiv || !submitStoreTagsCheckboxContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn || !submitStoreSpinner) return;
+    if (!submitStoreModal || !submitStoreGameIdInput || !submitStoreGameImage || !submitStoreGameNameSpan || !submitStoreGameVersionSpan || !submitStoreGameSizeSpan || !submitStoreGameDescriptionDiv || !submitStoreTagsCheckboxContainer || !submitStoreStatusSpan || !submitStoreSubmitBtn || !submitStoreSpinner) return;
 
     const game = state.getGameById(gameId);
     if (!game) {
@@ -402,6 +403,7 @@ async function openSubmitToStoreModal(gameId) {
     // Populate modal
     submitStoreGameIdInput.value = gameId;
     submitStoreGameNameSpan.textContent = game.name;
+    submitStoreGameVersionSpan.textContent = game.version || 'N/A'; // Populate version
     submitStoreGameDescriptionDiv.textContent = game.description || '(No description)';
     submitStoreGameDescriptionDiv.scrollTop = 0; // Scroll to top
 
@@ -505,7 +507,8 @@ async function handleSubmitToStore(event) {
         });
         const result = await api.handleApiResponse(response); // Handles errors and success (201)
         submitStoreStatusSpan.textContent = `Success! ${result.message || 'Game submitted.'}`;
-        uiUtils.showFlashMessage(`Game "${result.name || 'Unknown'}" successfully submitted to the store!`);
+        const gameNameForMessage = result.name || 'Unknown';
+        uiUtils.showFlashMessage(`Game "${gameNameForMessage}" successfully submitted to the store!`);
         // Optionally close modal after a delay on success
         setTimeout(closeSubmitToStoreModal, 2000);
     } catch (error) {
