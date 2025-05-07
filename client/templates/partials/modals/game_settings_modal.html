@@ -1,6 +1,14 @@
 <div class="modal-content">
     <button id="game-settings-modal-close" class="modal-close-btn" title="Close">&times;</button>
     <h3>Game Settings</h3>
+    <div class="game-version-display top-version-info">
+        <label for="game-settings-version-input">Game Version:</label>
+        <input type="text" id="game-settings-version-input" placeholder="1.0.0">
+        <span class="builder-version-text">Builder Version: <strong id="game-settings-builder-version">Loading...</strong></span>
+        <small>
+            Game version tracks your own versioning. Builder version shows compatibility.
+        </small>
+    </div>
     <button type="submit" form="game-settings-form" id="game-settings-submit-top" class="modal-save-btn-top">Save</button>
     <form id="game-settings-form">
         <div class="form-group">
@@ -12,37 +20,31 @@
             <p>
             <textarea id="game-settings-description-textarea" rows="6" placeholder="Enter the game description here..."></textarea>
         </div>
-        <div class="game-image-control-wrapper">
-            <label for="game-start-image-select">Start Image:</label>
-            <select id="game-start-image-select">
-                <option value="">-- Default Image --</option>
-                <!-- Image options will be populated here -->
-            </select>
-            <img id="game-start-image-thumbnail" class="game-image-preview" src="#" alt="Selected start image" title="Click to enlarge">
-        </div>
-        <div class="game-image-control-wrapper">
-            <label for="game-win-image-select">Win Image:</label>
-            <select id="game-win-image-select">
-                <option value="">-- Default Image --</option>
-                <!-- Image options will be populated here -->
-            </select>
-            <img id="game-win-image-thumbnail" class="game-image-preview" src="#" alt="Selected win image" title="Click to enlarge">
-        </div>
-        <div class="game-image-control-wrapper">
-            <label for="game-loss-image-select">Loss Image:</label>
-            <select id="game-loss-image-select">
-                <option value="">-- Default Image --</option>
-                <!-- Image options will be populated here -->
-            </select>
-            <img id="game-loss-image-thumbnail" class="game-image-preview" src="#" alt="Selected loss image" title="Click to enlarge">
-        </div>
-        <div class="game-version-display" style="margin-top: 15px; font-size: 0.9em; color: #555;">
-            <label for="game-settings-version-input">Game Version:</label>
-            <input type="text" id="game-settings-version-input" placeholder="1.0.0" style="width: 80px; padding: 3px 5px; margin-right: 10px;">
-            <span style="margin-left: 10px;">Builder Version: <strong id="game-settings-builder-version">Loading...</strong></span>
-            <small style="display: block; margin-top: 5px; color: #777;">
-                Game version tracks your own versioning. Builder version shows compatibility.
-            </small>
+        <div class="image-selectors-row">
+            <div class="game-image-control-wrapper">
+                <label for="game-start-image-select">Start Image:</label>
+                <select id="game-start-image-select">
+                    <option value="">-- Default Image --</option>
+                    <!-- Image options will be populated here -->
+                </select>
+                <img id="game-start-image-thumbnail" class="game-image-preview" src="#" alt="Selected start image" title="Click to enlarge">
+            </div>
+            <div class="game-image-control-wrapper">
+                <label for="game-win-image-select">Win Image:</label>
+                <select id="game-win-image-select">
+                    <option value="">-- Default Image --</option>
+                    <!-- Image options will be populated here -->
+                </select>
+                <img id="game-win-image-thumbnail" class="game-image-preview" src="#" alt="Selected win image" title="Click to enlarge">
+            </div>
+            <div class="game-image-control-wrapper">
+                <label for="game-loss-image-select">Loss Image:</label>
+                <select id="game-loss-image-select">
+                    <option value="">-- Default Image --</option>
+                    <!-- Image options will be populated here -->
+                </select>
+                <img id="game-loss-image-thumbnail" class="game-image-preview" src="#" alt="Selected loss image" title="Click to enlarge">
+            </div>
         </div>
         <div class="game-version-display" style="display: none; margin-top: 15px; font-size: 0.9em; color: #555;">
             <span>Old display - Adventure: <strong id="game-settings-version">Loading...</strong></span> |
