@@ -7,6 +7,12 @@ import { renderEntityDetails } from './entityDetails.js';
 // --- DOM Element Caching ---
 const entitySearchInput = document.getElementById('entity-search-input');
 const entityListUl = document.getElementById('entity-list-ul');
+const addEntityBtn = document.getElementById('add-entity-btn');
+const entityFilterButtons = document.querySelectorAll('.entity-filter-buttons .filter-btn');
+const entitySortSelect = document.getElementById('entity-sort-select');
+
+let currentEntityTypeFilter = 'all'; // 'all', 'ITEM', 'NPC'
+let currentEntitySortOrder = 'name_asc'; // 'name_asc', 'name_desc', 'type_item_first', 'type_npc_first'
 
 // --- Entity List Fetching and Rendering ---
 
@@ -23,6 +29,11 @@ export async function fetchEntitiesForGame(gameId) {
         state.setCurrentEntities(fetchedEntities); // Update state
         console.log("Entities fetched:", state.currentEntities);
         renderEntityList(); // Initial render with all entities
+        // Reset filters and sort to default when new game data is loaded
+        currentEntityTypeFilter = 'all';
+        currentEntitySortOrder = 'name_asc';
+        updateFilterButtonStates();
+        if (entitySortSelect) entitySortSelect.value = currentEntitySortOrder;
     } catch (error) {
         console.error(`Failed to fetch entities for game ${gameId}:`, error);
         if (entityListUl) entityListUl.innerHTML = '<li>Error loading entities.</li>';
@@ -35,26 +46,55 @@ export async function fetchEntitiesForGame(gameId) {
 /**
  * Renders the list of entities based on the current state.
  * Optionally filters the list based on the provided array.
- * @param {Array<object>} [entitiesToRender=state.currentEntities] - The array of entities to render. Defaults to all current entities.
  */
-export function renderEntityList(entitiesToRender = state.currentEntities) {
+export function renderEntityList() {
     if (!entityListUl) return;
 
-    // Filter based on search input *before* rendering
+    let entitiesToDisplay = [...state.currentEntities];
+
+    // 1. Filter by search term
     const searchTerm = entitySearchInput?.value.trim().toLowerCase() || '';
-    const filteredEntities = entitiesToRender.filter(entity =>
-        entity.name.toLowerCase().includes(searchTerm) ||
-        (entity.description && entity.description.toLowerCase().includes(searchTerm)) ||
-        entity.type.toLowerCase().includes(searchTerm)
-    );
+    if (searchTerm) {
+        entitiesToDisplay = entitiesToDisplay.filter(entity =>
+            entity.name.toLowerCase().includes(searchTerm) ||
+            (entity.description && entity.description.toLowerCase().includes(searchTerm)) ||
+            entity.type.toLowerCase().includes(searchTerm) // Also search by type string
+        );
+    }
+
+    // 2. Filter by entity type (ITEM or NPC)
+    if (currentEntityTypeFilter !== 'all') {
+        entitiesToDisplay = entitiesToDisplay.filter(entity => entity.type === currentEntityTypeFilter);
+    }
+
+    // 3. Sort entities
+    switch (currentEntitySortOrder) {
+        case 'name_asc':
+            entitiesToDisplay.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'name_desc':
+            entitiesToDisplay.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        case 'type_item_first':
+            entitiesToDisplay.sort((a, b) => {
+                if (a.type === b.type) return a.name.localeCompare(b.name);
+                return a.type === 'ITEM' ? -1 : 1;
+            });
+            break;
+        case 'type_npc_first':
+            entitiesToDisplay.sort((a, b) => {
+                if (a.type === b.type) return a.name.localeCompare(b.name);
+                return a.type === 'NPC' ? -1 : 1;
+            });
+            break;
+    }
 
     entityListUl.innerHTML = ''; // Clear list
-    if (filteredEntities.length === 0) {
-        entityListUl.innerHTML = '<li>No entities created yet.</li>';
+    if (entitiesToDisplay.length === 0) {
+        const message = searchTerm || currentEntityTypeFilter !== 'all' ? 'Geen entiteiten gevonden die voldoen aan de criteria.' : 'Nog geen entiteiten aangemaakt.';
+        entityListUl.innerHTML = `<li>${message}</li>`;
     } else {
-        // Sort entities alphabetically by name
-        const sortedEntities = [...filteredEntities].sort((a, b) => a.name.localeCompare(b.name));
-        sortedEntities.forEach(entity => {
+        entitiesToDisplay.forEach(entity => {
             const li = document.createElement('li');
             li.dataset.entityId = entity.id;
             li.addEventListener('click', () => selectEntity(entity.id));
@@ -132,13 +172,48 @@ export async function selectEntity(entityId) {
 
 // --- Search/Filter Listener ---
 
-function setupEntitySearchListener() {
+function setupEntityListControls() {
     if (entitySearchInput) {
         entitySearchInput.addEventListener('input', () => {
             renderEntityList(); // Re-render the list with the current filter
         });
     }
+
+    entityFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentEntityTypeFilter = button.dataset.filter;
+            updateFilterButtonStates();
+            renderEntityList();
+        });
+    });
+
+    if (entitySortSelect) {
+        entitySortSelect.addEventListener('change', (event) => {
+            currentEntitySortOrder = event.target.value;
+            renderEntityList();
+        });
+    }
+
+    // The addEntityBtn listener is already in entityDetails.js,
+    // but we can ensure it's correctly initialized if it wasn't.
+    // For now, assume entityDetails.js handles its initialization.
+}
+
+/**
+ * Updates the active state of filter buttons.
+ */
+function updateFilterButtonStates() {
+    entityFilterButtons.forEach(button => {
+        if (button.dataset.filter === currentEntityTypeFilter) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
 }
 
 // Initialize search listener when the module loads or via main.js
-setupEntitySearchListener();
+setupEntityListControls();
+
+// Ensure initial state of filter buttons is correct
+updateFilterButtonStates();

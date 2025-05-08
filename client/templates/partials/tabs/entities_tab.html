@@ -6,7 +6,20 @@
     <div class="entity-editor-layout">
         <div id="entity-list-container">
             <h4>Entiteiten Lijst</h4>
-            <input type="text" id="entity-search-input" placeholder="Filter entiteiten..." style="margin-bottom: 10px; padding: 6px; width: calc(100% - 14px);">
+            <div class="entity-list-controls">
+                <input type="text" id="entity-search-input" placeholder="Zoek entiteiten...">
+                <div class="entity-filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Alles</button>
+                    <button class="filter-btn" data-filter="ITEM">Items</button>
+                    <button class="filter-btn" data-filter="NPC">NPCs</button>
+                </div>
+                <select id="entity-sort-select">
+                    <option value="name_asc">Naam (A-Z)</option>
+                    <option value="name_desc">Naam (Z-A)</option>
+                    <option value="type_item_first">Type (Item eerst)</option>
+                    <option value="type_npc_first">Type (NPC eerst)</option>
+                </select>
+            </div>
             <button id="add-entity-btn">Nieuwe Entiteit Toevoegen</button>
             <ul id="entity-list-ul">
                 <!-- Entity list items will be populated here -->
