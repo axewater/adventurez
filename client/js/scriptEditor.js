@@ -347,34 +347,34 @@ async function handleDeleteScript() {
 // --- NEW: Helper Icon Logic ---
 
 /**
- * Inserts text into a textarea at the current cursor position or appends it.
- * Adds a newline before the text if the textarea is not empty.
- * @param {HTMLTextAreaElement} textarea - The target textarea element.
+ * Inserts text into a textarea or input at the current cursor position or appends it.
+ * Adds a newline before the text if the element is not empty.
+ * @param {HTMLTextAreaElement | HTMLInputElement} inputElement - The target textarea or input element.
  * @param {string} textToInsert - The text to insert.
  */
-function insertTextAtCursor(textarea, textToInsert) {
-    if (!textarea) return;
+function insertTextAtCursor(inputElement, textToInsert) {
+    if (!inputElement) return;
 
-    const startPos = textarea.selectionStart;
-    const endPos = textarea.selectionEnd;
-    const currentText = textarea.value;
+    const startPos = inputElement.selectionStart;
+    const endPos = inputElement.selectionEnd;
+    const currentText = inputElement.value;
     const textBefore = currentText.substring(0, startPos);
     const textAfter = currentText.substring(endPos, currentText.length);
 
-    // Add newline if inserting into non-empty textarea at start or end
+    // Add newline if inserting into non-empty element at start or end
     let prefix = "";
     if (currentText.length > 0 && (startPos === 0 || startPos === currentText.length)) {
         prefix = "\n";
     }
 
-    textarea.value = textBefore + prefix + textToInsert + textAfter;
+    inputElement.value = textBefore + prefix + textToInsert + textAfter;
 
     // Move cursor to the end of the inserted text
-    textarea.selectionStart = textarea.selectionEnd = startPos + prefix.length + textToInsert.length;
-    textarea.focus(); // Keep focus on the textarea
+    inputElement.selectionStart = inputElement.selectionEnd = startPos + prefix.length + textToInsert.length;
+    inputElement.focus(); // Keep focus on the element
 
     // Trigger input event to mark unsaved changes
-    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 /**
@@ -435,45 +435,108 @@ function handleHelperIconClick(event) {
     const icon = event.target.closest('.script-helper-icon');
     if (!icon) return;
 
-    const type = icon.dataset.type; // 'condition' or 'action'
+    const type = icon.dataset.type; // 'trigger', 'condition', or 'action'
     const command = icon.dataset.command;
-    const textarea = type === 'condition' ? scriptConditionTextarea : scriptActionTextarea;
+    let targetElement;
+
+    if (type === 'trigger') {
+        targetElement = scriptTriggerInput;
+    } else if (type === 'condition') {
+        targetElement = scriptConditionTextarea;
+    } else { // action
+        targetElement = scriptActionTextarea;
+    }
+
+    if (!targetElement) {
+        console.warn(`Target element for script helper type "${type}" not found.`);
+        return;
+    }
 
     switch (command) {
-        // Simple Insertions
-        case 'SHOW_MESSAGE': insertTextAtCursor(textarea, 'SHOW_MESSAGE("Your message here")'); break;
-        case 'SET_STATE': insertTextAtCursor(textarea, 'SET_STATE(variable_name, "value")'); break;
-        case 'ADD_SCORE': insertTextAtCursor(textarea, 'ADD_SCORE(10)'); break;
-        case 'SET_GAME_LOSS': insertTextAtCursor(textarea, 'SET_STATE(game_loss, True)'); break;
-        case 'SET_LOSS_REASON': insertTextAtCursor(textarea, 'SET_STATE(loss_reason, "You lost because...")'); break;
-        case 'SET_LOSS_IMAGE': insertTextAtCursor(textarea, 'SET_STATE(loss_image, "custom_loss_image.jpg")'); break;
-        case 'STATE': insertTextAtCursor(textarea, 'STATE(variable_name) == "value"'); break;
+        // --- Trigger Commands ---
+        case 'TRIGGER_ON_ENTER':
+            insertTextAtCursor(targetElement, 'ON_ENTER("KAMER_NAAM_PLACEHOLDER")');
+            showTemporaryDropdown(targetElement, state.currentRooms.map(r => ({ label: r.title, value: r.title })), (selectedName) => {
+                targetElement.value = targetElement.value.replace('"KAMER_NAAM_PLACEHOLDER"', `"${selectedName}"`);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            break;
+        case 'TRIGGER_ON_TAKE':
+            insertTextAtCursor(targetElement, 'ON_TAKE(ITEM_NAAM_PLACEHOLDER)');
+            const takableItemsForTrigger = state.currentEntities.filter(e => e.is_takable && e.type === 'ITEM');
+            showTemporaryDropdown(targetElement, takableItemsForTrigger.map(i => ({ label: i.name, value: i.name })), (selectedName) => {
+                targetElement.value = targetElement.value.replace('ITEM_NAAM_PLACEHOLDER', selectedName);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            break;
+        case 'TRIGGER_ON_DROP':
+            insertTextAtCursor(targetElement, 'ON_DROP(ITEM_NAAM_PLACEHOLDER)');
+            const allItemsForTrigger = state.currentEntities.filter(e => e.type === 'ITEM');
+            showTemporaryDropdown(targetElement, allItemsForTrigger.map(i => ({ label: i.name, value: i.name })), (selectedName) => {
+                targetElement.value = targetElement.value.replace('ITEM_NAAM_PLACEHOLDER', selectedName);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            break;
+        case 'TRIGGER_ON_EXAMINE':
+            insertTextAtCursor(targetElement, 'ON_EXAMINE(ENTITEIT_NAAM_PLACEHOLDER)');
+            showTemporaryDropdown(targetElement, state.currentEntities.map(e => ({ label: e.name, value: e.name })), (selectedName) => {
+                targetElement.value = targetElement.value.replace('ENTITEIT_NAAM_PLACEHOLDER', selectedName);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+            break;
+        case 'TRIGGER_ON_COMMAND':
+            insertTextAtCursor(targetElement, 'ON_COMMAND("jouw commando hier")');
+            break;
+        case 'TRIGGER_ON_POST_COMMAND':
+            insertTextAtCursor(targetElement, 'ON_POST_COMMAND');
+            break;
 
-        // Insertions Requiring Selection
+        // --- Condition Commands ---
         case 'HAS_ITEM':
-            insertTextAtCursor(textarea, 'HAS_ITEM(ITEM_NAME)');
+            insertTextAtCursor(targetElement, 'HAS_ITEM(ITEM_NAME)');
             const takableItems = state.currentEntities.filter(e => e.is_takable && e.type === 'ITEM');
-            showTemporaryDropdown(textarea, takableItems.map(i => ({ label: i.name, value: i.name })), (selectedName) => {
-                textarea.value = textarea.value.replace('ITEM_NAME', selectedName);
+            showTemporaryDropdown(targetElement, takableItems.map(i => ({ label: i.name, value: i.name })), (selectedName) => {
+                targetElement.value = targetElement.value.replace('ITEM_NAME', selectedName);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
             });
             break;
         case 'CURRENT_ROOM':
             // Insert placeholder with quotes for the title - Updated to use title
-            insertTextAtCursor(textarea, 'CURRENT_ROOM("ROOM_TITLE")');
+            insertTextAtCursor(targetElement, 'CURRENT_ROOM("ROOM_TITLE")');
             const rooms = state.currentRooms;
             // Show dropdown with room titles, value is also the title
-            showTemporaryDropdown(textarea, rooms.map(r => ({ label: r.title, value: r.title })), (selectedTitle) => {
+            showTemporaryDropdown(targetElement, rooms.map(r => ({ label: r.title, value: r.title })), (selectedTitle) => {
                 // Replace the placeholder, keeping the quotes - Updated to use title
-                textarea.value = textarea.value.replace('"ROOM_TITLE"', `"${selectedTitle}"`);
+                targetElement.value = targetElement.value.replace('"ROOM_TITLE"', `"${selectedTitle}"`);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
             });
+            break;
+        case 'STATE':
+            insertTextAtCursor(targetElement, 'STATE(variable_name) == "value"');
+            break;
+
+        // --- Action Commands ---
+        case 'SHOW_MESSAGE':
+            insertTextAtCursor(targetElement, 'SHOW_MESSAGE("Your message here")');
+            break;
+        case 'SET_STATE':
+            insertTextAtCursor(targetElement, 'SET_STATE(variable_name, "value")');
+            break;
+        case 'ADD_SCORE':
+            insertTextAtCursor(targetElement, 'ADD_SCORE(10)');
             break;
         case 'GIVE_ITEM':
-            insertTextAtCursor(textarea, 'GIVE_ITEM(ITEM_NAME)');
+            insertTextAtCursor(targetElement, 'GIVE_ITEM(ITEM_NAME)');
             const allItems = state.currentEntities.filter(e => e.type === 'ITEM');
-            showTemporaryDropdown(textarea, allItems.map(i => ({ label: i.name, value: i.name })), (selectedName) => {
-                textarea.value = textarea.value.replace('ITEM_NAME', selectedName);
+            showTemporaryDropdown(targetElement, allItems.map(i => ({ label: i.name, value: i.name })), (selectedName) => {
+                targetElement.value = targetElement.value.replace('ITEM_NAME', selectedName);
+                targetElement.dispatchEvent(new Event('input', { bubbles: true }));
             });
             break;
+        case 'SET_GAME_LOSS': insertTextAtCursor(targetElement, 'SET_STATE(game_loss, True)'); break;
+        case 'SET_LOSS_REASON': insertTextAtCursor(targetElement, 'SET_STATE(loss_reason, "You lost because...")'); break;
+        case 'SET_LOSS_IMAGE': insertTextAtCursor(targetElement, 'SET_STATE(loss_image, "custom_loss_image.jpg")'); break;
+
         default:
             console.warn(`Unknown script helper command: ${command}`);
     }

@@ -17,7 +17,17 @@
             <p id="script-details-placeholder" style="margin: auto; color: #666;">Selecteer een script uit de lijst of voeg een nieuw toe.</p>
             <form id="script-details-form" style="display: none;">
                 <label for="script-trigger-input" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Trigger:</label>
+                                <!-- NEW: Helper Icons for Triggers -->
+                                <div class="script-helper-icons">
+                                    <span class="script-helper-icon" data-type="trigger" data-command="TRIGGER_ON_COMMAND" title="ON_COMMAND(&quot;jouw commando hier&quot;)">⌨️</span>
+                                    <span class="script-helper-icon" data-type="trigger" data-command="TRIGGER_ON_ENTER" title="ON_ENTER(KAMER_NAAM)">🚪➡️</span>
+                                    <span class="script-helper-icon" data-type="trigger" data-command="TRIGGER_ON_TAKE" title="ON_TAKE(ITEM_NAAM)">🖐️➡️</span>
+                                    <span class="script-helper-icon" data-type="trigger" data-command="TRIGGER_ON_DROP" title="ON_DROP(ITEM_NAAM)">🖐️⤵️</span>
+                                    <span class="script-helper-icon" data-type="trigger" data-command="TRIGGER_ON_EXAMINE" title="ON_EXAMINE(ENTITEIT_NAAM)">🔍</span>
+                                    <span class="script-helper-icon" data-type="trigger" data-command="TRIGGER_ON_POST_COMMAND" title="ON_POST_COMMAND">⏭️</span>
+                                </div>
                 <input type="text" id="script-trigger-input" required placeholder="bijv., ON_ENTER, ON_TAKE(sleutel)" style="width: calc(100% - 22px); padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;">
+
 
                 <label for="script-condition-textarea" style="display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold;">Voorwaarde (Optioneel):</label>
                 <!-- NEW: Helper Icons for Conditions -->

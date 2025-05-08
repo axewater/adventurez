@@ -1,0 +1,1007 @@
+{
+  "game_info": {
+    "id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+    "name": "Alien Invasion",
+    "description": "Een plotselinge en verwoestende alieninvasie heeft de Aarde getroffen. Steden branden, en de mensheid staat op de rand van uitsterven. Jij bent een van de weinige overlevenden die een kans ziet: infiltreer het neergestorte moederschip van de aliens en vernietig het van binnenuit. De toekomst van de planeet rust op jouw schouders.",
+    "version": "1.1.0",
+    "builder_version": "1.1.1",
+    "start_image_path": null,
+    "win_image_path": null,
+    "loss_image_path": null,
+    "created_at": "2024-01-01T12:00:00Z",
+    "updated_at": "2024-07-10T10:00:00Z"
+  },
+  "rooms": [
+    {
+      "id": "room_01_street",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Straat vol Paniek",
+      "description": "Je staat midden op een verlaten straat. Overal zie je brandende autowrakken en puin. In de verte hoor je explosies en het onheilspellende gezoem van alien-schepen. Een supermarkt met ingeslagen ruiten is naar het oosten. Een smal steegje leidt naar het noorden.",
+      "pos_x": 100,
+      "pos_y": 300,
+      "sort_index": 0,
+      "image_path": null
+    },
+    {
+      "id": "room_02_supermarket",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Verlaten Supermarkt",
+      "description": "De supermarkt is geplunderd. Planken zijn leeggehaald en overal ligt rommel. Tussen de chaos zie je een notitieboekje op de grond liggen bij een kassa. De uitgang is naar het westen.",
+      "pos_x": 200,
+      "pos_y": 300,
+      "sort_index": 1,
+      "image_path": null
+    },
+    {
+      "id": "room_03_alley",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Smal Steegje",
+      "description": "Dit donkere steegje stinkt naar afval. Aan het einde zie je de flikkerende lichten van wat een neergestorte alien drone lijkt te zijn. Verder naar het noorden is een politiebureau. De straat is naar het zuiden.",
+      "pos_x": 100,
+      "pos_y": 250,
+      "sort_index": 2,
+      "image_path": null
+    },
+    {
+      "id": "room_04_drone_site",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Neergestorte Drone Site",
+      "description": "Een kleine, technologisch geavanceerde alien drone is hier neergestort. Rook stijgt nog op van het wrak. Het steegje is naar het zuiden.",
+      "pos_x": 100,
+      "pos_y": 200,
+      "sort_index": 3,
+      "image_path": null
+    },
+    {
+      "id": "room_05_police_station",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Overspoeld Politiebureau",
+      "description": "Het politiebureau is een chaos. Papieren liggen verspreid en meubilair is omvergeworpen. Een deur naar het westen leidt naar een kantoortje. Het steegje is naar het zuiden.",
+      "pos_x": 100,
+      "pos_y": 150,
+      "sort_index": 4,
+      "image_path": null
+    },
+    {
+      "id": "room_06_agent_office",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Agent's Kantoortje",
+      "description": "Dit kleine kantoortje is overhoop gehaald. Een bureau staat in het midden. Een zware archiefkast staat tegen de muur. Je hoort zacht gesnik vanachter de kast. De hoofdruimte van het politiebureau is naar het oosten.",
+      "pos_x": 50,
+      "pos_y": 150,
+      "sort_index": 5,
+      "image_path": null
+    },
+    {
+      "id": "room_07_bunker_entrance",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Ingang Geheime Bunker",
+      "description": "Achter de archiefkast in het kantoortje vind je een verborgen deur. Het lijkt de ingang van een bunker te zijn, maar de deur is vergrendeld met een elektronisch slot. Het kantoortje is terug achter je.",
+      "pos_x": 0,
+      "pos_y": 150,
+      "sort_index": 6,
+      "image_path": null
+    },
+    {
+      "id": "room_08_tunnel",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Ondergrondse Tunnel",
+      "description": "Een vochtige, betonnen tunnel strekt zich voor je uit. Het is hier koel en stil, een schril contrast met de chaos bovengronds. De tunnel loopt verder naar het noorden. De bunker ingang is naar het zuiden.",
+      "pos_x": 0,
+      "pos_y": 100,
+      "sort_index": 7,
+      "image_path": null
+    },
+    {
+      "id": "room_09_ufo_exterior",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Crash Site - Buitenrand",
+      "description": "De tunnel komt uit bij de rand van een enorme krater. Middenin ligt een gigantisch, buitenaards ruimteschip, half begraven in de aarde. Een metalen sluisdeur is zichtbaar aan de zijkant van de UFO naar het noorden. De tunnel is naar het zuiden.",
+      "pos_x": 0,
+      "pos_y": 50,
+      "sort_index": 8,
+      "image_path": null
+    },
+    {
+      "id": "room_10_ufo_airlock",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Sluis",
+      "description": "Je staat in de ingangssluis van de UFO. Vreemde symbolen lichten op aan de muren. De lucht is hier vreemd en metaalachtig. Een gang leidt dieper de UFO in naar het noorden. De buitendeur is naar het zuiden.",
+      "pos_x": 0,
+      "pos_y": 0,
+      "sort_index": 9,
+      "image_path": null
+    },
+    {
+      "id": "room_11_ufo_corridor",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Hoofdgang",
+      "description": "Een lange, steriele gang met pulserende lichten. Deuren leiden naar het westen (Medische Baai) en oosten (Machinekamer). Aan de noordelijke muur zijn drie deuren: links (noord-west) naar de Opslag Baai, midden naar de Kernreactor, en rechts (noord-oost) naar het Beveiligingscentrum. Een kleinere deur gemarkeerd 'VLUCHTPODS' is ook hier in de buurt. De ingangssluis is naar het zuiden.",
+      "pos_x": 0,
+      "pos_y": -50,
+      "sort_index": 10,
+      "image_path": null
+    },
+    {
+      "id": "room_12_ufo_medbay",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Medische Baai",
+      "description": "Deze kamer staat vol met vreemde medische apparatuur. Op een onderzoekstafel ligt een defecte medische scanner. Een menselijke wetenschapper, Dr. Aris Thorne, zit opgesloten in een energiekooi. De gang is naar het oosten.",
+      "pos_x": -50,
+      "pos_y": -50,
+      "sort_index": 11,
+      "image_path": null
+    },
+    {
+      "id": "room_13_ufo_engine",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Machinekamer",
+      "description": "Gigantische, zoemende machines vullen deze ruimte. Een alien technicus, Xylar, is bezig met een controlepaneel. De hitte is hier intens. De gang is naar het westen.",
+      "pos_x": 50,
+      "pos_y": -50,
+      "sort_index": 12,
+      "image_path": null
+    },
+    {
+      "id": "room_14_ufo_core",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Kernreactor",
+      "description": "Je bent in het hart van de UFO. Een pulserende energiekern domineert de kamer. Een imposante alien schildwacht, K'vrak, bewaakt een controlepaneel. Dit is je kans! De gang is naar het zuiden.",
+      "pos_x": 0,
+      "pos_y": -100,
+      "sort_index": 13,
+      "image_path": null
+    },
+    {
+      "id": "room_15_ufo_security_control",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Beveiligingscentrum",
+      "description": "Glimmende consoles vol knipperende lichten vullen deze kamer. Dit is duidelijk een zenuwcentrum van de UFO. Een groot scherm toont externe sensordata. De hoofdgang is naar het zuiden.",
+      "pos_x": 75,
+      "pos_y": -75,
+      "sort_index": 14,
+      "image_path": null
+    },
+    {
+      "id": "room_16_ufo_storage_bay",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Opslag Baai",
+      "description": "Metalen rekken vol met onbekende alien-apparatuur en voorraden staan hier. Het ruikt hier naar ozon en smeerolie. Een doorgang naar het oosten leidt naar een beschadigde gang. De hoofdgang is naar het zuiden.",
+      "pos_x": -75,
+      "pos_y": -75,
+      "sort_index": 15,
+      "image_path": null
+    },
+    {
+      "id": "room_17_ufo_damaged_corridor",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "Beschadigde UFO Gang",
+      "description": "Deze gang is zwaar beschadigd. Vonkende kabels hangen van het plafond en er hangt een bijtende, groene mist in de lucht. Het ziet er gevaarlijk uit. De opslagruimte is naar het westen.",
+      "pos_x": -25,
+      "pos_y": -75,
+      "sort_index": 16,
+      "image_path": null
+    },
+    {
+      "id": "room_18_ufo_escape_pod_bay",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "title": "UFO Ontsnappingscapsule Baai",
+      "description": "Een rij gestroomlijnde ontsnappingscapsules staat klaar voor lancering. Een bedieningspaneel knippert uitnodigend. Dit is je ticket hier weg! De hoofdgang is naar het zuiden.",
+      "pos_x": 0,
+      "pos_y": -150,
+      "sort_index": 17,
+      "image_path": null
+    }
+  ],
+  "entities": [
+    {
+      "id": "item_notebook",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_02_supermarket",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Agent's Notitieboekje",
+      "description": "Een klein, met bloed besmeurd notitieboekje. Op de laatste pagina staat haastig geschreven: 'Codewoord: Skyfall'.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je pakt het notitieboekje op."
+    },
+    {
+      "id": "item_drone_datapad",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": "entity_drone_wreck",
+      "type": "ITEM",
+      "name": "Alien Datapad",
+      "description": "Een beschadigd alien datapad. Het scherm flikkert, maar je kunt een logboekfragment lezen: 'Technicus Xylar klaagt constant over het vergeten van het 'Orion Protocol'. Typisch.'",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je trekt een datapad uit de drone."
+    },
+    {
+      "id": "entity_drone_wreck",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_04_drone_site",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Neergestorte Drone",
+      "description": "Het wrak van een kleine, snelle alien drone. Het glimt nog zwak.",
+      "is_takable": false,
+      "is_container": true,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_chest_key",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_05_police_station",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Kistsleutel",
+      "description": "Een kleine, onopvallende sleutel. Waar zou deze op passen?",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je vindt een kleine sleutel tussen de papieren."
+    },
+    {
+      "id": "npc_agent_jansen",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_06_agent_office",
+      "container_id": null,
+      "type": "NPC",
+      "name": "Agent Jansen",
+      "description": "Een agent in uniform, duidelijk in shock, verstopt zich achter een archiefkast.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": "conv_agent_jansen",
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "entity_archive_cabinet",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_06_agent_office",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Archiefkast",
+      "description": "Een zware, metalen archiefkast. Hij lijkt vast te zitten.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_police_keycard",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Politie Keycard",
+      "description": "Een standaard politie keycard. Lijkt toegang te geven tot beveiligde zones.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "entity_bunker_door",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_07_bunker_entrance",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Bunker Deur",
+      "description": "Een zware, stalen deur met een elektronisch slotpaneel.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_emp_grenade",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": "entity_locked_chest",
+      "type": "ITEM",
+      "name": "EMP Granaat",
+      "description": "Een experimentele EMP granaat. Kan elektronica uitschakelen.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je vindt een EMP granaat in de kist."
+    },
+    {
+      "id": "entity_locked_chest",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_07_bunker_entrance",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Gesloten Kist",
+      "description": "Een stevige metalen kist, afgesloten met een klein slot.",
+      "is_takable": false,
+      "is_container": true,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "entity_ufo_airlock_door",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_09_ufo_exterior",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "UFO Sluisdeur",
+      "description": "De hoofdingang van de UFO. Hij lijkt hermetisch afgesloten en beschermd door een energieschild.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_med_scanner_broken",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_12_ufo_medbay",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Defecte Medische Scanner",
+      "description": "Een geavanceerd medisch apparaat, maar het lijkt geen stroom te hebben.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je neemt de defecte scanner mee."
+    },
+    {
+      "id": "npc_dr_thorne",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_12_ufo_medbay",
+      "container_id": null,
+      "type": "NPC",
+      "name": "Dr. Aris Thorne",
+      "description": "Een vermoeid uitziende wetenschapper in een witte labjas, gevangen in een energiekooi.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": "conv_dr_thorne",
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_energy_cell",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Energiecel",
+      "description": "Een compacte, krachtige energiecel, zoemend met energie.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "npc_xylar_technician",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_13_ufo_engine",
+      "container_id": null,
+      "type": "NPC",
+      "name": "Xylar",
+      "description": "Een slanke alien met meerdere ogen, druk bezig met een complex paneel.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": "conv_xylar_technician",
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_med_scanner_fixed",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Gerepareerde Medische Scanner",
+      "description": "De medische scanner zoemt nu zachtjes. Hij is operationeel.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_ufo_access_code",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "UFO Toegangscode",
+      "description": "Een datachip met de toegangscode 'KRONOS-7'.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "entity_reactor_door_panel",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_11_ufo_corridor",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Vergrendeld Deurpaneel (Kernreactor)",
+      "description": "Een zwaar beveiligd deurpaneel dat leidt naar de kernreactor. Het vereist een toegangscode.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "npc_kvrak_guard",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_14_ufo_core",
+      "container_id": null,
+      "type": "NPC",
+      "name": "K'vrak",
+      "description": "Een reusachtige, gepantserde alien met gloeiende rode ogen. Hij blokkeert de weg naar het controlepaneel.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": "conv_kvrak_guard",
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_self_destruct_key",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Zelfvernietigings Sleutel",
+      "description": "Een kristallen sleutel die pulseert met donkere energie. Deze activeert het zelfvernietigingsmechanisme.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "entity_reactor_control_panel",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_14_ufo_core",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Controlepaneel Kernreactor",
+      "description": "Het hoofdcontrolepaneel voor de kernreactor. Er is een sleutelgat zichtbaar.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_security_bypass_card",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": null,
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Security Bypass Card",
+      "description": "Een dunne, metalen kaart met alien-symbolen. Lijkt een soort universele toegangspas.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je ontvangt de Security Bypass Card."
+    },
+    {
+      "id": "entity_security_console",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_15_ufo_security_control",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Beveiligingsconsole",
+      "description": "Een glimmend zwart console met een interactief scherm. Het lijkt vitale scheepssystemen te beheren.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    },
+    {
+      "id": "item_protective_suit",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_16_ufo_storage_bay",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Beschermend Pak",
+      "description": "Een lichtgewicht, isolerend pak gemaakt van een onbekend, flexibel materiaal. Het voelt alsof het bescherming kan bieden tegen gevaarlijke omgevingen.",
+      "is_takable": true,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": "Je pakt het beschermende pak."
+    },
+    {
+      "id": "entity_escape_pod_panel",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "room_id": "room_18_ufo_escape_pod_bay",
+      "container_id": null,
+      "type": "ITEM",
+      "name": "Ontsnappingscapsule Paneel",
+      "description": "Een bedieningspaneel naast een open ontsnappingscapsule. Een grote, groene knop met 'LANCEREN' in alien-schrift.",
+      "is_takable": false,
+      "is_container": false,
+      "conversation_id": null,
+      "image_path": null,
+      "is_mobile": false,
+      "pickup_message": null
+    }
+  ],
+  "connections": [
+    {"id": "conn_street_east_supermarket", "from_room_id": "room_01_street", "to_room_id": "room_02_supermarket", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_supermarket_west_street", "from_room_id": "room_02_supermarket", "to_room_id": "room_01_street", "direction": "west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_street_north_alley", "from_room_id": "room_01_street", "to_room_id": "room_03_alley", "direction": "noord", "is_locked": false, "required_key_id": null},
+    {"id": "conn_alley_south_street", "from_room_id": "room_03_alley", "to_room_id": "room_01_street", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_alley_north_drone", "from_room_id": "room_03_alley", "to_room_id": "room_04_drone_site", "direction": "noord", "is_locked": false, "required_key_id": null},
+    {"id": "conn_drone_south_alley", "from_room_id": "room_04_drone_site", "to_room_id": "room_03_alley", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_drone_east_police", "from_room_id": "room_04_drone_site", "to_room_id": "room_05_police_station", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_police_west_drone", "from_room_id": "room_05_police_station", "to_room_id": "room_04_drone_site", "direction": "west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_office_east_police", "from_room_id": "room_06_agent_office", "to_room_id": "room_05_police_station", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_office_west_bunker", "from_room_id": "room_06_agent_office", "to_room_id": "room_07_bunker_entrance", "direction": "west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_bunker_east_office", "from_room_id": "room_07_bunker_entrance", "to_room_id": "room_06_agent_office", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_bunker_north_tunnel", "from_room_id": "room_07_bunker_entrance", "to_room_id": "room_08_tunnel", "direction": "noord", "is_locked": true, "required_key_id": "item_police_keycard"},
+    {"id": "conn_tunnel_south_bunker", "from_room_id": "room_08_tunnel", "to_room_id": "room_07_bunker_entrance", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_tunnel_north_ufo_ext", "from_room_id": "room_08_tunnel", "to_room_id": "room_09_ufo_exterior", "direction": "noord", "is_locked": false, "required_key_id": null},
+    {"id": "conn_ufo_ext_south_tunnel", "from_room_id": "room_09_ufo_exterior", "to_room_id": "room_08_tunnel", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_ufo_ext_north_airlock", "from_room_id": "room_09_ufo_exterior", "to_room_id": "room_10_ufo_airlock", "direction": "noord", "is_locked": true, "required_key_id": "item_emp_grenade"},
+    {"id": "conn_airlock_south_ufo_ext", "from_room_id": "room_10_ufo_airlock", "to_room_id": "room_09_ufo_exterior", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_airlock_north_corridor", "from_room_id": "room_10_ufo_airlock", "to_room_id": "room_11_ufo_corridor", "direction": "noord", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_south_airlock", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_10_ufo_airlock", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_west_medbay", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_12_ufo_medbay", "direction": "west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_medbay_east_corridor", "from_room_id": "room_12_ufo_medbay", "to_room_id": "room_11_ufo_corridor", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_east_engine", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_13_ufo_engine", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_engine_west_corridor", "from_room_id": "room_13_ufo_engine", "to_room_id": "room_11_ufo_corridor", "direction": "west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_north_core", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_14_ufo_core", "direction": "noord", "is_locked": true, "required_key_id": "item_ufo_access_code"},
+    {"id": "conn_core_south_corridor", "from_room_id": "room_14_ufo_core", "to_room_id": "room_11_ufo_corridor", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_ne_security", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_15_ufo_security_control", "direction": "noord-oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_security_s_corridor", "from_room_id": "room_15_ufo_security_control", "to_room_id": "room_11_ufo_corridor", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_nw_storage", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_16_ufo_storage_bay", "direction": "noord-west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_storage_s_corridor", "from_room_id": "room_16_ufo_storage_bay", "to_room_id": "room_11_ufo_corridor", "direction": "zuid", "is_locked": false, "required_key_id": null},
+    {"id": "conn_storage_e_damaged", "from_room_id": "room_16_ufo_storage_bay", "to_room_id": "room_17_ufo_damaged_corridor", "direction": "oost", "is_locked": false, "required_key_id": null},
+    {"id": "conn_damaged_w_storage", "from_room_id": "room_17_ufo_damaged_corridor", "to_room_id": "room_16_ufo_storage_bay", "direction": "west", "is_locked": false, "required_key_id": null},
+    {"id": "conn_corridor_escape_pods", "from_room_id": "room_11_ufo_corridor", "to_room_id": "room_18_ufo_escape_pod_bay", "direction": "vluchtpods", "is_locked": false, "required_key_id": null},
+    {"id": "conn_escape_pods_s_corridor", "from_room_id": "room_18_ufo_escape_pod_bay", "to_room_id": "room_11_ufo_corridor", "direction": "zuid", "is_locked": false, "required_key_id": null}
+  ],
+  "scripts": [
+    {
+      "id": "script_take_notebook",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Agent's Notitieboekje)",
+      "condition": null,
+      "action": "ADD_SCORE(10)"
+    },
+    {
+      "id": "script_take_datapad",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Alien Datapad)",
+      "condition": null,
+      "action": "ADD_SCORE(15)"
+    },
+    {
+      "id": "script_examine_drone",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(onderzoek neergestorte drone)",
+      "condition": "CURRENT_ROOM(\"Neergestorte Drone Site\")",
+      "action": "SHOW_MESSAGE(\"Je doorzoekt de drone en vindt een beschadigd datapad.\")\nGIVE_ITEM(Alien Datapad)\nREMOVE_ITEM(Neergestorte Drone)"
+    },
+    {
+      "id": "script_take_chest_key",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Kistsleutel)",
+      "condition": null,
+      "action": "ADD_SCORE(5)"
+    },
+    {
+      "id": "script_use_chest_key",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik kistsleutel op gesloten kist)",
+      "condition": "CURRENT_ROOM(\"Ingang Geheime Bunker\")\nHAS_ITEM(Kistsleutel)",
+      "action": "SHOW_MESSAGE(\"De kistsleutel past en de kist gaat open! Binnenin vind je een EMP granaat.\")\nREMOVE_ITEM(Kistsleutel)\nGIVE_ITEM(EMP Granaat)\nSET_STATE(chest_unlocked, True)\nADD_SCORE(20)"
+    },
+    {
+      "id": "script_open_chest_locked",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(open gesloten kist)",
+      "condition": "CURRENT_ROOM(\"Ingang Geheime Bunker\")\nSTATE(chest_unlocked) == \"false\"",
+      "action": "SHOW_MESSAGE(\"De kist is op slot.\")"
+    },
+    {
+      "id": "script_open_chest_unlocked",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(open gesloten kist)",
+      "condition": "CURRENT_ROOM(\"Ingang Geheime Bunker\")\nSTATE(chest_unlocked) == \"true\"",
+      "action": "SHOW_MESSAGE(\"De kist is al open en leeg.\")"
+    },
+    {
+      "id": "script_take_keycard",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Politie Keycard)",
+      "condition": null,
+      "action": "ADD_SCORE(25)"
+    },
+    {
+      "id": "script_use_keycard_bunker",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik politie keycard op bunker deur)",
+      "condition": "CURRENT_ROOM(\"Ingang Geheime Bunker\")\nHAS_ITEM(Politie Keycard)",
+      "action": "SHOW_MESSAGE(\"De keycard werkt! De zware bunkerdeur zwaait open.\")\nSET_STATE(bunker_door_open, True)\nADD_SCORE(30)"
+    },
+    {
+      "id": "script_take_emp",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(EMP Granaat)",
+      "condition": null,
+      "action": "ADD_SCORE(15)"
+    },
+    {
+      "id": "script_use_emp_airlock",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik emp granaat op ufo sluisdeur)",
+      "condition": "CURRENT_ROOM(\"UFO Crash Site - Buitenrand\")\nHAS_ITEM(EMP Granaat)",
+      "action": "SHOW_MESSAGE(\"Je gooit de EMP granaat. Met een knetterend geluid valt het energieschild van de sluisdeur uit en de deur glijdt open!\")\nREMOVE_ITEM(EMP Granaat)\nSET_STATE(ufo_airlock_open, True)\nADD_SCORE(40)"
+    },
+    {
+      "id": "script_take_scanner_broken",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Defecte Medische Scanner)",
+      "condition": null,
+      "action": "ADD_SCORE(5)"
+    },
+    {
+      "id": "script_take_energy_cell",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Energiecel)",
+      "condition": null,
+      "action": "ADD_SCORE(20)"
+    },
+    {
+      "id": "script_combine_scanner_cell",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik energiecel op defecte medische scanner)",
+      "condition": "HAS_ITEM(Energiecel)\nHAS_ITEM(Defecte Medische Scanner)",
+      "action": "SHOW_MESSAGE(\"Je plaatst de energiecel in de scanner. Het apparaat begint te zoemen en de lichtjes gaan aan! Je hebt nu een Gerepareerde Medische Scanner.\")\nREMOVE_ITEM(Energiecel)\nREMOVE_ITEM(Defecte Medische Scanner)\nGIVE_ITEM(Gerepareerde Medische Scanner)\nADD_SCORE(35)"
+    },
+    {
+      "id": "script_take_scanner_fixed",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Gerepareerde Medische Scanner)",
+      "condition": null,
+      "action": "ADD_SCORE(0)"
+    },
+    {
+      "id": "script_take_access_code",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(UFO Toegangscode)",
+      "condition": null,
+      "action": "ADD_SCORE(50)"
+    },
+    {
+      "id": "script_use_access_code_reactor_door",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik ufo toegangscode op vergrendeld deurpaneel (kernreactor))",
+      "condition": "CURRENT_ROOM(\"UFO Hoofdgang\")\nHAS_ITEM(UFO Toegangscode)",
+      "action": "SHOW_MESSAGE(\"De toegangscode 'KRONOS-7' werkt! De zware deur naar de kernreactor ontgrendelt.\")\nSET_STATE(reactor_door_open, True)\nADD_SCORE(60)"
+    },
+    {
+      "id": "script_take_self_destruct_key",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Zelfvernietigings Sleutel)",
+      "condition": null,
+      "action": "ADD_SCORE(100)"
+    },
+    {
+      "id": "script_use_self_destruct_key_panel",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik zelfvernietigings sleutel op controlepaneel kernreactor)",
+      "condition": "CURRENT_ROOM(\"UFO Kernreactor\")\nHAS_ITEM(Zelfvernietigings Sleutel)",
+      "action": "SHOW_MESSAGE(\"Je steekt de sleutel in het paneel en draait hem om. Sirenes loeien! 'ZELFVERNIETIGING GEACTIVEERD. SYSTEEM OVERLOAD OVER T-MINUS 5 BEWEGINGEN. EVACUEER ONMIDDELLIJK.' Je moet hier weg!\")\nSET_STATE(self_destruct_activated, True)\nSET_STATE(escape_countdown, 5)\nADD_SCORE(200)"
+    },
+    {
+      "id": "script_enter_core_first_time",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_ENTER(UFO Kernreactor)",
+      "condition": "STATE(entered_core) == \"false\"",
+      "action": "SHOW_MESSAGE(\"De lucht trilt van de energie. Dit is het! K'vrak, de wachter, ziet er niet vriendelijk uit.\")\nSET_STATE(entered_core, True)"
+    },
+    {
+      "id": "script_escape_countdown_tick",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_POST_COMMAND",
+      "condition": "STATE(self_destruct_activated) == \"true\" AND STATE(escape_countdown) > \"0\"",
+      "action": "DECREMENT_STATE(escape_countdown)\nSHOW_MESSAGE(\"ALARMSYSTEEM: Overload in T-minus {{STATE_VALUE(escape_countdown)}} bewegingen!\")"
+    },
+    {
+      "id": "script_countdown_zero_death",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_POST_COMMAND",
+      "condition": "STATE(self_destruct_activated) == \"true\" AND STATE(escape_countdown) == \"0\" AND STATE(game_won) == \"false\"",
+      "action": "SHOW_MESSAGE(\"De UFO explodeert om je heen! Je was te langzaam...\")\nSET_STATE(game_loss, True)\nSET_STATE(loss_reason, \"Je kon niet op tijd ontsnappen aan de exploderende UFO.\")"
+    },
+    {
+      "id": "script_escape_in_pod",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik ontsnappingscapsule paneel)",
+      "condition": "CURRENT_ROOM(\"UFO Ontsnappingscapsule Baai\") AND STATE(self_destruct_activated) == \"true\"",
+      "action": "SHOW_MESSAGE(\"Je springt in de ontsnappingscapsule en ramt op de lanceerknop! Net op tijd schiet je weg terwijl de UFO achter je in een gigantische vuurbal uiteenspat. De Aarde is gered, dankzij jou!\")\nSET_STATE(game_won, True)\nADD_SCORE(300)"
+    },
+    {
+      "id": "script_use_security_console_no_card",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik beveiligingsconsole)",
+      "condition": "CURRENT_ROOM(\"UFO Beveiligingscentrum\") AND NOT HAS_ITEM(Security Bypass Card)",
+      "action": "SHOW_MESSAGE(\"Je probeert het console te bedienen, maar plotseling beginnen overal rode lichten te knipperen en een oorverdovend alarm gaat af! Twee zware veiligheidsdeuren slaan dicht. Je zit gevangen!\")\nSET_STATE(game_loss, True)\nSET_STATE(loss_reason, \"Je hebt het beveiligingssysteem geactiveerd zonder autorisatie en bent ingesloten.\")"
+    },
+    {
+      "id": "script_use_security_console_with_card",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_COMMAND(gebruik beveiligingsconsole)",
+      "condition": "CURRENT_ROOM(\"UFO Beveiligingscentrum\") AND HAS_ITEM(Security Bypass Card)",
+      "action": "SHOW_MESSAGE(\"Je haalt de bypass card langs een scanner op het console. Lichten worden groen. Je hebt nu toegang tot enkele niet-kritieke systemen, zoals interne deurcontroles of communicatielogs. Misschien vind je hier nuttige info?\")\nADD_SCORE(25)"
+    },
+    {
+      "id": "script_enter_damaged_corridor_no_suit",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_ENTER(Beschadigde UFO Gang)",
+      "condition": "NOT HAS_ITEM(Beschermend Pak)",
+      "action": "SHOW_MESSAGE(\"Zodra je de gang betreedt, prikt de groene mist in je ogen en longen. Je voelt je direct duizelig en valt op de grond, happend naar adem... Dit was geen goed idee.\")\nSET_STATE(game_loss, True)\nSET_STATE(loss_reason, \"Je bent bezweken aan de giftige dampen in de beschadigde gang.\")"
+    },
+    {
+      "id": "script_enter_damaged_corridor_with_suit",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_ENTER(Beschadigde UFO Gang)",
+      "condition": "HAS_ITEM(Beschermend Pak)",
+      "action": "SHOW_MESSAGE(\"Je trekt het beschermende pak aan. De groene mist deert je niet. Je kunt veilig door de gang bewegen.\")\nADD_SCORE(10)"
+    },
+    {
+      "id": "script_take_protective_suit",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Beschermend Pak)",
+      "condition": null,
+      "action": "ADD_SCORE(20)"
+    },
+    {
+      "id": "script_take_security_bypass_card",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "trigger": "ON_TAKE(Security Bypass Card)",
+      "condition": null,
+      "action": "ADD_SCORE(10)"
+    }
+  ],
+  "conversations": [
+    {
+      "id": "conv_agent_jansen",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "name": "Gesprek Agent Jansen",
+      "structure": {
+        "start_node": "start_jansen",
+        "nodes": {
+          "start_jansen": {
+            "npc_text": "Oh god, oh god... we zijn verloren! Ze zijn overal!",
+            "options": [
+              {"text": "Wat is er aan de hand, agent?", "next_node": "jansen_panic"},
+              {"text": "Ik heb een codewoord voor u.", "next_node": "jansen_codeword_ask"}
+            ]
+          },
+          "jansen_panic": {
+            "npc_text": "De aliens! Ze vernietigen alles! Ik... ik heb een keycard voor de bunker hierachter, maar ik durf niet... Misschien als je bewijst dat je te vertrouwen bent...",
+            "options": [
+              {"text": "Hoe kan ik dat bewijzen?", "next_node": "jansen_codeword_ask"},
+              {"text": "Oké, blijf veilig.", "next_node": "jansen_end_panic"}
+            ]
+          },
+          "jansen_codeword_ask": {
+            "npc_text": "Een codewoord? Welk codewoord?",
+            "type": "question",
+            "expected_answer": "Skyfall",
+            "next_node_correct": "jansen_codeword_correct",
+            "next_node_incorrect": "jansen_codeword_incorrect",
+            "action_on_correct": "ADD_SCORE(25)"
+          },
+          "jansen_codeword_correct": {
+            "npc_text": "Skyfall! Ja! Dat is het! Je... je bent er een van ons! Hier, neem deze keycard. Het opent de bunker achter de kast. Er is daar een kist, misschien zit er iets nuttigs in. Veel geluk!",
+            "action": "GIVE_ITEM(Politie Keycard)",
+            "options": [
+              {"text": "Dank u, agent. Ik zal de wereld redden.", "next_node": "jansen_end_hope"}
+            ]
+          },
+          "jansen_codeword_incorrect": {
+            "npc_text": "Nee, dat is het niet! Ga weg! Laat me met rust!",
+            "options": []
+          },
+          "jansen_end_panic": {
+            "npc_text": "Ik... ik probeer het.",
+            "options": []
+          },
+          "jansen_end_hope": {
+            "npc_text": "Doe dat... voor ons allemaal.",
+            "options": []
+          }
+        }
+      }
+    },
+    {
+      "id": "conv_dr_thorne",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "name": "Gesprek Dr. Aris Thorne",
+      "structure": {
+        "start_node": "start_thorne",
+        "nodes": {
+          "start_thorne": {
+            "npc_text": "Een mens! Help me! Deze aliens... ze hebben me gevangen genomen. Ik was bezig met cruciale data over hun schip.",
+            "options": [
+              {"text": "Hoe kan ik u helpen, dokter?", "next_node": "thorne_needs_scanner"},
+              {"text": "Wat voor data?", "next_node": "thorne_data_info"}
+            ]
+          },
+          "thorne_data_info": {
+            "npc_text": "Data over de zwakke plek van de kernreactor! Maar ik heb mijn scanner nodig om de laatste analyses te doen. Hij ligt hier ergens, maar hij is defect.",
+            "options": [
+              {"text": "Ik zal kijken of ik hem kan repareren.", "next_node": "thorne_needs_scanner_remind"}
+            ]
+          },
+          "thorne_needs_scanner": {
+            "npc_text": "Mijn medische scanner... het is mijn enige hoop om de data te ontcijferen. Hij is hier in de kamer, maar de energiecel is eruit gehaald. Als je die kunt vinden en de scanner repareert...",
+            "options": [
+              {"text": "Ik heb de Gerepareerde Medische Scanner.", "next_node": "thorne_give_scanner_check"}
+            ]
+          },
+          "thorne_needs_scanner_remind": {
+            "npc_text": "Zoek alsjeblieft naar de scanner en een energiecel.",
+            "options": []
+          },
+          "thorne_give_scanner_check": {
+            "condition": "HAS_ITEM(Gerepareerde Medische Scanner)",
+            "npc_text": "Je hebt hem! Fantastisch!",
+            "next_node_correct": "thorne_scanner_given",
+            "next_node_incorrect": "thorne_no_scanner_yet",
+            "type": "condition_check"
+          },
+          "thorne_no_scanner_yet": {
+             "npc_text": "Je hebt de gerepareerde scanner nog niet. Kom terug als je hem hebt.",
+             "options": []
+          },
+          "thorne_scanner_given": {
+            "npc_text": "Uitstekend! Momentje... *Dr. Thorne gebruikt de scanner* ... Ja! Ik heb het! De toegangscode voor de reactor is 'KRONOS-7'. Gebruik het op het paneel in de gang. Oh, en neem deze bypass card. Kan van pas komen in hun systemen. Haast je!",
+            "action": "REMOVE_ITEM(Gerepareerde Medische Scanner)\nGIVE_ITEM(UFO Toegangscode)\nGIVE_ITEM(Security Bypass Card)\nADD_SCORE(85)",
+            "options": [
+              {"text": "Bedankt, dokter! Ik ga ervoor!", "next_node": "thorne_end"}
+            ]
+          },
+          "thorne_end": {
+            "npc_text": "Red ons allemaal!",
+            "options": []
+          }
+        }
+      }
+    },
+    {
+      "id": "conv_xylar_technician",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "name": "Gesprek Xylar de Technicus",
+      "structure": {
+        "start_node": "start_xylar",
+        "nodes": {
+          "start_xylar": {
+            "npc_text": "*Xylar mompelt in een onverstaanbare taal, gefrustreerd kijkend naar het paneel* Wat wil jij, organisch wezen?",
+            "options": [
+              {"text": "Ik ben hier voor onderhoud.", "next_node": "xylar_maintenance_lie"},
+              {"text": "Ik heb een onderdeel nodig.", "next_node": "xylar_needs_part"}
+            ]
+          },
+          "xylar_maintenance_lie": {
+            "npc_text": "Onderhoud? Jij? *Xylar bekijkt je sceptisch* Nou, als je zo slim bent, wat is dan het protocol voor de energie-omleiders?",
+            "type": "question",
+            "expected_answer": "Orion Protocol",
+            "next_node_correct": "xylar_protocol_correct",
+            "next_node_incorrect": "xylar_protocol_incorrect",
+            "action_on_correct": "ADD_SCORE(30)"
+          },
+          "xylar_protocol_correct": {
+            "npc_text": "Orion Protocol... juist. Verrassend. Nou, ik heb hier een reserve energiecel die ik niet nodig heb. Neem maar mee, als je er iets mee kunt.",
+            "action": "GIVE_ITEM(Energiecel)",
+            "options": [
+              {"text": "Dank je wel.", "next_node": "xylar_end"}
+            ]
+          },
+          "xylar_protocol_incorrect": {
+            "npc_text": "Fout! Ga weg, amateur, je leidt me alleen maar af!",
+            "options": []
+          },
+          "xylar_needs_part": {
+            "npc_text": "Een onderdeel? Alles hier is van vitaal belang. Ik kan niets missen, tenzij je me kunt helpen met dit vervloekte paneel. Het blijft maar foutcodes geven voor het 'Orion Protocol'.",
+            "options": [
+              {"text": "Misschien kan ik helpen met het 'Orion Protocol'?", "next_node": "xylar_maintenance_lie"}
+            ]
+          },
+          "xylar_end": {
+            "npc_text": "*Xylar keert terug naar zijn werk, je negerend.*",
+            "options": []
+          }
+        }
+      }
+    },
+    {
+      "id": "conv_kvrak_guard",
+      "game_id": "a1a2a3a4-b1b2-c1c2-d1d2-e1e2e3e4e5f6",
+      "name": "Gesprek K'vrak de Schildwacht",
+      "structure": {
+        "start_node": "start_kvrak",
+        "nodes": {
+          "start_kvrak": {
+            "npc_text": "STOP! Sterfelijk wezen, jij zult niet passeren! Alleen zij die de test van de Geest doorstaan, mogen de kern benaderen.",
+            "options": [
+              {"text": "Wat is de test van de Geest?", "next_node": "kvrak_riddle_ask"}
+            ]
+          },
+          "kvrak_riddle_ask": {
+            "npc_text": "Beantwoord mijn raadsel, en de weg zal open zijn. Faal, en je lot is bezegeld.\n\nIk heb steden, maar geen huizen.\nIk heb bergen, maar geen bomen.\nIk heb water, maar geen vissen.\n\nWat ben ik?",
+            "type": "question",
+            "expected_answer": "Een landkaart",
+            "next_node_correct": "kvrak_riddle_correct",
+            "next_node_incorrect": "kvrak_riddle_incorrect",
+            "action_on_correct": "ADD_SCORE(100)"
+          },
+          "kvrak_riddle_correct": {
+            "npc_text": "Inderdaad... een landkaart. Je wijsheid is... onverwacht. De kern is kwetsbaar. Hier, neem deze sleutel. Vernietig wat vernietigd moet worden.",
+            "action": "GIVE_ITEM(Zelfvernietigings Sleutel)\nSET_STATE(kvrak_defeated, True)",
+            "options": [
+              {"text": "Dank u, wijze K'vrak.", "next_node": "kvrak_end_win"}
+            ]
+          },
+          "kvrak_riddle_incorrect": {
+            "npc_text": "Fout! Je onwetendheid is je ondergang! Je zult nu de gevolgen dragen!",
+            "action": "SET_STATE(game_loss, True)\nSET_STATE(loss_reason, \"Je hebt de alien-wachter K'vrak niet kunnen overtuigen en bent gevangen genomen.\")",
+            "options": []
+          },
+          "kvrak_end_win": {
+            "npc_text": "*K'vrak stapt opzij en deactiveert een deel van zijn pantser, een teken van respect.*",
+            "options": []
+          }
+        }
+      }
+    }
+  ]
+}
