@@ -53,7 +53,8 @@
     border-radius: 4px;
     cursor: pointer;
     background-color: #f9f9f9;
-    /* Add type indicator later? */
+    display: flex; /* Align icon and text */
+    align-items: center; /* Vertically center icon and text */
 }
 
 #entity-list-ul li:hover {
@@ -64,6 +65,11 @@
     background-color: #d9edf7; /* Light blue */
     border-color: #bce8f1;
     font-weight: bold;
+}
+
+/* Style for the entity icon */
+.entity-icon {
+    margin-right: 8px; /* Space between icon and text */
 }
 
 #entity-details-panel {

@@ -56,9 +56,27 @@ export function renderEntityList(entitiesToRender = state.currentEntities) {
         const sortedEntities = [...filteredEntities].sort((a, b) => a.name.localeCompare(b.name));
         sortedEntities.forEach(entity => {
             const li = document.createElement('li');
-            li.textContent = `${entity.name} (${entity.type})`; // Show name and type
             li.dataset.entityId = entity.id;
             li.addEventListener('click', () => selectEntity(entity.id));
+
+            // Create icon span
+            const iconSpan = document.createElement('span');
+            iconSpan.classList.add('entity-icon');
+            if (entity.type === 'NPC') {
+                iconSpan.textContent = '👤'; // User icon for NPC
+            } else if (entity.type === 'ITEM') {
+                iconSpan.textContent = '📦'; // Box icon for ITEM
+            } else {
+                iconSpan.textContent = '❓'; // Question mark for unknown types
+            }
+
+            // Create text span
+            const textSpan = document.createElement('span');
+            textSpan.textContent = `${entity.name} (${entity.type})`;
+
+            li.appendChild(iconSpan);
+            li.appendChild(textSpan);
+
             if (state.selectedEntity && entity.id === state.selectedEntity.id) {
                 li.classList.add('selected');
             }
